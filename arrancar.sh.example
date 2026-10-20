@@ -28,7 +28,7 @@ else
   else
     docker run -d --name secretaria-mariadb \
       -e MYSQL_ROOT_PASSWORD="$DB_PASS" \
-      -e MYSQL_DATABASE=wordpress \
+      -e MYSQL_DATABASE=db-secretaria \
       -e MYSQL_USER=wpuser \
       -e MYSQL_PASSWORD="$DB_PASS" \
       -p 127.0.0.1:3307:3306 \

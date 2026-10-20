@@ -21,7 +21,7 @@ cp detener.sh.example detener.sh && chmod +x detener.sh
 - Sitio: http://localhost:8000
 - Admin: http://localhost:8000/wp-admin/
 
-La primera vez, completa `wp-config.php` (host `127.0.0.1:3307`, base `wordpress`, usuario `wpuser`, la contraseña de `DB_PASS`).
+La primera vez, completa `wp-config.php` (host `127.0.0.1:3307`, base `db-secretaria`, usuario `wpuser`, la contraseña de `DB_PASS`).
 
 ## Tipografía
 
