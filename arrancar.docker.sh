@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Plantilla: cp arrancar.sh.example arrancar.sh && chmod +x arrancar.sh
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WP="$SCRIPT_DIR/wordpress-7.1.3"
+DB_PASS='243978f11fe071672dbc3d8b22df0f4d'
+
+port_open() {
+  timeout 1 bash -c "echo >/dev/tcp/0.0.0.0/$1" 2>/dev/null
+}
+
+if [ ! -d "$WP" ]; then
+  echo "ERROR: no existe $WP"
+  exit 1
+fi
+
+if port_open 3308; then
+  echo "✔ MariaDB ya está corriendo (puerto 3308)."
+else
+  echo "▶ Arrancando MariaDB (Docker)..."
+  if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then
+    echo "ERROR: instala/arranca Docker."
+    exit 1
+  fi
+  if docker ps -a --format '{{.Names}}' | grep -qx 'secretaria-mariadb'; then
+    docker start secretaria-mariadb >/dev/null
+  else
+    docker run -d --name secretaria-mariadb \
+      -e MYSQL_ROOT_PASSWORD="$DB_PASS" \
+      -e MYSQL_DATABASE=db-secretaria \
+      -e MYSQL_USER=wpuser \
+      -e MYSQL_PASSWORD="$DB_PASS" \
+      -p 127.0.0.1:3308:3306 \
+      -v secretaria-mariadb-data:/var/lib/mysql \
+      mariadb:11 >/dev/null
+  fi
+  for _ in $(seq 1 40); do
+    port_open 3308 && break
+    sleep 1
+  done
+  if ! port_open 3308; then
+    echo "ERROR: MariaDB no respondió en el puerto 3308."
+    exit 1
+  fi
+  echo "✔ MariaDB lista."
+fi
+
+if port_open 8000; then
+  echo "✔ El servidor ya está corriendo (puerto 8000)."
+else
+  echo "▶ Arrancando servidor PHP..."
+  setsid php -d opcache.revalidate_freq=0 -S 0.0.0.0:8000 -t "$WP" </dev/null >/tmp/php-server.log 2>&1 &
+  disown 2>/dev/null || true
+  sleep 2
+fi
+
+echo ""
+echo "========================================"
+echo "  Sitio:  http://localhost:8000"
+echo "  Admin:  http://localhost:8000/wp-admin/"
+echo "  (usuario y contraseña: ver credenciales.txt)"
+echo "========================================"
