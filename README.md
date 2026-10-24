@@ -47,6 +47,8 @@ Familia oficial: [Montserrat](https://fonts.google.com/specimen/Montserrat), sol
 
 `--azul-cl` (`#E6F0F8`) es un tinte claro derivado del azul principal, solo para fondos de tarjetas y secciones; no forma parte de la guía.
 
+`--azul-noche` (`#07235C`) y `--azul-rey` (`#0B3D9E`) son tonos profundos derivados de los azules institucionales, usados juntos como degradado `--grad-azul` en las bandas oscuras: barra superior, banner de las páginas internas, tarjeta del horario, perfil destacado y pie. No forman parte de la guía.
+
 ### Colores de apoyo (20 % cromática secundaria)
 
 Úsalos con moderación (máx. ~20 % de la composición).

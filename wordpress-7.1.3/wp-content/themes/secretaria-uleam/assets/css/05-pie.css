@@ -1,0 +1,28 @@
+/* Pie del sitio. */
+/* ===== FOOTER ===== */
+footer{background:var(--azul-osc);color:#fff;padding:56px 0 22px;border-radius:0;margin-top:0}
+.pie{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.3fr;gap:30px}
+.pie h5{font-size:14px;margin-bottom:12px;color:#fff}
+.pie a,.pie p{display:block;font-size:13px;opacity:.88;margin-bottom:7px;line-height:1.5}
+.pie a:hover{opacity:1;text-decoration:underline}
+.pie .logo{color:#fff}
+.pie .logo small{color:#cfd9f5}
+.pie .sociales{display:flex;gap:8px;margin-top:10px}
+.pie .sociales a{background:rgba(255,255,255,.12);width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:600;font-size:12px;margin:0}
+.pie .sociales a:hover{background:var(--rojo);color:#fff;text-decoration:none}
+.copy{text-align:center;font-size:12px;opacity:.75;margin-top:30px;border-top:1px solid rgba(255,255,255,.18);padding-top:16px}
+@media(max-width:1000px){
+  .pie{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .pie{grid-template-columns:1fr}
+}
+/* Pie del sitio: banda azul profunda (como los banners), centrado, íconos en círculo con borde */
+.pie-sitio{margin-top:auto;flex-shrink:0;background:var(--grad-azul);color:#fff;text-align:center;padding:36px 20px 28px;border-top:4px solid var(--rojo)}
+.pie-sitio h2{font-size:20px;font-weight:600;margin-bottom:14px}
+.pie-redes{display:flex;justify-content:center;gap:12px;margin-bottom:24px}
+.pie-redes a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;color:#fff;transition:.2s}
+.pie-redes a:hover{background:#fff;color:var(--azul-noche)}
+.pie-redes .ico{width:19px;height:19px}
+.pie-texto{max-width:900px;margin:0 auto;font-size:14px;line-height:1.7;opacity:.85;text-wrap:balance;overflow-wrap:break-word}
+.pie-sitio{padding:var(--e4) var(--e2) var(--e3)}

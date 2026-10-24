@@ -10,14 +10,14 @@
 <header>
   <div class="topbar">
     <div class="wrap">
-      <?php if ( $m = get_theme_mod( 'uleam_email' ) ) : ?>
+      <?php if ( $m = get_theme_mod( 'uleam_email', ULEAM_CORREO ) ) : ?>
         <a href="mailto:<?php echo esc_attr( $m ); ?>"><?php echo uleam_icon( 'mail' ); ?><?php echo esc_html( $m ); ?></a>
       <?php else : ?><span></span><?php endif; ?>
       <div class="sociales">
-        <?php $hay = false; foreach ( REDES as $k => $l ) { if ( $u = get_theme_mod( "uleam_$k" ) ) { $hay = true; } } if ( $hay ) echo 'Síguenos'; ?>
-        <?php foreach ( REDES as $k => $l ) : if ( $u = get_theme_mod( "uleam_$k" ) ) : ?>
-          <a href="<?php echo esc_url( $u ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( ucfirst( $k ) ); ?>"><?php echo uleam_icon( $k ); ?></a>
-        <?php endif; endforeach; ?>
+        <?php $redes = uleam_redes( true ); if ( $redes ) echo '<span>' . esc_html( get_theme_mod( 'uleam_siguenos', ULEAM_SIGUENOS ) ) . '</span>'; ?>
+        <?php foreach ( $redes as $k => $r ) : ?>
+          <a href="<?php echo esc_url( $r[0] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( $r[1] . ' (se abre en otra pestaña)' ); ?>"><?php echo uleam_icon( $k ); ?></a>
+        <?php endforeach; ?>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
         <span class="nombre"><?php bloginfo( 'name' ); ?></span>
       </a>
       <form class="buscar" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-        <input type="search" name="s" placeholder="Buscar en el sitio..." aria-label="Buscar en el sitio">
+        <input type="search" name="s" <?php $b = get_theme_mod( 'uleam_buscar', ULEAM_BUSCAR ); ?>placeholder="<?php echo esc_attr( $b ); ?>" aria-label="<?php echo esc_attr( $b ); ?>">
         <button type="submit" aria-label="Buscar"><?php echo uleam_icon( 'search' ); ?></button>
       </form>
     </div>

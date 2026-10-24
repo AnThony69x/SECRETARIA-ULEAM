@@ -1,16 +1,11 @@
 <footer class="pie-sitio">
-  <h2>Síguenos</h2>
+  <h2><?php echo esc_html( get_theme_mod( 'uleam_siguenos', ULEAM_SIGUENOS ) ); ?></h2>
   <div class="pie-redes">
-    <?php foreach ( array(
-		'facebook'  => array( 'https://www.facebook.com/UleamEc/', 'Facebook' ),
-		'x'         => array( 'https://x.com/UleamEcuador', 'X' ),
-		'youtube'   => array( 'https://www.youtube.com/channel/UCOferC0PjpEUegrVq8Re-TQ', 'YouTube' ),
-		'instagram' => array( 'https://www.instagram.com/uleam_ecuador_oficial/', 'Instagram' ),
-	) as $icono => $r ) : ?>
-      <a href="<?php echo esc_url( $r[0] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( $r[1] ); ?>"><?php echo uleam_icon( $icono ); ?></a>
+    <?php foreach ( uleam_redes() as $icono => $r ) : ?>
+      <a href="<?php echo esc_url( $r[0] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( $r[1] . ' (se abre en otra pestaña)' ); ?>"><?php echo uleam_icon( $icono ); ?></a>
     <?php endforeach; ?>
   </div>
-  <p class="pie-texto">ULEAM © Copyright 2020, Todos los derechos reservados - Universidad Laica Eloy Alfaro de Manabí<br>Dirección: Av. Circunvalación - Vía a San Mateo<br>Manta - Manabí - Ecuador</p>
+  <p class="pie-texto"><?php echo nl2br( esc_html( str_replace( '{año}', wp_date( 'Y' ), get_theme_mod( 'uleam_pie_texto', ULEAM_PIE ) ) ) ); ?></p>
 </footer>
 <?php wp_footer(); ?>
 </body>

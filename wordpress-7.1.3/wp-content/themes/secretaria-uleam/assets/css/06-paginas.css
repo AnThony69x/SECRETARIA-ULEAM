@@ -1,0 +1,34 @@
+/* Páginas internas: banner (pag-hero) y contenedor del contenido. */
+/* Páginas internas y pie */
+.pagina{max-width:920px;margin:0 auto;padding:56px 20px 72px;background:#fff}
+.pagina-titulo{text-align:center;text-transform:uppercase;color:var(--rojo);font-weight:400;font-size:clamp(28px,4vw,44px);margin-bottom:40px}
+.pagina-contenido{text-align:justify;font-size:15px}
+.pagina-contenido h2,.pagina-contenido h3{font-size:14px;font-weight:400;color:var(--gris);margin:0 0 2px}
+.pagina-contenido p{margin-bottom:16px}
+.pagina{flex:1 0 auto;width:100%}
+/* Misión y Visión */
+.pag-hero{background:var(--grad-azul);color:#fff;border-bottom:4px solid var(--rojo);padding:48px 0}
+.pag-hero h1{font-size:clamp(32px,5vw,52px);font-weight:600}
+.pag-hero h1 span{color:var(--azul-claro)}
+.pag-hero p{font-size:clamp(15px,2vw,18px);opacity:.9;margin:6px 0 16px;font-style:italic}
+.pagina-cont{flex:1 0 auto;max-width:1000px;width:100%;margin:0 auto;padding:48px 20px 64px}
+.pagina-cont img{max-width:100%;height:auto;display:block;margin:0 auto;border-radius:var(--radio)}
+.pagina-cont figure{margin:0 0 24px}
+.pagina-cont p{margin-bottom:16px}
+@media(max-width:760px){
+  .pagina-cont{padding:32px 16px 48px}
+}
+.pag-hero .chips span{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 11px}
+.pag-hero .chips .ico{width:15px;height:15px;color:var(--azul-claro)}
+.pag-hero .wrap{max-width:1000px;padding:0 20px}
+/* Banner de páginas: misma altura en todo el sitio (185px) */
+.pag-hero{box-sizing:border-box;min-height:185px;padding:20px 0;display:flex;align-items:center}
+.pag-hero .wrap{width:100%}
+.pag-hero h1{font-size:clamp(28px,3.4vw,38px);line-height:1.2}
+.pag-hero p{margin:4px 0 12px}
+.pag-hero{padding:var(--e3) 0}
+.pag-hero p{margin:var(--e1) 0 var(--e2)}
+.pagina-cont{padding:var(--e4) var(--e2) 56px}
+@media(max-width:760px){
+  .pagina-cont{padding:var(--e3) var(--e2) var(--e4)}
+}

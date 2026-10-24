@@ -1,0 +1,49 @@
+/* Variables de diseño (paleta del README), reset, tipografía y utilidades globales. */
+/*
+Theme Name: Secretaría ULEAM
+Description: Tema de la Dirección de Secretaría General · ULEAM (basado en la maqueta).
+Version: 0.1
+Text Domain: secretaria-uleam
+*/
+:root{
+  /* Paleta institucional ULEAM: azules 80 %, rojos de apoyo 20 % (ver README) */
+  --azul:#005689; --azul-osc:#004499; --azul-medio:#0059A8; --azul-claro:#46A4FF;
+  --rojo:#DB1D1F; --rojo-osc:#B11719; --rojo-claro:#FF0000;
+  --azul-cl:#e6f0f8; /* tinte claro derivado del azul principal, solo para fondos */
+  --azul-noche:#07235c; --azul-rey:#0b3d9e; /* tonos profundos derivados para bandas oscuras (barra, banners, pie) */
+  --grad-azul:linear-gradient(110deg,var(--azul-noche),var(--azul-rey));
+  --texto:#1e2a44; --gris:#5f6b85; --linea:#e3e9f5; --fondo:#f4f7fc; --blanco:#fff;
+  --radio:16px; --sombra:0 6px 24px rgba(0,86,137,.10);
+  --font-uleam:"Montserrat",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:108px}
+body{font-family:var(--font-uleam);font-weight:400;color:var(--texto);background:var(--fondo);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px;border-radius:6px}
+.wrap{max-width:none;margin:0 auto;padding:0 5vw}
+h1,h2,h3,h4{line-height:1.2;font-weight:600}
+section{padding:68px 0}
+/* ===== HEADER ===== */
+.ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+@media(max-width:560px){
+  .wrap{padding:0 16px}
+}
+@media(max-width:560px){
+  section{padding:48px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+/* Pie siempre al fondo, aunque el contenido sea corto */
+body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+/* Ritmo de espacios: escala 8 / 16 / 24 / 40 */
+:root{--e1:8px;--e2:16px;--e3:24px;--e4:40px}
+html{scroll-padding-top:80px}
+/* Página única del Consejo: índice fijo, herramientas y accesibilidad */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;transition:none!important}
+}

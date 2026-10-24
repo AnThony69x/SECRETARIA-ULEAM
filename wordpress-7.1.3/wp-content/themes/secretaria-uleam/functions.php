@@ -42,30 +42,65 @@ function uleam_icon( $name ) {
 			'folder'         => '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/>',
 			'calendar'       => '<path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
 		'tiktok'         => '<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>',
+		// Organigrama (áreas)
+		'edificio'       => '<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/>',
+		'maletin'        => '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
+		'chip'           => '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>',
+		'herramienta'    => '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/>',
+		'engranaje'      => '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+		'bandeja'        => '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+		'lapiz'          => '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/>',
+		'ayuda'          => '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/>',
 	);
 	return isset( $p[ $name ] ) ? '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">' . $p[ $name ] . '</svg>' : '';
 }
 
 // Datos de contacto y redes editables en Apariencia → Personalizar → Secretaría ULEAM.
-const REDES = array( 'facebook' => 'Facebook (URL)', 'instagram' => 'Instagram (URL)', 'tiktok' => 'TikTok (URL)' );
+// Cada red: etiqueta, URL por defecto (cuentas oficiales ULEAM) y si sale en la barra superior por defecto. El pie muestra todas las que tengan URL.
+const REDES = array(
+	'facebook'  => array( 'Facebook', 'https://www.facebook.com/UleamEc/', true ),
+	'x'         => array( 'X', 'https://x.com/UleamEcuador', false ),
+	'youtube'   => array( 'YouTube', 'https://www.youtube.com/channel/UCOferC0PjpEUegrVq8Re-TQ', false ),
+	'instagram' => array( 'Instagram', 'https://www.instagram.com/uleam_ecuador_oficial/', false ),
+	'tiktok'    => array( 'TikTok', '', false ),
+);
+const ULEAM_CORREO = 'secretaria.general@uleam.edu.ec';
+const ULEAM_SIGUENOS = 'Síguenos';
+const ULEAM_BUSCAR   = 'Buscar en el sitio...';
+const ULEAM_PIE    = "ULEAM © Copyright {año}, Todos los derechos reservados - Universidad Laica Eloy Alfaro de Manabí\nDirección: Av. Circunvalación - Vía a San Mateo\nManta - Manabí - Ecuador";
+
+// Redes con URL; $barra = true filtra las marcadas para la barra superior.
+function uleam_redes( $barra = false ) {
+	$out = array();
+	foreach ( REDES as $k => $r ) {
+		$u = get_theme_mod( "uleam_$k", $r[1] );
+		if ( $u && ( ! $barra || get_theme_mod( "uleam_{$k}_barra", $r[2] ) ) ) {
+			$out[ $k ] = array( $u, $r[0] );
+		}
+	}
+	return $out;
+}
 
 add_action( 'customize_register', function ( $c ) {
 	$c->add_section( 'uleam', array( 'title' => 'Secretaría ULEAM', 'priority' => 30 ) );
-	$c->add_setting( 'uleam_email', array( 'default' => '', 'sanitize_callback' => 'sanitize_email' ) );
+	$c->add_setting( 'uleam_email', array( 'default' => ULEAM_CORREO, 'sanitize_callback' => 'sanitize_email' ) );
 	$c->add_control( 'uleam_email', array( 'section' => 'uleam', 'label' => 'Correo de la barra superior', 'type' => 'email' ) );
-	foreach ( REDES as $k => $label ) {
-		$c->add_setting( "uleam_$k", array( 'default' => '', 'sanitize_callback' => 'esc_url_raw' ) );
-		$c->add_control( "uleam_$k", array( 'section' => 'uleam', 'label' => $label, 'type' => 'url' ) );
+	foreach ( REDES as $k => $r ) {
+		$c->add_setting( "uleam_$k", array( 'default' => $r[1], 'sanitize_callback' => 'esc_url_raw' ) );
+		$c->add_control( "uleam_$k", array( 'section' => 'uleam', 'label' => $r[0] . ' (URL, vacío = no se muestra)', 'type' => 'url' ) );
+		$c->add_setting( "uleam_{$k}_barra", array( 'default' => $r[2], 'sanitize_callback' => 'rest_sanitize_boolean' ) );
+		$c->add_control( "uleam_{$k}_barra", array( 'section' => 'uleam', 'label' => 'Mostrar ' . $r[0] . ' en la barra superior', 'type' => 'checkbox' ) );
 	}
+	$c->add_setting( 'uleam_siguenos', array( 'default' => ULEAM_SIGUENOS, 'sanitize_callback' => 'sanitize_text_field' ) );
+	$c->add_control( 'uleam_siguenos', array( 'section' => 'uleam', 'label' => 'Texto junto a las redes (barra superior y pie)', 'type' => 'text' ) );
+	$c->add_setting( 'uleam_buscar', array( 'default' => ULEAM_BUSCAR, 'sanitize_callback' => 'sanitize_text_field' ) );
+	$c->add_control( 'uleam_buscar', array( 'section' => 'uleam', 'label' => 'Texto de ayuda del buscador', 'type' => 'text' ) );
+	$c->add_setting( 'uleam_pie_texto', array( 'default' => ULEAM_PIE, 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$c->add_control( 'uleam_pie_texto', array( 'section' => 'uleam', 'label' => 'Texto del pie ({año} = año actual, se actualiza solo)', 'type' => 'textarea' ) );
 } );
 
-add_action( 'wp_enqueue_scripts', function () {
-	$dir = get_template_directory();
-	$uri = get_template_directory_uri();
-	wp_enqueue_style( 'montserrat', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap', array(), null );
-	wp_enqueue_style( 'secretaria-uleam', get_stylesheet_uri(), array( 'montserrat' ), filemtime( "$dir/style.css" ) );
-	wp_enqueue_script( 'secretaria-uleam', "$uri/assets/main.js", array(), filemtime( "$dir/assets/main.js" ), true );
-} );
+// CSS y JS: ver inc/recursos.php (un archivo por componente en assets/css y assets/js).
+require get_template_directory() . '/inc/recursos.php';
 
 // --- Slides del hero ---
 add_action( 'init', function () {
@@ -139,3 +174,9 @@ add_action( 'save_post_page', function ( $id ) {
 
 // Documentos PDF (miembros, actas y resoluciones).
 require get_template_directory() . "/inc/documentos.php";
+
+// Horario de atención editable.
+require get_template_directory() . "/inc/horario.php";
+
+// Organigrama de personal editable (Personal / Áreas del organigrama).
+require get_template_directory() . "/inc/organigrama.php";

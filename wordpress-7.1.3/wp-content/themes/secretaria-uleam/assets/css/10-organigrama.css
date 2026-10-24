@@ -1,0 +1,76 @@
+/* Organigrama de Recursos Humanos: niveles, paneles por área y tarjetas. */
+/* ===== Organigrama institucional: paneles por área, tarjetas centradas, nodos numerados ===== */
+.pagina-cont:has(.oc){max-width:none;margin:0;padding:48px 0 64px}
+.oc-wrap{box-sizing:content-box;max-width:1240px;margin:0 auto;padding:0 24px}
+.oc{list-style:none;margin:0;padding:0}
+/* Cada área define --area-color (inline); el resto se deriva de él */
+.oc-n{--area-color:#0B5C8E;--next-color:var(--area-color);--area-soft:color-mix(in srgb,var(--area-color) 10%,white);--area-dark:color-mix(in srgb,var(--area-color) 62%,black);position:relative;display:flex;padding-bottom:32px}
+.oc-n:not(:last-child)::before{content:"";position:absolute;left:19px;top:40px;bottom:-4px;width:4px;border-radius:4px;background:linear-gradient(var(--area-color) 55%,var(--next-color))}
+.oc-num{flex:none;width:40px;height:40px;border-radius:50%;background:var(--area-color);color:#fff;display:grid;place-items:center;font-weight:600;font-size:16px;box-shadow:0 4px 12px color-mix(in srgb,var(--area-color) 45%,transparent),0 0 0 5px var(--area-soft);z-index:1}
+.oc-n::after{content:"";flex:none;width:24px;height:4px;background:var(--area-color);margin-top:18px;order:1}
+/* Panel del nivel */
+.oc-cont{order:2;flex:1;min-width:0;position:relative;background:var(--area-soft);border:1px solid color-mix(in srgb,var(--area-color) 20%,transparent);border-radius:16px;padding:20px}
+.oc-tit{display:flex;align-items:center;gap:10px;margin:0 0 18px;padding-bottom:12px;border-bottom:1px solid color-mix(in srgb,var(--area-color) 25%,transparent);font-size:19px;color:var(--area-dark)}
+.oc-ic{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--area-color);box-shadow:0 2px 6px color-mix(in srgb,var(--area-color) 25%,transparent)}
+.oc-ic svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.oc-sub+.oc-sub{margin-top:26px}
+.oc-sub h3{display:flex;align-items:center;gap:8px;margin:0 0 16px;font-size:15px;color:var(--area-dark)}
+.oc-sub h3::after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--area-color) 30%,transparent)}
+.oc-sub h3 b{font-weight:600;font-size:12px;background:var(--area-color);color:#fff;border-radius:999px;padding:1px 9px}
+/* Tarjetas centradas; JS limita el ancho para repartir las filas (p. ej. 4 + 3) */
+.oc-caj{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;margin:0 auto}
+.oc-c{position:relative;width:250px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:0 0 20px;overflow:hidden;background:#fff;border:1px solid var(--linea);border-top:4px solid var(--area-color);border-radius:14px;transition:.2s}
+.oc-c:hover{transform:translateY(-4px);box-shadow:0 14px 28px color-mix(in srgb,var(--area-color) 25%,transparent)}
+/* Foto cuadrada a todo el ancho de la tarjeta; rostro arriba */
+.oc-av{flex:none;display:block;width:100%;aspect-ratio:1/1;margin:0;border:0;border-bottom:4px solid var(--area-color);border-radius:0;object-fit:cover;object-position:center 20%;background:var(--area-soft)}
+.oc-ini{display:grid;place-items:center;background:linear-gradient(135deg,var(--area-color),var(--area-dark));color:#fff;font-weight:600;font-size:64px;letter-spacing:.03em}
+.oc-tx{display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 14px}
+.oc-tx b{display:flex;align-items:center;justify-content:center;min-height:2.6em;font-size:16px;font-weight:700;line-height:1.3;color:var(--texto)}
+.oc-tx small{font-size:12px;line-height:1.3;font-weight:600;color:var(--area-dark)}
+/* Secretaría General: tarjeta principal, centrada, con conector hacia el nivel 2 */
+.oc-uno{margin-top:10px}
+.oc-main{width:320px;background:linear-gradient(145deg,#DB2777,#831843);border:0;border-top:4px solid #F9A8D4;box-shadow:0 18px 40px rgba(131,24,67,.35);overflow:visible}
+.oc-main .oc-av{border-bottom-color:#F9A8D4;border-radius:10px 10px 0 0}
+.oc-main .oc-ini{background:linear-gradient(135deg,#46A4FF,#0B5C8E);font-size:84px}
+.oc-main .oc-tx b{font-size:22px;color:#fff;min-height:0}
+.oc-main .oc-tx small{color:rgba(255,255,255,.85)}
+.oc-main:hover{box-shadow:0 22px 46px rgba(131,24,67,.45)}
+.oc-ins{position:absolute;top:-12px;left:50%;transform:translateX(-50%);white-space:nowrap;background:linear-gradient(90deg,#F59E0B,#D97706);color:#3b2300;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:5px 14px;box-shadow:0 4px 10px rgba(0,0,0,.25)}
+/* Botón Subir */
+.oc-up{position:fixed;right:24px;bottom:24px;width:46px;height:46px;border:0;border-radius:50%;background:var(--azul);color:#fff;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,86,137,.35);opacity:0;visibility:hidden;transform:translateY(10px);transition:.25s;z-index:50}
+.oc-up.ver{opacity:1;visibility:visible;transform:none}
+.oc-up:hover{background:var(--azul-osc)}
+.oc-up svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:600px){
+  .oc-wrap{padding:0 12px}
+  .oc-num{width:34px;height:34px;font-size:14px}
+  .oc-n:not(:last-child)::before{left:16px;top:34px;width:2px}
+  .oc-n::after{width:10px;height:2px;margin-top:16px}
+  .oc-cont{padding:14px 10px}
+  .oc-caj{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:none!important}
+  .oc-uno{display:block}
+  .oc-c{width:auto;min-width:0;padding:0 0 14px}
+  .oc-main{width:100%}
+  .oc-ini{font-size:44px}
+  .oc-main .oc-ini{font-size:72px}
+  .oc-tx{padding:0 8px}
+  .oc-tx b{font-size:13px}
+  .oc-up{right:14px;bottom:14px}
+}
+.oc-def{object-fit:contain;padding:8%;background:linear-gradient(135deg,var(--area-soft),color-mix(in srgb,var(--area-color) 28%,white))}
+/* Organigrama: animación de entrada (JS añade .oc-anim y luego .oc-in) y microinteracciones */
+.oc-anim .oc-num{transform:scale(0) rotate(-90deg);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.oc-anim::before{transform:scaleY(0);transform-origin:top;transition:transform .9s ease .25s}
+.oc-anim::after{transform:scaleX(0);transform-origin:left;transition:transform .35s ease .2s}
+.oc-anim .oc-cont{opacity:0;transform:translateX(32px);transition:opacity .6s ease .15s,transform .6s cubic-bezier(.22,1,.36,1) .15s}
+.oc-anim .oc-c{opacity:0;transform:translateY(28px) scale(.94);transition:opacity .5s ease,transform .6s cubic-bezier(.34,1.4,.64,1);transition-delay:calc(var(--i,0)*90ms + .35s)}
+.oc-anim.oc-in .oc-num,.oc-anim.oc-in::before,.oc-anim.oc-in::after,.oc-anim.oc-in .oc-cont,.oc-anim.oc-in .oc-c{opacity:1;transform:none}
+.oc-av{transition:transform .4s ease}
+.oc-c:not(.oc-main):hover .oc-av{transform:scale(1.06)}
+.oc-main{animation:oc-brillo 3.2s ease-in-out infinite}
+@keyframes oc-brillo{50%{box-shadow:0 18px 46px rgba(219,39,119,.45),0 0 0 6px rgba(219,39,119,.12)}}
+.oc-ins{background-size:200% 100%;background-image:linear-gradient(90deg,#F59E0B,#FCD34D,#D97706,#F59E0B);animation:oc-ins 3s linear infinite}
+@keyframes oc-ins{to{background-position:200% 0}}
+@media(prefers-reduced-motion:reduce){
+  .oc-main,.oc-ins{animation:none}
+}
