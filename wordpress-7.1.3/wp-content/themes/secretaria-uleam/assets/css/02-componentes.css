@@ -5,6 +5,11 @@
 .btn.azul{background:var(--azul);color:#fff;border-color:var(--azul)}
 .btn.sec{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
 .btn.sec:hover{background:rgba(255,255,255,.12)}
+/* Botón del editor de bloques (Gutenberg) con el aspecto de .btn.azul, para que el administrador no tenga que dar estilo. */
+.wp-block-button__link{display:inline-flex;align-items:center;gap:6px;background:var(--azul);color:var(--blanco);padding:14px 26px;border-radius:12px;border:2px solid var(--azul);font-weight:600;font-size:16px;transition:.2s}
+.wp-block-button__link:hover{color:var(--blanco);transform:translateY(-2px);box-shadow:var(--sombra)}
+.wp-block-button__link:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.wp-block-button__link{transition:none}.wp-block-button__link:hover{transform:none}}
 .btn.pq{padding:8px 16px;font-size:13px;border-radius:10px}
 .enlace{color:var(--azul-medio);font-weight:600;font-size:14px}
 .enlace:hover{text-decoration:underline}

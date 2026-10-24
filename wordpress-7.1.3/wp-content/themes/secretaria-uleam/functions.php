@@ -176,6 +176,9 @@ add_action( 'save_post_page', function ( $id ) {
 require get_template_directory() . "/inc/documentos.php";
 require get_template_directory() . "/inc/documentos-vista.php";
 
+// Páginas de accesos en tarjetas a partir de un menú ([enlaces menu="slug"]).
+require get_template_directory() . "/inc/enlaces.php";
+
 // Horario de atención editable.
 require get_template_directory() . "/inc/horario.php";
 
