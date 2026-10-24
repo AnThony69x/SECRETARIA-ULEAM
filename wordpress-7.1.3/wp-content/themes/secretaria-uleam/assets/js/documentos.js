@@ -2,6 +2,7 @@
 // La página trae solo el año inicial de cada pestaña; los demás años y las búsquedas se piden a /wp-json/uleam/v1/documentos.
 document.querySelectorAll('.docs-todo').forEach(function (d) {
   var PAG = 30, PAGS = 4, api = d.dataset.api, vq = '&vista=' + (d.dataset.vista || ''), q = '', tipo = '', orden = '', res = null, buscando = 0, timer;
+  if (!d.querySelector('.doc-tpl')) return; // la lista de resultados de búsqueda (search.php) usa las mismas clases pero sin este script
   var tpl = d.querySelector('.doc-tpl').content.firstElementChild;
   var cont = d.querySelector('.doc-contador'), vacio = d.querySelector('.doc-vacio'), sel = d.querySelector('.doc-anio select');
   var tabs = [].slice.call(d.querySelectorAll('[role=tab]'));

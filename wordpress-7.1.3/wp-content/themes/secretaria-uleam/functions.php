@@ -197,6 +197,10 @@ require get_template_directory() . "/inc/enlaces.php";
 // Informes anuales de rendición de cuentas en tarjetas ([rendicion]).
 require get_template_directory() . "/inc/rendicion.php";
 
+// Búsqueda con documentos, página 404 y datos para buscadores y redes.
+require get_template_directory() . "/inc/busqueda.php";
+require get_template_directory() . "/inc/seo.php";
+
 // Horario de atención editable.
 require get_template_directory() . "/inc/horario.php";
 
