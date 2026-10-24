@@ -49,6 +49,14 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     li.querySelector('.doc-t>span').textContent = r.ti; // nombre original del documento, sin abreviar
     li.querySelector('.doc-t small').textContent = compacto || act.g || act.grupos.length < 2 ? '' : r.g; // el grupo ya se ve en el filtro o en la sesión, o es el único
     a[0].href = a[1].href = r.u;
+    if (r.img) { // documento con portada: miniatura grande en lugar del icono
+      var m = document.createElement('a'), im = document.createElement('img');
+      m.className = 'doc-mini'; m.href = r.u; m.target = '_blank'; m.rel = 'noopener'; m.tabIndex = -1; m.setAttribute('aria-hidden', 'true');
+      im.src = r.img; im.alt = ''; im.loading = 'lazy';
+      m.appendChild(im);
+      li.classList.add('con-img');
+      li.replaceChild(m, li.firstElementChild);
+    }
     a[0].setAttribute('aria-label', a[0].textContent + ': ' + r.ti);
     a[1].setAttribute('aria-label', a[1].textContent + ': ' + r.ti);
     return li;

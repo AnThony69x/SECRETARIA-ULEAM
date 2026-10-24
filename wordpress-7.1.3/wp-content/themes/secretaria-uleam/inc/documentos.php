@@ -172,7 +172,7 @@ function doc_filas( $args ) {
 		$u = doc_url( $d->ID );
 		$s = get_the_terms( $d, 'seccion' ); // usa la caché que get_posts ya cargó
 		if ( $u && $s && ! is_wp_error( $s ) ) {
-			$out[] = array( 's' => $s[0]->slug, 'g' => get_post_meta( $d->ID, 'grupo', true ) ?: 'Sin periodo', 't' => doc_tipo( $d ), 'ti' => get_the_title( $d ), 'u' => $u );
+			$out[] = array( 's' => $s[0]->slug, 'g' => get_post_meta( $d->ID, 'grupo', true ) ?: 'Sin periodo', 't' => doc_tipo( $d ), 'ti' => get_the_title( $d ), 'u' => $u, 'img' => (string) wp_get_attachment_image_url( (int) get_post_meta( $d->ID, 'portada_id', true ), 'large' ) ); // 'img': portada opcional (se muestra como miniatura)
 		}
 	}
 	usort( $out, fn( $x, $y ) => strnatcasecmp( $y['g'], $x['g'] ) ?: strnatcasecmp( $x['ti'], $y['ti'] ) ); // más reciente primero
