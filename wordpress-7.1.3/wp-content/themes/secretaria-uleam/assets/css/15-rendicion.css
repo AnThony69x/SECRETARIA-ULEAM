@@ -1,0 +1,38 @@
+/* [rendicion]: informes anuales de rendición de cuentas (inc/rendicion.php). Reutiliza .card, .kicker y .btn. */
+.rc{margin-top:var(--e3)}
+.pagina-cont:has(.rc)>p{max-width:820px;font-size:18px;line-height:1.65;color:var(--texto)}
+.rc>.kicker,.rc-hist .kicker{font-size:14px;margin-bottom:10px}
+.rc-card{display:flex;flex-direction:column;gap:var(--e2);padding:var(--e2);transition:box-shadow .25s,border-color .25s}
+.rc-card:hover{border-color:var(--azul-claro);box-shadow:0 14px 34px rgba(0,40,100,.14)}
+.rc-img{margin:0}
+.rc-info{flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:14px;width:100%}
+.rc-info h2,.rc-info h3{color:var(--azul);font-weight:600;line-height:1.2;margin:0}
+.rc-info h3{font-size:24px}
+.rc-acciones{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:auto}
+.rc-acciones .btn.pq{min-height:46px;padding:10px 22px;font-size:15px}
+.rc-acciones .ico{width:18px;height:18px}
+.rc-sin{color:var(--gris);font-size:15px;min-height:46px;display:inline-flex;align-items:center}
+.rc-grande{border-top:6px solid var(--azul);padding:var(--e3)}
+.rc-grande .rc-info{gap:18px}
+.rc-grande .rc-info h2{font-size:clamp(30px,3.6vw,46px)}
+.rc-grande .rc-acciones .btn.pq{min-height:50px;padding:12px 28px;font-size:16px}
+.rc-hist{margin:var(--e4) 0 var(--e2)}
+.rc-hist h2{color:var(--azul);font-size:clamp(26px,3vw,34px);font-weight:600;margin:0}
+/* Misma altura de imagen en todo el histórico, para que títulos, cifras y botones queden alineados entre tarjetas. */
+.rc-grid .rc-img{aspect-ratio:4/3;display:grid;place-items:center}
+.rc-grid .rc-img img{width:100%;height:100%;object-fit:contain}
+.rc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:var(--e3)}
+.rc .zoom-btn{min-height:40px} /* el visor lo reduce en móvil */
+/* Tablas pequeñas del histórico: el botón de ampliar es solo el icono, para no tapar la imagen (el texto sigue para lectores de pantalla). */
+.rc-grid .zoom-btn{padding:0;width:44px;height:44px;justify-content:center;right:12px;bottom:12px}
+.rc-grid .zoom-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(min-width:861px){
+  .rc-grande{flex-direction:row;align-items:center;gap:var(--e4)}
+  .rc-grande .rc-img{flex:1 1 56%}
+  .rc-grande .rc-info{flex:1 1 44%}
+}
+@media(max-width:600px){
+  .rc-grid{grid-template-columns:1fr}
+  .rc-grande{padding:var(--e2)}
+}
+@media(prefers-reduced-motion:reduce){.rc-card{transition:none}}

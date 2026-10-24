@@ -11,7 +11,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
       grupos: JSON.parse(el.dataset.resumen || '[]'), g0: el.dataset.g0 || '', cache: {}, pide: {}, fallo: {}, abiertos: {}, pag: 1
     };
     // Con varios años la vista inicial es "todos": el año en curso abierto y los anteriores recogidos (documentos-anios.js).
-    s.ini = s.g0 && /^Año/.test(s.g0) ? '' : s.g0;
+    s.ini = s.grupos.some(function (x) { return /^Año/.test(x[0]); }) ? '' : s.g0;
     s.g = s.ini;
     s.cache[s.g0 || '*'] = JSON.parse(el.dataset.ini || '[]');
     return s;
@@ -46,7 +46,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     var li = tpl.cloneNode(true), a = li.querySelectorAll('a');
     li.style.setProperty('--i', i % PAG);
     li.querySelector('.doc-t>span').textContent = r.ti; // nombre original del documento, sin abreviar
-    li.querySelector('.doc-t small').textContent = compacto || act.g ? '' : r.g; // el año ya se ve en el filtro o en la sesión
+    li.querySelector('.doc-t small').textContent = compacto || act.g || act.grupos.length < 2 ? '' : r.g; // el grupo ya se ve en el filtro o en la sesión, o es el único
     a[0].href = a[1].href = r.u;
     a[0].setAttribute('aria-label', a[0].textContent + ': ' + r.ti);
     a[1].setAttribute('aria-label', a[1].textContent + ': ' + r.ti);
@@ -116,10 +116,10 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     var s = act, cs = por[secs.indexOf(s)], sinDocs = !q && !s.grupos.length;
     vacio.firstChild.nodeValue = sinDocs ? T.sin : T.vacio; // sección sin documentos vs. filtros sin resultados
     d.querySelector('.doc-herramientas').hidden = sinDocs; // sin documentos no hay nada que buscar ni filtrar
-    var per = !/^Año/.test((s.grupos[0] || [''])[0]);
+    var todos = s.grupos.every(function (x) { return /^Año/.test(x[0]); }) ? 'Todos los años' : s.grupos.every(function (x) { return /^Periodo/.test(x[0]); }) ? 'Todos los periodos' : 'Todos';
     // Selector de año/periodo con cantidad por opción (los años viejos viven en la página del archivo histórico).
     sel.innerHTML = '';
-    sel.add(new Option((per ? 'Todos los periodos' : 'Todos los años') + ' (' + s.n + ')', '', false, !s.g));
+    sel.add(new Option(todos + ' (' + s.n + ')', '', false, !s.g));
     cs.forEach(function (x) { sel.add(new Option(x[0].replace(/^Año /, '') + ' (' + x[1] + ')', x[0], false, s.g === x[0])); });
     d.querySelector('.doc-anio').hidden = s.grupos.length < 2;
     d.querySelector('.doc-tipo').hidden = !s.grupos.some(function (x) { return x[1].resolucion; });
@@ -185,9 +185,9 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     var f = document.activeElement, gf = f && s.ul.contains(f) && f.closest('.doc-anio-it') ? f.closest('.doc-anio-it').dataset.g : null;
     s.ul.innerHTML = ''; s.ul.appendChild(r.frag);
     if (gf !== null) [].some.call(s.ul.querySelectorAll('.doc-anio-it'), function (li) { if (li.dataset.g !== gf) return false; li.querySelector('summary').focus({ preventScroll: true }); return true; });
-    s.ul.hidden = !r.n; s.mas.hidden = true;
-    cont.textContent = r.n ? r.n + (r.n === 1 ? ' año' : ' años') + ' · ' + s.n + ' documentos en ' + s.name : '';
-    vacio.hidden = r.n > 0;
+    s.ul.hidden = !(r.n || r.fijos); s.mas.hidden = true;
+    cont.textContent = r.n || r.fijos ? (r.n ? r.n + (r.n === 1 ? ' año · ' : ' años · ') : '') + s.n + ' documentos en ' + s.name : '';
+    vacio.hidden = !!(r.n || r.fijos);
   }
   function buscar() {
     var t = q;

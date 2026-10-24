@@ -67,7 +67,7 @@
   .doc-fila .btn{margin-left:48px}
 }
 /* Diseño final: pestañas como tarjetas, barra de herramientas en tarjeta y filas con jerarquía */
-.doc-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;border:0;margin-bottom:18px}
+.doc-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;border:0;margin-bottom:18px}
 .doc-tabs [role=tab]{position:relative;display:flex;align-items:flex-start;gap:12px;text-align:left;background:#fff;border:1px solid var(--linea);border-radius:var(--radio);margin:0;padding:18px 16px 16px;box-shadow:var(--sombra);transition:border-color .2s,transform .2s,box-shadow .2s}
 .doc-tabs [role=tab]:hover{transform:translateY(-2px);border-color:var(--azul-claro)}
 .doc-tabs [aria-selected=true]{border:2px solid var(--azul);padding:17px 15px 15px;background:linear-gradient(180deg,#fff,var(--azul-cl))}
@@ -92,8 +92,8 @@
 .doc-fila .icono{background:#fdecec;color:var(--rojo-osc)}
 .doc-t{font-size:14px;font-weight:600;color:var(--texto)}
 .doc-t small{font-weight:400;margin-top:2px}
-.doc-fila .btn.pq{background:#fff;color:var(--azul);border:1px solid var(--azul)}
-.doc-fila .btn.pq:hover{background:var(--azul);color:#fff;transform:none;box-shadow:none}
+.doc-fila .btn.pq,.rc-acciones .btn.pq{background:#fff;color:var(--azul);border:1px solid var(--azul)}
+.doc-fila .btn.pq:hover,.rc-acciones .btn.pq:hover{background:var(--azul);color:#fff;transform:none;box-shadow:none}
 @media(max-width:760px){
   .doc-tabs{grid-template-columns:1fr;gap:8px}
   .doc-tabs [role=tab]{padding:12px}
@@ -153,8 +153,8 @@
 /* Ver y Descargar por separado */
 .doc-acciones{display:flex;gap:6px;flex:none}
 .doc-fila .doc-acciones .btn.pq{padding:6px 11px;font-size:12.5px}
-.doc-fila .doc-acciones .doc-bajar{background:var(--azul);color:#fff}
-.doc-fila .doc-acciones .doc-bajar:hover{background:var(--azul-osc);border-color:var(--azul-osc)}
+.doc-fila .doc-acciones .doc-bajar,.rc-acciones .btn.pq.doc-bajar{background:var(--azul);color:#fff}
+.doc-fila .doc-acciones .doc-bajar:hover,.rc-acciones .btn.pq.doc-bajar:hover{background:var(--azul-osc);border-color:var(--azul-osc)}
 .doc-fila .doc-ver:hover .ico{animation:none;transform:scale(1.15)}
 @media(max-width:760px){
   .doc-fila .btn{margin-left:0}
@@ -213,11 +213,15 @@
 .doc-vacio-hist{display:inline-block;margin-left:6px;color:var(--azul-medio);font-weight:600;text-decoration:underline}
 .doc-vacio-hist[hidden]{display:none}
 /* Arreglo de desbordes: la barra de filtros se reparte el ancho sin salirse; textos largos de pestañas se ajustan */
-.doc-herramientas{grid-template-columns:minmax(200px,1fr) repeat(3,minmax(0,170px)) auto}
+.doc-herramientas{display:flex;flex-wrap:wrap;align-items:end}
 .doc-herramientas>*{min-width:0}
+.doc-herramientas .doc-buscar{flex:1 1 320px}
+.doc-herramientas>label{flex:0 1 190px}
 .doc-anio select,.doc-tipo select,.doc-orden select{min-width:0;width:100%;text-overflow:ellipsis}
 .doc-limpiar{white-space:nowrap}
 .doc-tabs [role=tab]{min-width:0;overflow:hidden;padding-right:40px}
-.doc-tab-txt,.doc-tab-txt b,.doc-tab-txt small{min-width:0;overflow-wrap:anywhere}
-@media(max-width:1100px){.doc-herramientas{grid-template-columns:1fr 1fr 1fr auto}.doc-herramientas .doc-buscar{grid-column:1/-1}}
-@media(max-width:600px){.doc-herramientas{grid-template-columns:1fr}.doc-limpiar{grid-column:1/-1;justify-content:center}}
+.doc-tab-txt,.doc-tab-txt b,.doc-tab-txt small{min-width:0;overflow-wrap:break-word}
+.doc-tab-n{white-space:nowrap}
+/* Escritorio: icono arriba y texto debajo, así las 5 pestañas caben en una fila sin partir palabras */
+@media(min-width:901px){.doc-tabs [role=tab]{flex-direction:column;gap:10px;padding-right:16px}}
+@media(max-width:760px){.doc-herramientas .doc-buscar{flex-basis:100%}.doc-herramientas>label{flex:1 1 140px}.doc-limpiar{flex:1 1 100%;justify-content:center}}

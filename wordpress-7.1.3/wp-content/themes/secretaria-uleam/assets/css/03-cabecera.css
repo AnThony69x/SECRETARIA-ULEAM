@@ -52,7 +52,7 @@
 .menu li{position:relative}
 .menu .menu-item-has-children>a::after{content:"";display:inline-block;margin-left:8px;border:4px solid transparent;border-top-color:currentColor;border-bottom:0;vertical-align:middle}
 .menu .sub-menu{display:none;position:absolute;top:100%;left:0;min-width:230px;background:#fff;border:1px solid var(--linea);border-radius:10px;box-shadow:0 12px 24px rgba(0,0,0,.12);padding:8px;list-style:none;z-index:40}
-.menu li:hover>.sub-menu,.menu li:focus-within>.sub-menu{display:block}
+.menu li:hover>.sub-menu,.menu li:has(:focus-visible)>.sub-menu{display:block}
 .menu .sub-menu a{padding:10px 12px;border:0;border-radius:6px;font-weight:400;white-space:nowrap}
 .menu .sub-menu a:hover,.menu .sub-menu .current-menu-item>a{background:var(--azul-cl);color:var(--azul)}
 /* Móvil: submenús plegables con el botón de flecha que añade assets/js/menu.js */
@@ -64,7 +64,7 @@
   .menu .menu-item-has-children>a{flex:1;min-width:0}
   .sub-toggle{display:grid}
   .sub-toggle:hover{background:var(--azul-cl)}
-  .menu .sub-menu,.menu li:hover>.sub-menu,.menu li:focus-within>.sub-menu{display:none;flex-basis:100%;position:static;box-shadow:none;border:0;border-left:2px solid var(--azul-cl);border-radius:0;margin:0 0 10px 8px;padding:0 0 0 10px;min-width:0}
+  .menu .sub-menu,.menu li:hover>.sub-menu,.menu li:has(:focus-visible)>.sub-menu{display:none;flex-basis:100%;position:static;box-shadow:none;border:0;border-left:2px solid var(--azul-cl);border-radius:0;margin:0 0 10px 8px;padding:0 0 0 10px;min-width:0}
   .menu li.abierto>.sub-menu{display:block}
   .menu .sub-menu a{padding:11px 8px;font-size:14px;white-space:normal;color:var(--gris)}
   .menu .menu-item-has-children>a::after{display:none}
@@ -75,9 +75,9 @@
 /* Submenú estilo tarjeta */
 @media(min-width:861px){
   .menu>.menu-item-has-children>a{padding:9px 13px;margin:9px 0;border:1px solid transparent;border-radius:9px}
-  .menu>.menu-item-has-children:hover>a,.menu>.menu-item-has-children:focus-within>a{background:var(--azul-cl);border-color:#c9dcf0;color:var(--azul);font-weight:600}
+  .menu>.menu-item-has-children:hover>a,.menu>.menu-item-has-children:has(:focus-visible)>a{background:var(--azul-cl);border-color:#c9dcf0;color:var(--azul);font-weight:600}
   .menu .menu-item-has-children>a::after{width:7px;height:7px;border:0;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .2s;margin-left:10px}
-  .menu .menu-item-has-children:hover>a::after,.menu .menu-item-has-children:focus-within>a::after{transform:rotate(-135deg) translate(-2px,-1px)}
+  .menu .menu-item-has-children:hover>a::after,.menu .menu-item-has-children:has(:focus-visible)>a::after{transform:rotate(-135deg) translate(-2px,-1px)}
   .menu .sub-menu{top:calc(100% - 2px);min-width:270px;padding:10px;border-radius:16px;border-color:var(--linea);box-shadow:0 16px 40px rgba(0,40,100,.16)}
   .menu .sub-menu::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
   .menu .sub-menu a{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:10px;color:var(--gris);font-size:14px;border-left:3px solid transparent}
@@ -108,7 +108,7 @@
 .menu .current-menu-ancestor>a{color:var(--azul);font-weight:600}
 @media(min-width:861px){
   .menu>.current-menu-ancestor::after{content:"";position:absolute;left:13px;right:13px;bottom:0;height:3px;background:var(--rojo)}
-  .menu>.current-menu-ancestor:hover::after,.menu>.current-menu-ancestor:focus-within::after{display:none}
+  .menu>.current-menu-ancestor:hover::after,.menu>.current-menu-ancestor:has(:focus-visible)::after{display:none}
   .menu .current-menu-ancestor>a::after{transform:rotate(-135deg) translate(-2px,-1px)}
 }
 /* Flecha → del submenú: aparece y se desliza al pasar el mouse o enfocar */

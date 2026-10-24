@@ -35,7 +35,7 @@ function doc_url( $id ) {
 	if ( ! $url && ( $rel = get_post_meta( $id, 'pdf_ruta', true ) ) ) { // importados: ruta dentro de uploads
 		$url = content_url( 'uploads/' . $rel );
 	}
-	return $url;
+	return $url ?: (string) get_post_meta( $id, 'pdf_url', true ); // documento alojado en otro sitio (ej. normativas)
 }
 
 // Listado del admin: columnas Periodo/Año y PDF, y filtro por sección (son ~2.600 documentos).
@@ -121,6 +121,7 @@ add_action( 'add_meta_boxes', function () {
 		echo '<p><strong>PDF</strong><br><input type="hidden" name="pdf_id" id="pdf_id" value="' . esc_attr( $id ) . '">';
 		echo '<span id="pdf_nombre">' . ( $url ? '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener">' . esc_html( basename( $url ) ) . '</a>' : 'Ninguno' ) . '</span> ';
 		echo '<button type="button" class="button" id="pdf_btn">' . ( $url ? 'Reemplazar PDF' : 'Seleccionar / subir PDF' ) . '</button></p>';
+		echo '<p><label><strong>o URL externa del documento</strong><br><input type="url" name="pdf_url" class="widefat" placeholder="https://…" value="' . esc_attr( get_post_meta( $post->ID, 'pdf_url', true ) ) . '"></label><br><small>Solo si el archivo está publicado en otro sitio y no se sube aquí.</small></p>';
 		echo '<script>document.getElementById("pdf_btn").onclick=function(){var m=wp.media({library:{type:"application/pdf"},multiple:false});m.on("select",function(){var a=m.state().get("selection").first().toJSON();document.getElementById("pdf_id").value=a.id;document.getElementById("pdf_nombre").textContent=a.filename;});m.open();};</script>';
 	}, 'documento' );
 } );
@@ -132,6 +133,7 @@ add_action( 'save_post_documento', function ( $id ) {
 	}
 	update_post_meta( $id, 'grupo', sanitize_text_field( wp_unslash( $_POST['grupo'] ?? '' ) ) );
 	update_post_meta( $id, 'pdf_id', absint( $_POST['pdf_id'] ?? 0 ) );
+	update_post_meta( $id, 'pdf_url', esc_url_raw( wp_unslash( $_POST['pdf_url'] ?? '' ) ) );
 	$tipo = sanitize_key( $_POST['tipo'] ?? '' );
 	update_post_meta( $id, 'tipo', isset( DOC_TIPOS[ $tipo ] ) ? $tipo : '' );
 } );

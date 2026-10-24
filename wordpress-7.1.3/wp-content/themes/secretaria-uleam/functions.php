@@ -144,6 +144,21 @@ add_action( 'save_post_slide', function ( $id ) {
 	}
 } );
 
+// Un elemento del menú principal con submenú es título de sección, no enlace: su página ya está entre los hijos.
+// Con url "#" menu.js lo convierte en botón; sin "current" no se marca activo (queda como ancestro del hijo actual).
+add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
+	if ( isset( $args->theme_location ) && 'principal' === $args->theme_location ) {
+		foreach ( $items as $item ) {
+			if ( in_array( 'menu-item-has-children', (array) $item->classes, true ) ) {
+				$item->url     = '#';
+				$item->current = false;
+				$item->classes = array_diff( (array) $item->classes, array( 'current-menu-item', 'current_page_item' ) );
+			}
+		}
+	}
+	return $items;
+}, 10, 2 );
+
 // Marca el enlace de la página actual con la clase "activo" del CSS.
 add_filter( 'nav_menu_link_attributes', function ( $atts, $item, $args ) {
 	if ( isset( $args->theme_location ) && 'principal' === $args->theme_location && $item->current && false === strpos( $item->url, '#' ) ) {
@@ -178,6 +193,9 @@ require get_template_directory() . "/inc/documentos-vista.php";
 
 // Páginas de accesos en tarjetas a partir de un menú ([enlaces menu="slug"]).
 require get_template_directory() . "/inc/enlaces.php";
+
+// Informes anuales de rendición de cuentas en tarjetas ([rendicion]).
+require get_template_directory() . "/inc/rendicion.php";
 
 // Horario de atención editable.
 require get_template_directory() . "/inc/horario.php";

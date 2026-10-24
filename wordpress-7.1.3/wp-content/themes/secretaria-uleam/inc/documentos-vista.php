@@ -14,6 +14,9 @@ const DOC_TEXTOS = array(
 	'doc_l_orden'  => array( 'Etiqueta del orden', 'Orden' ),
 	'doc_anio_act' => array( 'Etiqueta del año en curso (desplegado arriba)', 'Año en curso' ),
 	'doc_anio_rec' => array( 'Etiqueta del año más reciente cuando aún no hay documentos del año en curso', 'Año más reciente' ),
+	'rc_titulo_hist' => array( 'Rendición de cuentas: título de los informes de años anteriores', 'Informes de años anteriores' ),
+	'rc_ultimo'    => array( 'Rendición de cuentas: etiqueta del informe más reciente', 'Último informe' ),
+	'rc_sin'       => array( 'Rendición de cuentas: aviso cuando un año no tiene PDF', 'Informe en PDF no disponible' ),
 	'doc_sin'      => array( 'Aviso de una sección sin documentos', 'Aún no hay documentos publicados en esta sección.' ),
 	'doc_anios_ant' => array( 'Título de la lista de años anteriores al año en curso (recogidos)', 'Histórico' ),
 	'hist_titulo'  => array( 'Archivo histórico: título del aviso', 'Archivo histórico' ),
@@ -99,7 +102,9 @@ add_shortcode( 'consejo', function ( $a ) {
 	$o .= '<div class="doc-activos" aria-label="Filtros activos"></div><p class="doc-contador" role="status" aria-live="polite"></p>';
 	foreach ( $terms as $t ) {
 		$gs   = $res[ $t->slug ] ?? array();
-		$g0   = $gs && ( count( $gs ) > 2 || 0 === strpos( array_key_first( $gs ), 'Año' ) ) ? array_key_first( $gs ) : ''; // grupos por año: vista por años
+		$anios = array_filter( array_keys( $gs ), fn( $g ) => 0 === strpos( $g, 'Año' ) );
+		$fijos = array_diff( array_keys( $gs ), $anios ); // ej. "Documentos generales": se muestran arriba y el resto va como histórico
+		$g0    = $anios && $fijos ? reset( $fijos ) : ( $gs && ( $anios || ( count( $gs ) > 2 && 0 === strpos( array_key_first( $gs ), 'Periodo' ) ) ) ? array_key_first( $gs ) : '' ); // años: vista por años; muchos periodos: abre el más reciente
 		$ini  = array_values( array_filter( doc_filas( array( 'tax_query' => doc_tax( $t->slug ) ) + ( $g0 ? array( 'meta_query' => array( array( 'key' => 'grupo', 'value' => $g0 ) ) ) : array() ) ), fn( $f ) => doc_en_vista( $f['g'], $vista ) ) );
 		$o   .= '<section class="doc-seccion" id="' . esc_attr( $t->slug ) . '" role="tabpanel" aria-labelledby="tab-' . esc_attr( $t->slug ) . '" hidden'
 			. ' data-g0="' . esc_attr( $g0 ) . '" data-resumen="' . esc_attr( wp_json_encode( array_map( null, array_keys( $gs ), array_values( $gs ) ) ) ) . '" data-ini="' . esc_attr( wp_json_encode( $ini ) ) . '">'

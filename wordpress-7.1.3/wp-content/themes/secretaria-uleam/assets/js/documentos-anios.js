@@ -43,13 +43,30 @@
     return li;
   }
 
+  function fijo(o, g) {
+    var li = document.createElement('li'), ul = document.createElement('ul'), rows = o.filas(g);
+    li.className = 'doc-anio-fijos'; ul.className = 'doc-sub';
+    if (rows) o.cuerpo(rows).forEach(function (x) { ul.appendChild(x); });
+    else { // si la petición falló, se reintenta a petición (como en los años) para no repetirla en bucle
+      ul.innerHTML = '<li class="doc-anio-msj"></li>'; ul.firstChild.textContent = o.s.fallo[g] ? o.t.error : o.t.cargando;
+      if (!o.s.fallo[g]) o.pedir(g);
+      else { var b = document.createElement('button'); b.type = 'button'; b.className = 'btn pq'; b.textContent = o.t.reintentar; b.onclick = function () { delete o.s.fallo[g]; o.pedir(g); }; ul.firstChild.appendChild(b); }
+    }
+    li.appendChild(ul);
+    return li;
+  }
+
   function anios(o) {
     // En el archivo histórico ningún año se destaca: todos son pasados y van recogidos por igual.
     var frag = document.createDocumentFragment(), act = o.hist ? null : o.cs.filter(function (x) { return x[0] === o.s.g0 && x[1]; })[0];
-    var resto = o.cs.filter(function (x) { return x !== act && x[1]; });
+    var esAnio = function (x) { return /^Año/.test(x[0]); };
+    var resto = o.cs.filter(function (x) { return x !== act && x[1] && esAnio(x); });
+    // Grupos que no son años (ej. "Documentos generales"): abiertos arriba, como lista; los años quedan como histórico.
+    o.cs.filter(function (x) { return x !== act && x[1] && !esAnio(x); }).forEach(function (x) { frag.appendChild(fijo(o, x[0])); });
+    var hayFijos = frag.childNodes.length > 0;
     if (o.asc) resto.reverse();
     if (act) frag.appendChild(anio(o, act[0], act[1], true));
-    if (resto.length && (act || o.hist)) { // en el histórico el título encabeza la lista
+    if (resto.length && (act || o.hist || hayFijos)) { // en el histórico el título encabeza la lista
       var sep = document.createElement('li');
       sep.className = 'doc-anios-sep';
       sep.innerHTML = '<span class="kicker"></span>';
@@ -57,7 +74,7 @@
       frag.appendChild(sep);
     }
     resto.forEach(function (x) { frag.appendChild(anio(o, x[0], x[1], false)); });
-    return { frag: frag, n: (act ? 1 : 0) + resto.length };
+    return { frag: frag, n: (act ? 1 : 0) + resto.length, fijos: hayFijos }; // n = años
   }
   window.ULEAM_DOC = window.ULEAM_DOC || {};
   window.ULEAM_DOC.anios = anios;
