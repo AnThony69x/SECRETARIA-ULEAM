@@ -174,6 +174,7 @@ add_action( 'save_post_page', function ( $id ) {
 
 // Documentos PDF (miembros, actas y resoluciones).
 require get_template_directory() . "/inc/documentos.php";
+require get_template_directory() . "/inc/documentos-vista.php";
 
 // Horario de atención editable.
 require get_template_directory() . "/inc/horario.php";

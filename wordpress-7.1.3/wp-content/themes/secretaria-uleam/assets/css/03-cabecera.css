@@ -93,12 +93,15 @@
   .menu{font-size:14px}
 }
 @media(min-width:861px){
-  .menu{gap:clamp(12px,1.4vw,34px)}
+  .menu{gap:clamp(8px,.8vw,34px)}
 }
 @media(min-width:861px) and (max-width:1600px){
   .menu{font-size:14px}
+  /* Menú compacto en portátiles: 7 elementos con submenú no caben con el relleno completo. */
+  .menu>.menu-item-has-children>a{padding:9px 8px}
+  .menu .menu-item-has-children>a::after{margin-left:6px}
 }
-@media(min-width:861px) and (max-width:1250px){
+@media(min-width:861px) and (max-width:1365px){
   .menu{flex-wrap:wrap;column-gap:18px;font-size:13px}
 }
 /* El padre del submenú queda marcado cuando estás en una de sus páginas */

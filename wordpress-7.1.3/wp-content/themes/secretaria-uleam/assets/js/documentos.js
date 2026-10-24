@@ -40,7 +40,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
       .then(function (rows) { s.cache[k] = rows; render(); })
       .catch(function () { s.pide[k] = 0; s.fallo[g] = 1; render(); cont.textContent = 'No se pudieron cargar los documentos. Intenta de nuevo.'; s.ul.removeAttribute('aria-busy'); });
   }
-  var T = { actual: d.dataset.tActual, rec: d.dataset.tRec, ant: d.dataset.tAnt, cargando: 'Cargando documentos…', error: 'No se pudieron cargar los documentos.', reintentar: 'Reintentar' };
+  var T = { sin: d.dataset.tSin, vacio: vacio.firstChild.nodeValue, actual: d.dataset.tActual, rec: d.dataset.tRec, ant: d.dataset.tAnt, cargando: 'Cargando documentos…', error: 'No se pudieron cargar los documentos.', reintentar: 'Reintentar' };
   var DS = window.ULEAM_DOC, MESES = DS.MESES, tipoDe = DS.tipoDe, agrupar = DS.agrupar, MES2 = +d.dataset.mes2 || 7;
   function fila(r, i, compacto) {
     var li = tpl.cloneNode(true), a = li.querySelectorAll('a');
@@ -106,12 +106,17 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
       s.n = por[i].reduce(function (n, x) { return n + x[1]; }, 0);
       s.tab.querySelector('.doc-tab-n').textContent = s.n + (s.n === 1 ? ' documento' : ' documentos');
     });
-    if (!act.n) { var o = secs.filter(function (s) { return s.n; })[0]; if (o) act = o; }
+    // Si una búsqueda o un filtro deja la pestaña en 0 (o al cargar) se salta a otra con documentos; una sección vacía de verdad
+    // que el usuario elige se queda, con su aviso.
+    if (!act.n && (q || act.grupos.length || !d.classList.contains('listo'))) { var o = secs.filter(function (s) { return s.n; })[0]; if (o) act = o; }
     secs.forEach(function (s) {
       var on = s === act;
       s.tab.setAttribute('aria-selected', on); s.tab.tabIndex = on ? 0 : -1; s.el.hidden = !on;
     });
-    var s = act, cs = por[secs.indexOf(s)], per = !/^Año/.test((s.grupos[0] || [''])[0]);
+    var s = act, cs = por[secs.indexOf(s)], sinDocs = !q && !s.grupos.length;
+    vacio.firstChild.nodeValue = sinDocs ? T.sin : T.vacio; // sección sin documentos vs. filtros sin resultados
+    d.querySelector('.doc-herramientas').hidden = sinDocs; // sin documentos no hay nada que buscar ni filtrar
+    var per = !/^Año/.test((s.grupos[0] || [''])[0]);
     // Selector de año/periodo con cantidad por opción (los años viejos viven en la página del archivo histórico).
     sel.innerHTML = '';
     sel.add(new Option((per ? 'Todos los periodos' : 'Todos los años') + ' (' + s.n + ')', '', false, !s.g));
@@ -172,7 +177,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     return pers.map(function (P) { var k = 'p' + P.k; return periodoLi(P, !!s.abiertos[k], s.abiertos); });
   }
   function pintarAnios(s, cs) {
-    var r = DS.anios({ s: s, cs: cs, asc: orden === 'asc', hist: d.dataset.vista === 'historico', cuerpo: function (rows) { return cuerpo(rows, s); }, t: T,
+    var r = DS.anios({ s: s, cs: cs, asc: orden === 'asc', hist: d.dataset.vista === 'historico' || d.dataset.vista === 'todo', cuerpo: function (rows) { return cuerpo(rows, s); }, t: T,
       filas: function (g) { return s.cache[g] || null; }, pedir: function (g) { pedir(s, g); } });
     s.ul.removeAttribute('aria-busy'); s.ul.classList.remove('cargando');
     s.ul.classList.add('por-sesion', 'por-anio');

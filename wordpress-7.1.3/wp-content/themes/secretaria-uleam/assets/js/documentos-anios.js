@@ -49,7 +49,7 @@
     var resto = o.cs.filter(function (x) { return x !== act && x[1]; });
     if (o.asc) resto.reverse();
     if (act) frag.appendChild(anio(o, act[0], act[1], true));
-    if (act && resto.length) {
+    if (resto.length && (act || o.hist)) { // en el histórico el título encabeza la lista
       var sep = document.createElement('li');
       sep.className = 'doc-anios-sep';
       sep.innerHTML = '<span class="kicker"></span>';
