@@ -11,16 +11,17 @@
 .pag-hero h1{font-size:clamp(32px,5vw,52px);font-weight:600}
 .pag-hero h1 span{color:var(--azul-claro)}
 .pag-hero p{font-size:clamp(15px,2vw,18px);opacity:.9;margin:6px 0 16px;font-style:italic}
-.pagina-cont{flex:1 0 auto;max-width:1000px;width:100%;margin:0 auto;padding:48px 20px 64px}
+.pagina-cont{flex:1 0 auto;max-width:var(--ancho-pagina);width:100%;margin:0 auto;padding:48px 20px 64px}
 .pagina-cont img{max-width:100%;height:auto;display:block;margin:0 auto;border-radius:var(--radio)}
 .pagina-cont figure{margin:0 0 24px}
+.pagina-cont .brandbook{max-width:900px;margin-inline:auto}
 .pagina-cont p{margin-bottom:16px}
 @media(max-width:760px){
   .pagina-cont{padding:32px 16px 48px}
 }
 .pag-hero .chips span{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 11px}
 .pag-hero .chips .ico{width:15px;height:15px;color:var(--azul-claro)}
-.pag-hero .wrap{max-width:1000px;padding:0 20px}
+.pag-hero .wrap{max-width:var(--ancho-pagina);padding:0 var(--e2)} /* mismo borde izquierdo que el contenido */
 /* Banner de páginas: misma altura en todo el sitio (185px) */
 .pag-hero{box-sizing:border-box;min-height:185px;padding:20px 0;display:flex;align-items:center}
 .pag-hero .wrap{width:100%}

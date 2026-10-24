@@ -1,0 +1,8 @@
+/* Icono por formato de archivo (inc/arch.php): baldosa azul clara con la hoja y las letras del formato (data-ext). */
+.arch{--hoja:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 44'%3E%3Cpath d='M8 0H20V12A4 4 0 0 0 24 16H36V36A8 8 0 0 1 28 44H8A8 8 0 0 1 0 36V8A8 8 0 0 1 8 0Z'/%3E%3Cpath d='M24 0L36 12H26A2 2 0 0 1 24 10Z'/%3E%3C/svg%3E");
+  position:relative;display:grid;place-items:end center;flex:none;width:40px;height:40px;border-radius:12px;background:var(--azul-cl);color:var(--azul)}
+.arch::before{content:"";position:absolute;inset:5px 8px;background:currentColor;-webkit-mask:var(--hoja) center/100% 100% no-repeat;mask:var(--hoja) center/100% 100% no-repeat}
+.arch::after{content:attr(data-ext);position:relative;margin-bottom:9px;font-size:9px;font-weight:600;line-height:1;letter-spacing:.02em;color:var(--blanco)}
+@media(forced-colors:active){.arch::before{background:CanvasText}.arch::after{color:Canvas}}
+/* En las listas de documentos la baldosa es rojo claro con la hoja roja (la portada conserva la azul) */
+.doc-fila .arch{background:var(--rojo-cl);color:var(--rojo)}

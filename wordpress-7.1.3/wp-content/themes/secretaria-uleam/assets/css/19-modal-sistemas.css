@@ -1,0 +1,17 @@
+/* Modal de sistemas (inc/sistemas-modal.php). Las tarjetas son las de [enlaces] (14-enlaces.css). */
+.sis-abierto{overflow:hidden}
+.sis-modal{margin:auto;width:min(960px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:0;border-radius:20px;background:#fff;color:var(--texto);box-shadow:0 30px 80px rgba(0,20,60,.45);overflow:auto}
+.sis-modal::backdrop{background:rgba(6,28,70,.65);backdrop-filter:blur(3px)}
+.sis-modal[open]{animation:sis-entra .25s ease-out}
+@keyframes sis-entra{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.sis-caja{position:relative;padding:var(--e3)}
+.sis-modal h2{margin:0 48px 4px 0;color:var(--azul);font-size:clamp(22px,3vw,30px);font-weight:600}
+.sis-sub{margin:0;color:var(--gris);font-size:15px}
+.sis-ayuda{margin:var(--e2) 0 0;font-size:14px;font-weight:600;color:var(--texto)}
+.sis-modal .enlaces{margin-top:var(--e2)}
+.sis-cerrar{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--linea);background:#fff;color:var(--azul);display:grid;place-items:center}
+.sis-cerrar:hover{background:var(--azul);color:#fff}
+.sis-cerrar:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
+.sis-cerrar .ico{width:20px;height:20px}
+@media(max-width:600px){.sis-caja{padding:var(--e2)}.sis-modal{border-radius:16px}}
+@media(prefers-reduced-motion:reduce){.sis-modal[open]{animation:none}}

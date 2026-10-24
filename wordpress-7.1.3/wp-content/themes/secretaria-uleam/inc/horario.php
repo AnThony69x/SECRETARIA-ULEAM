@@ -12,6 +12,12 @@ const HA_TEXTOS = array(
 	'ha_t_copiado'   => array( 'Mensaje al copiar el correo', '¡Copiado!' ),
 	'ha_t_ubicacion' => array( 'Título de la tarjeta de ubicación', 'Dónde estamos' ),
 	'ha_t_mapa'      => array( 'Botón del mapa', 'Ver en el mapa' ),
+	'ha_t_canales'   => array( 'Título de la tarjeta de canales oficiales', 'Canales oficiales ULEAM' ),
+	'ha_t_canales_s' => array( 'Subtítulo de la tarjeta de canales oficiales', 'Información institucional y noticias verificadas' ),
+	'ha_t_portal'    => array( 'Nombre del portal institucional', 'Portal institucional ULEAM' ),
+	'ha_t_visitar'   => array( 'Botón de cada canal', 'Visitar sitio' ),
+	'ha_t_correo_s'  => array( 'Subtítulo de la tarjeta de correo', 'Vía oficial para oficios y trámites formales' ),
+	'ha_t_despacho'  => array( 'Etiqueta junto al correo', 'Despacho oficial' ),
 );
 
 add_action( 'customize_register', function ( $c ) {
@@ -22,6 +28,8 @@ add_action( 'customize_register', function ( $c ) {
 		'ha_correo'    => array( 'Correo de atención', 'secretaria.general@uleam.edu.ec', 'email', 'sanitize_email' ),
 		'ha_nota'      => array( 'Texto de la tarjeta de correo', 'Atendemos consultas y solicitudes por correo electrónico.', 'text', 'sanitize_text_field' ),
 		'ha_direccion' => array( 'Dirección', "Av. Circunvalación – Vía a San Mateo\nManta – Manabí – Ecuador", 'textarea', 'sanitize_textarea_field' ),
+		'ha_consejo'   => array( 'Recomendación bajo el texto del correo', 'Incluye en el mensaje tu nombre, unidad o carrera, asunto y una descripción clara de la solicitud para orientarte más rápido.', 'textarea', 'sanitize_textarea_field' ),
+		'ha_portal'    => array( 'Enlace del portal institucional (vacío = no se muestra)', 'https://www.uleam.edu.ec/', 'url', 'esc_url_raw' ),
 		'ha_mapa'      => array( 'Enlace del mapa', 'https://www.google.com/maps/search/?api=1&query=Universidad+Laica+Eloy+Alfaro+de+Manab%C3%AD+Manta', 'url', 'esc_url_raw' ),
 	);
 	foreach ( $campos as $k => $v ) {
@@ -51,6 +59,7 @@ add_shortcode( 'horario', function () {
 	$dias   = (int) ha_mod( 'ha_dias', 5 );
 	$correo = ha_mod( 'ha_correo', 'secretaria.general@uleam.edu.ec' );
 	$dir    = ha_mod( 'ha_direccion', "Av. Circunvalación – Vía a San Mateo\nManta – Manabí – Ecuador" );
+	$portal = ha_mod( 'ha_portal', 'https://www.uleam.edu.ec/' );
 	$mapa   = ha_mod( 'ha_mapa', 'https://www.google.com/maps/search/?api=1&query=Universidad+Laica+Eloy+Alfaro+de+Manab%C3%AD+Manta' );
 	$pills  = '';
 	foreach ( array( 1 => 'L', 2 => 'M', 3 => 'M', 4 => 'J', 5 => 'V', 6 => 'S', 0 => 'D' ) as $n => $l ) {
@@ -75,12 +84,24 @@ add_shortcode( 'horario', function () {
         <p class="ha-estado" aria-live="polite"></p>
       </div>
     </article>
-    <article class="ha-card">
-      <span class="ha-ic"><?php echo uleam_icon( 'mail' ); ?></span>
-      <h2><?php echo ha_txt( 'ha_t_correo' ); ?></h2>
+    <article class="ha-card ha-can">
+      <header class="ha-cab"><span class="ha-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></span>
+        <div><h2><?php echo ha_txt( 'ha_t_canales' ); ?></h2><p><?php echo ha_txt( 'ha_t_canales_s' ); ?></p></div></header>
+      <ul class="ha-canales">
+      <?php if ( $portal ) : ?>
+        <li><b><?php echo ha_txt( 'ha_t_portal' ); ?></b><a class="ha-btn ha-lleno" href="<?php echo esc_url( $portal ); ?>" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg><span><?php echo ha_txt( 'ha_t_visitar' ); ?></span></a></li>
+      <?php endif; foreach ( uleam_redes() as $icono => $r ) : ?>
+        <li><b><?php echo esc_html( $r[1] ); ?></b><a class="ha-btn ha-lleno" href="<?php echo esc_url( $r[0] ); ?>" target="_blank" rel="noopener"><?php echo uleam_icon( $icono ); ?><span><?php echo ha_txt( 'ha_t_visitar' ); ?></span></a></li>
+      <?php endforeach; ?>
+      </ul>
+    </article>
+    <article class="ha-card ha-cor">
+      <header class="ha-cab"><span class="ha-ic"><?php echo uleam_icon( 'mail' ); ?></span>
+        <div><h2><?php echo ha_txt( 'ha_t_correo' ); ?></h2><p><?php echo ha_txt( 'ha_t_correo_s' ); ?></p></div></header>
       <p><?php echo esc_html( ha_mod( 'ha_nota', 'Atendemos consultas y solicitudes por correo electrónico.' ) ); ?></p>
-      <a class="ha-mail" href="mailto:<?php echo esc_attr( $correo ); ?>"><?php echo esc_html( $correo ); ?></a>
-      <button type="button" class="ha-btn ha-copiar" data-copiar="<?php echo esc_attr( $correo ); ?>" data-ok="<?php echo ha_txt( 'ha_t_copiado' ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span><?php echo ha_txt( 'ha_t_copiar' ); ?></span></button>
+      <p><?php echo esc_html( ha_mod( 'ha_consejo', 'Incluye en el mensaje tu nombre, unidad o carrera, asunto y una descripción clara de la solicitud para orientarte más rápido.' ) ); ?></p>
+      <div class="ha-buzon"><a class="ha-mail" href="mailto:<?php echo esc_attr( $correo ); ?>"><?php echo uleam_icon( 'mail' ) . esc_html( $correo ); ?></a><span class="tag"><?php echo ha_txt( 'ha_t_despacho' ); ?></span>
+        <button type="button" class="ha-btn ha-copiar" data-copiar="<?php echo esc_attr( $correo ); ?>" data-ok="<?php echo ha_txt( 'ha_t_copiado' ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span><?php echo ha_txt( 'ha_t_copiar' ); ?></span></button></div>
     </article>
     <article class="ha-card">
       <span class="ha-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>

@@ -1,0 +1,42 @@
+/* Secciones de la portada bajo los accesos (página "Contenido de la portada"): Misión y Visión, equipo, consulta de archivos. */
+.inicio-cont{max-width:none;padding:0 5vw 64px} /* la portada ocupa todo el ancho, con el margen del menú; los accesos van pegados al banner */
+.inicio-sec{margin:0 0 var(--e4)}
+.inicio-sec .kicker{margin:0 0 6px}
+.inicio-sec h2.titulo{color:var(--azul);font-size:clamp(26px,3vw,36px);font-weight:600;margin:0 0 var(--e3)}
+.inicio-sec h2.titulo::after{content:"";display:block;width:56px;height:4px;border-radius:4px;background:var(--rojo);margin-top:10px}
+.inicio-sec .mv-pag{margin-bottom:var(--e2)}
+.inicio-ver{margin:var(--e2) 0 0;justify-content:flex-start}
+.inicio-ver .wp-block-button__link,.inicio-archivo .wp-block-button__link{display:inline-flex;align-items:center;min-height:46px;padding:10px 24px;border-radius:var(--radio);background:var(--azul);color:#fff;font-weight:600;font-size:15px;text-decoration:none;transition:background .2s}
+.inicio-ver .wp-block-button__link:hover{background:var(--azul-osc)}
+.inicio-ver .wp-block-button__link:focus-visible,.inicio-archivo .wp-block-button__link:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
+/* Equipo: panel claro que contiene el carrusel */
+.inicio-equipo{margin-inline:calc(50% - 50vw);background:var(--azul-cl);border-radius:0;padding:var(--e4) 5vw} /* franja a todo el ancho (body corta el desborde de la barra de scroll) */
+.inicio-equipo>.wp-block-group__inner-container{max-width:none;margin:0 auto}
+.inicio-equipo .eq{margin:0 -4px}
+/* Consulta de archivos: banda azul con dos botones (actual / histórico) */
+.inicio-archivo{background:var(--grad-azul);color:#fff;border-radius:24px;border-bottom:5px solid var(--rojo);padding:var(--e4) var(--e3);box-shadow:0 14px 34px rgba(7,35,92,.22)}
+.inicio-archivo h2.titulo{color:#fff}
+.inicio-archivo h2.titulo::after{background:var(--azul-claro)}
+.inicio-archivo p{max-width:62ch;font-size:16px;line-height:1.7;margin:0 0 var(--e3)}
+.inicio-archivo .wp-block-buttons{display:flex;flex-wrap:wrap;gap:12px}
+.inicio-archivo .wp-block-button__link{background:#fff;color:var(--azul)}
+.inicio-archivo .wp-block-button:last-child .wp-block-button__link{background:transparent;color:#fff;border:2px solid #fff}
+.inicio-archivo .wp-block-button__link:hover{background:var(--azul-cl);color:var(--azul)}
+@media(max-width:600px){.inicio-equipo{padding:var(--e3) var(--e2)}.inicio-archivo{padding:var(--e3) var(--e2);border-radius:18px}.inicio-archivo .wp-block-button,.inicio-archivo .wp-block-button__link{width:100%;justify-content:center}}
+.inicio-archivo .kicker{color:var(--azul-claro)}
+/* Todas las secciones y las tarjetas de acceso: mismo ancho que la franja de Recursos Humanos (borde a borde con 5vw de margen y tope de 1400 px) */
+.inicio-sec:not(.inicio-equipo),.inicio-cont .accesos-wrap{margin-inline:calc(50% - 50vw);padding-inline:5vw}
+.inicio-sec:not(.inicio-equipo)>.wp-block-group__inner-container,.inicio-cont .accesos{max-width:none;margin-inline:auto}
+@media(max-width:600px){.inicio-sec:not(.inicio-equipo),.inicio-cont .accesos-wrap{padding-inline:var(--e2)}}
+/* Botones de las secciones: enlace de texto con flecha (mismo estilo que «Explorar todo el archivo» de la biblioteca), no un botón relleno. */
+.inicio-ver{margin:var(--e2) 0 0;justify-content:flex-start}
+.inicio-ver .wp-block-button__link{min-height:40px;padding:0;text-align:left;background:none;border:0;border-radius:0;color:var(--azul-medio);font-size:15px;box-shadow:none;transform:none}
+.inicio-ver .wp-block-button__link::after{content:"";width:16px;height:16px;margin-left:8px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M12 5l7 7-7 7'/%3E%3C/svg%3E") center/contain no-repeat;transition:transform .2s}
+.inicio-ver .wp-block-button__link:hover{background:none;color:var(--azul);text-decoration:underline;box-shadow:none}
+.inicio-ver .wp-block-button__link:hover::after{transform:translateX(3px)}
+@media(prefers-reduced-motion:reduce){.inicio-ver .wp-block-button__link::after{transition:none}.inicio-ver .wp-block-button__link:hover::after{transform:none}}
+/* Accesos rápidos: título y subtítulo centrados sobre las tarjetas */
+.inicio-accesos{text-align:center;padding-block:var(--e4) 0}
+.inicio-accesos h2.titulo::after{margin-inline:auto}
+.inicio-sub{max-width:62ch;margin:calc(-1 * var(--e2)) auto var(--e3);color:var(--gris);font-size:16px;line-height:1.6}
+.inicio-accesos .accesos-wrap{margin:0;padding-inline:0}

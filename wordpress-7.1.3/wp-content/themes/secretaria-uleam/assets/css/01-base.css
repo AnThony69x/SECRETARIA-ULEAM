@@ -8,17 +8,18 @@ Text Domain: secretaria-uleam
 :root{
   /* Paleta institucional ULEAM: azules 80 %, rojos de apoyo 20 % (ver README) */
   --azul:#005689; --azul-osc:#004499; --azul-medio:#0059A8; --azul-claro:#46A4FF;
-  --rojo:#DB1D1F; --rojo-osc:#B11719; --rojo-claro:#FF0000;
+  --rojo:#DB1D1F; --rojo-osc:#B11719; --rojo-claro:#FF0000; --rojo-cl:#fdecec; /* tinte claro del rojo: baldosa de los iconos de archivo */
   --azul-cl:#e6f0f8; /* tinte claro derivado del azul principal, solo para fondos */
   --azul-noche:#07235c; --azul-rey:#0b3d9e; /* tonos profundos derivados para bandas oscuras (barra, banners, pie) */
   --grad-azul:linear-gradient(110deg,var(--azul-noche),var(--azul-rey));
   --texto:#1e2a44; --gris:#5f6b85; --linea:#e3e9f5; --fondo:#f4f7fc; --blanco:#fff;
   --radio:16px; --sombra:0 6px 24px rgba(0,86,137,.10);
   --font-uleam:"Montserrat",system-ui,sans-serif;
+  --ancho-pagina:1180px; /* ancho del contenido de las páginas interiores; la portada va a todo el ancho (17-inicio-secciones.css) */
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:108px}
-body{font-family:var(--font-uleam);font-weight:400;color:var(--texto);background:var(--fondo);line-height:1.6;overflow-x:hidden}
+html{scroll-behavior:smooth;scroll-padding-top:108px;overflow-x:clip} /* clip (no hidden): recorta lo que sobresale sin romper el menú fijo */
+body{font-family:var(--font-uleam);font-weight:400;color:var(--texto);background:var(--fondo);line-height:1.6;overflow-x:hidden;overflow-x:clip}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 button{font:inherit;cursor:pointer}

@@ -96,7 +96,7 @@ add_shortcode( 'consejo', function ( $a ) {
 	}
 	$o   = '<div class="docs-todo" data-vista="' . $vista . '" data-t-actual="' . esc_attr( doc_txt( 'doc_anio_act' ) ) . '" data-t-ant="' . esc_attr( doc_txt( 'doc_anios_ant' ) ) . '" data-t-rec="' . esc_attr( doc_txt( 'doc_anio_rec' ) ) . '" data-mes2="' . (int) get_theme_mod( 'uleam_doc_mes_p2', 7 ) . '" data-t-sin="' . esc_attr( doc_txt( 'doc_sin' ) ) . '" data-api="' . esc_url( rest_url( 'uleam/v1/documentos' ) ) . '">';
 	$o  .= 'historico' === $vista ? $aviso : ''; // "Volver" arriba en el archivo histórico
-	$o  .= '<template class="doc-tpl"><li class="doc-fila"><span class="icono">' . uleam_icon( 'file-text' ) . '</span><span class="doc-t"><span></span><small></small></span>'
+	$o  .= '<template class="doc-tpl"><li class="doc-fila">' . doc_arch() . '<span class="doc-t"><span></span><small></small></span>'
 		. '<span class="doc-acciones"><a class="btn pq doc-ver" target="_blank" rel="noopener">' . uleam_icon( 'eye' ) . '<span>' . esc_html( doc_txt( 'doc_ver' ) ) . '</span></a>'
 		. '<a class="btn azul pq doc-bajar" download>' . uleam_icon( 'download' ) . '<span>' . esc_html( doc_txt( 'doc_descargar' ) ) . '</span></a></span></li></template>';
 	$o .= '<div class="doc-tabs" role="tablist" aria-label="Apartados">';

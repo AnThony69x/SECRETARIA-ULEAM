@@ -17,12 +17,27 @@ footer{background:var(--azul-osc);color:#fff;padding:56px 0 22px;border-radius:0
 @media(max-width:560px){
   .pie{grid-template-columns:1fr}
 }
-/* Pie del sitio: banda azul profunda (como los banners), centrado, íconos en círculo con borde */
-.pie-sitio{margin-top:auto;flex-shrink:0;background:var(--grad-azul);color:#fff;text-align:center;padding:36px 20px 28px;border-top:4px solid var(--rojo)}
-.pie-sitio h2{font-size:20px;font-weight:600;margin-bottom:14px}
-.pie-redes{display:flex;justify-content:center;gap:12px;margin-bottom:24px}
-.pie-redes a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;color:#fff;transition:.2s}
+/* Pie del sitio: banda azul profunda en 4 columnas (sobre la dirección, enlaces, contacto, redes) y franja inferior con el copyright. Mismo ancho que el contenido de la portada. */
+.pie-sitio{margin-top:auto;flex-shrink:0;background:var(--grad-azul);color:#fff;border-top:4px solid var(--rojo);padding:var(--e4) 5vw var(--e3)}
+.pie-g{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1.2fr auto;gap:var(--e4)}
+.pie-col{padding:0} /* anula el padding global de section */
+.pie-col h2{font-size:16px;font-weight:600;margin:0 0 var(--e2)}
+.pie-col p,.pie-contacto,.pie-enlaces{font-size:14px;line-height:1.7;opacity:.88;margin:0}
+.pie-enlaces,.pie-contacto{list-style:none;padding:0}
+.pie-enlaces li+li{margin-top:2px}
+.pie-sitio a{color:#fff}
+.pie-enlaces a,.pie-contacto a{display:inline-block;min-height:28px;align-content:center} /* con ratón basta 28 px; en pantallas táctiles, 40 px */
+@media(pointer:coarse),(max-width:760px){.pie-enlaces a,.pie-contacto a{min-height:40px}}
+.pie-enlaces a:hover,.pie-contacto a:hover{text-decoration:underline}
+.pie-sitio a:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
+.pie-contacto li{display:flex;gap:10px;align-items:flex-start}
+.pie-contacto li+li{margin-top:10px}
+.pie-contacto .ico{flex:none;width:18px;height:18px;margin-top:4px;color:var(--azul-claro)}
+.pie-redes{display:flex;gap:12px}
+.pie-redes a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;transition:background .2s,color .2s}
 .pie-redes a:hover{background:#fff;color:var(--azul-noche)}
 .pie-redes .ico{width:19px;height:19px}
-.pie-texto{max-width:900px;margin:0 auto;font-size:14px;line-height:1.7;opacity:.85;text-wrap:balance;overflow-wrap:break-word}
-.pie-sitio{padding:var(--e4) var(--e2) var(--e3)}
+.pie-texto{max-width:1400px;margin:var(--e3) auto 0;padding-top:var(--e2);border-top:1px solid rgba(255,255,255,.18);text-align:center;font-size:13px;line-height:1.7;opacity:.8;overflow-wrap:break-word}
+@media(max-width:1000px){.pie-g{grid-template-columns:1fr 1fr;gap:var(--e3)}}
+@media(max-width:600px){.pie-sitio{padding:var(--e3) var(--e2)}.pie-g{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.pie-redes a{transition:none}}

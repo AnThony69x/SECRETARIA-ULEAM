@@ -16,6 +16,7 @@
 .rc-grande .rc-info{gap:18px}
 .rc-grande .rc-info h2{font-size:clamp(30px,3.6vw,46px)}
 .rc-grande .rc-acciones .btn.pq{min-height:50px;padding:12px 28px;font-size:16px}
+.rc-grande .rc-img,.rc-grande .rc-info{max-width:640px;width:100%;align-self:center}
 .rc-hist{margin:var(--e4) 0 var(--e2)}
 .rc-hist h2{color:var(--azul);font-size:clamp(26px,3vw,34px);font-weight:600;margin:0}
 /* Misma altura de imagen en todo el histórico, para que títulos, cifras y botones queden alineados entre tarjetas. */
@@ -28,8 +29,8 @@
 .rc-grid .zoom-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(min-width:861px){
   .rc-grande{flex-direction:row;align-items:center;gap:var(--e4)}
-  .rc-grande .rc-img{flex:1 1 56%}
-  .rc-grande .rc-info{flex:1 1 44%}
+  .rc-grande .rc-img{flex:1 1 60%;max-width:none;align-self:auto}
+  .rc-grande .rc-info{flex:1 1 40%;max-width:none;align-self:auto}
 }
 @media(max-width:600px){
   .rc-grid{grid-template-columns:1fr}

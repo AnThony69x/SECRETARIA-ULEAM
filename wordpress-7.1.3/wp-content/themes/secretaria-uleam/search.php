@@ -2,9 +2,15 @@
 // Resultados de la búsqueda: páginas del sitio y documentos (ver inc/busqueda.php).
 get_header();
 $q    = trim( get_search_query( false ) );
-$docs = uleam_buscar_docs( $q );
-$hay  = have_posts();
-uleam_hero( doc_txt( 'bus_titulo' ), $q ? str_replace( '{q}', $q, doc_txt( 'bus_sub' ) ) : '' );
+// Filtros que envía la biblioteca de la portada: apartado (sección) y año (periodo). Con filtros solo se listan documentos.
+$sec  = isset( $_GET['a'] ) ? sanitize_title( wp_unslash( $_GET['a'] ) ) : '';
+$gr   = isset( $_GET['g'] ) ? sanitize_text_field( wp_unslash( $_GET['g'] ) ) : '';
+$docs = uleam_buscar_docs( $q, $sec, $gr );
+$hay  = $q && ! $sec && ! $gr && have_posts();
+$term = $sec ? get_term_by( 'slug', $sec, 'seccion' ) : null;
+$filtros = trim( ( $term ? $term->name : '' ) . ( $gr ? ' · ' . preg_replace( '/^Año\s*/u', '', $gr ) : '' ), ' ·' );
+$sub  = $q ? str_replace( '{q}', $q, doc_txt( 'bus_sub' ) ) . ( $filtros ? ' · ' . $filtros : '' ) : $filtros;
+uleam_hero( doc_txt( 'bus_titulo' ), $sub );
 ?>
 <main class="pagina-cont">
 <?php if ( $hay ) : ?>
@@ -25,7 +31,7 @@ uleam_hero( doc_txt( 'bus_titulo' ), $q ? str_replace( '{q}', $q, doc_txt( 'bus_
   <div class="docs-todo listo"><div class="doc-lista"><ul class="doc-filas">
   <?php foreach ( $docs['filas'] as $i => $r ) : ?>
     <li class="doc-fila" style="--i:<?php echo (int) ( $i % 30 ); ?>">
-      <span class="icono"><?php echo uleam_icon( 'file-text' ); ?></span>
+      <?php echo doc_arch( $r['u'] ); ?>
       <span class="doc-t"><span><?php echo esc_html( $r['ti'] ); ?></span><small><?php echo esc_html( trim( $r['et'] . ' · ' . $r['g'], ' ·' ) ); ?></small></span>
       <span class="doc-acciones">
         <a class="btn pq doc-ver" href="<?php echo esc_url( $r['u'] ); ?>" target="_blank" rel="noopener"><?php echo uleam_icon( 'eye' ); ?><span><?php echo esc_html( doc_txt( 'doc_ver' ) ); ?></span></a>

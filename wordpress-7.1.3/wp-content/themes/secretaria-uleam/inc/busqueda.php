@@ -17,8 +17,8 @@ function uleam_hero( $titulo, $sub = '' ) {
 }
 
 // Documentos que coinciden con la búsqueda: total y las primeras 50 filas, cada una con su etiqueta de sección.
-function uleam_buscar_docs( $q ) {
-	$rows = mb_strlen( $q ) >= 2 ? doc_api( array( 'q' => $q, 'seccion' => '', 'grupo' => '' ) ) : array();
+function uleam_buscar_docs( $q, $sec = '', $gr = '' ) {
+	$rows = mb_strlen( $q ) >= 2 || $sec || $gr ? doc_api( array( 'q' => $q, 'seccion' => $sec, 'grupo' => $gr ) ) : array();
 	$rows = is_wp_error( $rows ) ? array() : $rows;
 	$et   = array(); // etiqueta por sección: "Órgano · Sección" si la sección es hija de un órgano
 	$out  = array();

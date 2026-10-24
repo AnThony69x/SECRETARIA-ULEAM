@@ -46,6 +46,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
   function fila(r, i, compacto) {
     var li = tpl.cloneNode(true), a = li.querySelectorAll('a');
     li.style.setProperty('--i', i % PAG);
+    li.querySelector('.arch').dataset.ext = r.e || ''; // formato del archivo (PDF, XLS…), calculado en PHP
     li.querySelector('.doc-t>span').textContent = r.ti; // nombre original del documento, sin abreviar
     li.querySelector('.doc-t small').textContent = compacto || act.g || act.grupos.length < 2 ? '' : r.g; // el grupo ya se ve en el filtro o en la sesión, o es el único
     a[0].href = a[1].href = r.u;
@@ -185,8 +186,24 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     // Los periodos empiezan recogidos y conservan lo que el usuario abra o cierre: al abrir otro año se repinta todo.
     return pers.map(function (P) { var k = 'p' + P.k; return periodoLi(P, !!s.abiertos[k], s.abiertos); });
   }
+  // Selector "Actual / Histórico": solo aparece si la sección tiene documentos fijos y por año.
+  var modo = 'actual';
+  function selectorModo(s, ver) {
+    var m = s.el.querySelector('.doc-modo');
+    if (!m) {
+      m = document.createElement('div'); m.className = 'doc-modo'; m.setAttribute('role', 'group'); m.setAttribute('aria-label', 'Tipo de archivo');
+      [['actual', 'Archivo actual'], ['hist', 'Archivo histórico']].forEach(function (x) {
+        var b = document.createElement('button'); b.type = 'button'; b.dataset.m = x[0]; b.textContent = x[1];
+        b.onclick = function () { modo = x[0]; render(); };
+        m.appendChild(b);
+      });
+      s.ul.parentNode.insertBefore(m, s.ul);
+    }
+    m.hidden = !ver;
+    [].forEach.call(m.children, function (b) { b.setAttribute('aria-pressed', b.dataset.m === modo); });
+  }
   function pintarAnios(s, cs) {
-    var r = DS.anios({ s: s, cs: cs, asc: orden === 'asc', hist: d.dataset.vista === 'historico' || d.dataset.vista === 'todo', cuerpo: function (rows) { return cuerpo(rows, s); }, t: T,
+    var r = DS.anios({ s: s, cs: cs, modo: modo, asc: orden === 'asc', hist: d.dataset.vista === 'historico' || d.dataset.vista === 'todo', cuerpo: function (rows) { return cuerpo(rows, s); }, t: T,
       filas: function (g) { return s.cache[g] || null; }, pedir: function (g) { pedir(s, g); } });
     s.ul.removeAttribute('aria-busy'); s.ul.classList.remove('cargando');
     s.ul.classList.add('por-sesion', 'por-anio');
@@ -195,6 +212,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     s.ul.innerHTML = ''; s.ul.appendChild(r.frag);
     if (gf !== null) [].some.call(s.ul.querySelectorAll('.doc-anio-it'), function (li) { if (li.dataset.g !== gf) return false; li.querySelector('summary').focus({ preventScroll: true }); return true; });
     s.ul.hidden = !(r.n || r.fijos); s.mas.hidden = true;
+    selectorModo(s, r.ambos);
     cont.textContent = r.n || r.fijos ? (r.n ? r.n + (r.n === 1 ? ' año · ' : ' años · ') : '') + s.n + ' documentos en ' + s.name : '';
     vacio.hidden = !!(r.n || r.fijos);
   }
@@ -229,10 +247,11 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     secs.forEach(function (s) { s.g = s.ini; s.pag = 1; });
     render();
   });
-  var q0 = new URLSearchParams(location.search).get('q'); // búsqueda que llega desde la otra página
+  var P = new URLSearchParams(location.search), q0 = P.get('q'); // búsqueda que llega desde la otra página (portada: ?q=&a=sección&g=año)
   if (q0) { var inp = d.querySelector('.doc-buscar input'); inp.value = q0; q = q0.trim(); secs.forEach(function (s) { s.g = ''; }); buscar(); }
-  var h = location.hash.slice(1); if (h === 'actas') h = 'sesiones-ordinarias';
+  var h = location.hash.slice(1) || P.get('a') || ''; if (h === 'actas') h = 'sesiones-ordinarias';
   secs.forEach(function (s) { if (s.slug === h) act = s; });
+  var g1 = P.get('g'); if (g1 && act.grupos.some(function (x) { return x[0] === g1; })) act.g = g1; // año elegido en la portada
   render();
   // Las animaciones de filas/paneles solo se activan tras el primer pintado (al recargar no se anima nada).
   requestAnimationFrame(function () { requestAnimationFrame(function () { d.classList.add('listo'); }); });

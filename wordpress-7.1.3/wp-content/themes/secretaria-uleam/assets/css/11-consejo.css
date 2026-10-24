@@ -1,7 +1,7 @@
 /* Introducción e integración del Consejo Universitario. */
 /* Introducción del Consejo: bloques editables (Grupo con clase "consejo-intro" + Título + Párrafo + Lista).
    Cada elemento de la lista es una tarjeta; el icono rota según su posición, el texto en negrita es el encabezado. */
-.consejo-intro{max-width:1040px;margin:0 auto 32px;text-align:center}
+.consejo-intro{margin:0 auto 32px;text-align:center}
 .consejo-intro h2{color:var(--azul);font-size:clamp(22px,3vw,28px);margin-bottom:8px}
 .consejo-intro h2::after{content:"";display:block;width:56px;height:3px;border-radius:3px;background:var(--rojo);margin:10px auto 0}
 .pagina-cont .consejo-intro p{color:var(--gris);font-size:16px;max-width:65ch;margin:0 auto 22px}
@@ -27,7 +27,7 @@
   .consejo-intro ul{grid-template-columns:1fr}
 }
 /* Integración con el texto completo: tarjetas numeradas en 2 columnas + nota destacada */
-.consejo-intro{max-width:1080px;margin-bottom:40px}
+.consejo-intro{margin-bottom:40px}
 .consejo-intro ul{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));counter-reset:ci;gap:12px}
 .consejo-intro li{counter-increment:ci;padding:18px 20px 18px 84px;min-height:0;font-size:13.5px;line-height:1.6;text-align:left}
 .consejo-intro li strong{font-size:15px;margin-bottom:4px}
@@ -36,7 +36,7 @@
 .pagina-cont .consejo-intro .consejo-nota{display:flex;gap:12px;align-items:flex-start;text-align:left;max-width:none;margin:14px 0 0;padding:14px 18px;background:var(--azul-cl);border-left:4px solid var(--azul);border-radius:4px var(--radio) var(--radio) 4px;color:var(--texto);font-size:13.5px}
 .pagina-cont .consejo-intro .consejo-nota::before{content:"i";flex:none;width:22px;height:22px;border-radius:50%;background:var(--azul);color:#fff;font-weight:600;font-size:13px;display:grid;place-items:center;font-style:italic;font-family:Georgia,serif}
 /* Integración: todo dentro de un solo panel; cada integrante es una fila (título | detalle) */
-.consejo-intro{max-width:1080px;text-align:left}
+.consejo-intro{text-align:left}
 .consejo-intro>.wp-block-group__inner-container{background:#fff;border:1px solid var(--linea);border-top:4px solid var(--azul);border-radius:var(--radio);box-shadow:var(--sombra);overflow:hidden}
 .consejo-intro h2{padding:26px 32px 0;font-size:clamp(20px,2.4vw,24px)}
 .consejo-intro h2::after{margin:10px 0 0}

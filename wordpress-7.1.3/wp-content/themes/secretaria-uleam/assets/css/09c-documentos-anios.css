@@ -10,7 +10,7 @@
 .doc-anio-actual>details>summary .doc-ses-t b{color:var(--blanco);font-size:22px}
 .doc-anio-actual>details>summary .doc-ses-t small{color:var(--blanco);opacity:.85;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
 .doc-anio-actual>details>summary .doc-ses-n{background:var(--blanco);color:var(--azul)}
-.doc-anio-actual>details>summary .doc-ses-chev{color:var(--blanco)}
+.doc-anio-actual>details>summary .doc-ses-chev{background:rgba(255,255,255,.18);color:var(--blanco)}
 .doc-anio-per{list-style:none;display:grid;gap:10px;margin:0;padding:12px;border-top:1px solid var(--linea);background:var(--fondo)}
 .doc-anio-per>.doc-fila{background:var(--blanco);border-radius:var(--radio)}
 .doc-anio-msj{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:8px 4px;color:var(--gris);font-size:14px}
@@ -23,3 +23,10 @@
 }
 /* Sin animación de entrada en la vista por años: al abrir un año se repinta la lista y cientos de filas parpadeaban. */
 .docs-todo .doc-filas.por-anio .doc-fila:not([hidden]){animation:none}
+/* Selector Actual / Histórico (interruptor de dos opciones sobre la lista) */
+.doc-modo{display:inline-flex;justify-self:start;gap:4px;padding:4px;margin-bottom:12px;background:var(--azul-cl);border-radius:999px}
+.doc-modo[hidden]{display:none}
+.doc-modo button{min-height:40px;padding:0 20px;border:0;border-radius:999px;background:none;color:var(--azul);font-weight:600;font-size:14px;transition:background .2s,color .2s}
+.doc-modo button[aria-pressed=true]{background:var(--azul);color:#fff}
+.doc-modo button:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
+@media(max-width:480px){.doc-modo{display:flex}.doc-modo button{flex:1;padding:0 8px}}

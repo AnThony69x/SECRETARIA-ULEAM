@@ -1,6 +1,5 @@
 /* Página Horario de atención ([horario]). */
 /* ===== Horario de atención ===== */
-.pagina-cont:has(.ha){max-width:1120px}
 .ha svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .ha-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:20px}
 .ha-card{position:relative;background:#fff;border:1px solid var(--linea);border-top:4px solid var(--azul);border-radius:var(--radio);box-shadow:var(--sombra);padding:26px 24px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;transition:transform .25s,box-shadow .25s;animation:doc-sube .5s cubic-bezier(.2,.8,.2,1) both}
@@ -27,9 +26,9 @@
 .ha-estado.si b{background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.7);animation:ha-pulso 1.8s infinite}
 .ha-estado.no b{background:#f87171}
 @keyframes ha-pulso{70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
-.ha-mail{font-weight:600;font-size:15px;color:var(--azul-medio);overflow-wrap:anywhere}
+.ha-mail{font-weight:600;display:inline-block;padding-block:8px;font-size:15px;color:var(--azul-medio);overflow-wrap:anywhere}
 .ha-mail:hover{text-decoration:underline}
-.ha-btn{margin-top:auto;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;border:1px solid var(--azul);background:#fff;color:var(--azul);font-weight:600;font-size:14px;transition:background .2s,color .2s}
+.ha-btn{margin-top:auto;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:9px 16px;border-radius:10px;border:1px solid var(--azul);background:#fff;color:var(--azul);font-weight:600;font-size:14px;transition:background .2s,color .2s}
 .ha-btn svg{width:16px;height:16px}
 .ha-btn:hover,.ha-btn.ok{background:var(--azul);color:#fff}
 @media(max-width:600px){
@@ -89,3 +88,22 @@
 .ha-main .ha-ic svg{width:32px;height:32px}
 .ha-main h2{font-size:22px}
 .ha-card.ha-main .ha-sub{font-size:17px}
+/* Canales oficiales y correo: tarjetas con cabecera, contenido y caja de acción */
+.ha-card.ha-can,.ha-card.ha-cor{display:flex;flex-direction:column;align-items:stretch;gap:14px;padding:24px}
+.ha-grid>.ha-card:last-child{grid-column:1/-1;grid-template-columns:auto 1fr auto;align-items:center;column-gap:16px;padding:20px 24px} /* ubicación: icono, dirección y botón en una fila */
+.ha-grid>.ha-card:last-child .ha-btn{grid-column:3;grid-row:1/-1;justify-self:end;align-self:center;margin:0}
+.ha-cab{display:flex;align-items:center;gap:14px}
+.ha-cab h2{font-size:18px}
+.ha-cab p{margin:0;font-size:14px}
+.ha-canales{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ha-canales li{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:8px 12px;padding:10px 12px;border:1px solid var(--linea);border-radius:12px;background:var(--fondo)}
+.ha-canales li:first-child:not(:only-child){grid-column:1/-1} /* el portal ocupa el ancho; las redes van de dos en dos */
+.ha-canales b{color:var(--azul);font-size:15px;font-weight:600}
+.ha-card .ha-btn.ha-lleno{margin:0;padding:8px 14px;font-size:13px;background:var(--azul);color:#fff}
+.ha-card .ha-btn.ha-lleno:hover{background:var(--azul-osc);border-color:var(--azul-osc)}
+.ha-buzon{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:auto;padding:12px 14px;border:1px solid var(--linea);border-radius:12px;background:var(--rojo-cl)}
+.ha-buzon .ha-mail{padding-block:0;overflow-wrap:anywhere}
+.ha-buzon .ha-mail svg{width:18px;height:18px;margin-right:8px;vertical-align:-3px}
+.ha-buzon .tag{background:#fff;color:var(--rojo-osc)}
+.ha-buzon .ha-btn{margin:0 0 0 auto;padding:7px 14px;font-size:14px}
+@media(max-width:600px){.ha-canales{grid-template-columns:1fr}.ha-buzon .ha-btn{margin-left:0}.ha-grid>.ha-card:last-child{grid-template-columns:auto 1fr}.ha-grid>.ha-card:last-child .ha-btn{grid-column:1/-1;grid-row:auto;justify-self:start;margin-top:8px}}

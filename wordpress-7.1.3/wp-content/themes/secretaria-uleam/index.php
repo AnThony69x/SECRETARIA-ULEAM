@@ -32,19 +32,9 @@ $slides = new WP_Query( array( 'post_type' => 'slide', 'orderby' => 'menu_order'
 </div>
 <?php endif; ?>
 
-<?php if ( has_nav_menu( 'accesos' ) ) : ?>
-<div class="accesos-wrap">
-  <?php wp_nav_menu( array( 'theme_location' => 'accesos', 'container' => false, 'items_wrap' => '<div class="accesos">%3$s</div>', 'walker' => new class extends Walker_Nav_Menu {
-	// Enlaces sueltos sin <li>: el CSS espera <a class="acceso"> hijos directos de .accesos.
-	public function start_lvl( &$o, $d = 0, $a = null ) {}
-	public function end_lvl( &$o, $d = 0, $a = null ) {}
-	public function start_el( &$o, $item, $depth = 0, $args = null, $id = 0 ) {
-		$o .= '<a class="acceso" href="' . esc_url( $item->url ) . '"' . ( '_blank' === $item->target ? ' target="_blank" rel="noopener"' : '' ) . '>'
-			. '<span class="icono">' . uleam_icon( $item->description ) . '</span><b>' . esc_html( $item->title ) . '</b></a>';
-	}
-	public function end_el( &$o, $item, $depth = 0, $args = null ) {}
-} ) ); ?>
-</div>
+<?php // Contenido de la portada bajo los accesos: página "Contenido de la portada" (bloques y shortcodes), editable en wp-admin → Páginas.
+if ( $ini = get_page_by_path( 'inicio-contenido' ) ) : ?>
+<main class="pagina-cont inicio-cont"><?php echo apply_filters( 'the_content', $ini->post_content ); ?></main>
 <?php endif; ?>
 
 <?php get_footer();

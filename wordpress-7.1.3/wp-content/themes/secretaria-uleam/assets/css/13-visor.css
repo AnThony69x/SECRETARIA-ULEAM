@@ -1,6 +1,5 @@
 /* Imágenes ampliables del contenido y visor con zoom. */
 /* ===== Imágenes del contenido ampliables (organigrama) + visor ===== */
-.pagina-cont:has(.zoomable){max-width:1400px}
 .pagina-cont figure.zoomable{position:relative;background:#fff;border:1px solid var(--linea);border-radius:var(--radio);box-shadow:var(--sombra);padding:16px;overflow:hidden}
 .pagina-cont figure.zoomable img{width:100%;cursor:zoom-in;transition:transform .4s ease}
 .pagina-cont figure.zoomable:hover img{transform:scale(1.015)}
@@ -24,7 +23,7 @@
 .lb-ayuda{text-align:center;color:rgba(255,255,255,.6);font-size:12px;margin-bottom:12px}
 @media(max-width:600px){
   .pagina-cont figure.zoomable{padding:8px}
-  .zoom-btn{right:12px;bottom:12px;padding:8px 12px;font-size:13px}
+  .zoom-btn{right:12px;bottom:12px;min-height:40px;padding:8px 12px;font-size:14px}
   .lb-ayuda{display:none}
 }
 @media(prefers-reduced-motion:reduce){

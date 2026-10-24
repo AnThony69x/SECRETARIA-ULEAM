@@ -8,6 +8,7 @@ add_action( 'after_setup_theme', function () {
 	register_nav_menus( array(
 		'principal' => 'Menú principal',
 		'accesos'   => 'Accesos rápidos (el nombre del icono va en la Descripción del enlace)',
+		'pie'       => 'Enlaces del pie de página',
 	) );
 } );
 
@@ -15,6 +16,7 @@ add_action( 'after_setup_theme', function () {
 function uleam_icon( $name ) {
 	static $p = array(
 		'mail'           => '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+		'map-pin'        => '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
 		'search'         => '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
 		'chevron-left'   => '<path d="m15 18-6-6 6-6"/>',
 		'chevron-right'  => '<path d="m9 18 6-6-6-6"/>',
@@ -67,7 +69,14 @@ const REDES = array(
 const ULEAM_CORREO = 'secretaria.general@uleam.edu.ec';
 const ULEAM_SIGUENOS = 'Síguenos';
 const ULEAM_BUSCAR   = 'Buscar en el sitio...';
-const ULEAM_PIE    = "ULEAM © Copyright {año}, Todos los derechos reservados - Universidad Laica Eloy Alfaro de Manabí\nDirección: Av. Circunvalación - Vía a San Mateo\nManta - Manabí - Ecuador";
+const ULEAM_PIE    = 'ULEAM © Copyright {año}, Todos los derechos reservados - Universidad Laica Eloy Alfaro de Manabí';
+// Textos de las columnas del pie: clave => [etiqueta, valor por defecto, tipo]. La dirección y el correo salen de los datos de contacto ya editables.
+const ULEAM_PIE_COLS = array(
+	'pie_t_sobre'    => array( 'Pie: título de la primera columna', 'Sobre la Dirección', 'text' ),
+	'pie_sobre'      => array( 'Pie: texto de la primera columna', 'La Secretaría General es una dirección de apoyo al rectorado, que garantiza la adecuada conservación y custodia de la memoria institucional.', 'textarea' ),
+	'pie_t_enlaces'  => array( 'Pie: título de los enlaces (el menú se arma en Apariencia → Menús → «Enlaces del pie»)', 'Enlaces rápidos', 'text' ),
+	'pie_t_contacto' => array( 'Pie: título del contacto', 'Contacto', 'text' ),
+);
 
 // Redes con URL; $barra = true filtra las marcadas para la barra superior.
 function uleam_redes( $barra = false ) {
@@ -95,6 +104,10 @@ add_action( 'customize_register', function ( $c ) {
 	$c->add_control( 'uleam_siguenos', array( 'section' => 'uleam', 'label' => 'Texto junto a las redes (barra superior y pie)', 'type' => 'text' ) );
 	$c->add_setting( 'uleam_buscar', array( 'default' => ULEAM_BUSCAR, 'sanitize_callback' => 'sanitize_text_field' ) );
 	$c->add_control( 'uleam_buscar', array( 'section' => 'uleam', 'label' => 'Texto de ayuda del buscador', 'type' => 'text' ) );
+	foreach ( ULEAM_PIE_COLS as $k => $d ) {
+		$c->add_setting( "uleam_$k", array( 'default' => $d[1], 'sanitize_callback' => 'textarea' === $d[2] ? 'sanitize_textarea_field' : 'sanitize_text_field' ) );
+		$c->add_control( "uleam_$k", array( 'section' => 'uleam', 'label' => $d[0], 'type' => $d[2] ) );
+	}
 	$c->add_setting( 'uleam_pie_texto', array( 'default' => ULEAM_PIE, 'sanitize_callback' => 'sanitize_textarea_field' ) );
 	$c->add_control( 'uleam_pie_texto', array( 'section' => 'uleam', 'label' => 'Texto del pie ({año} = año actual, se actualiza solo)', 'type' => 'textarea' ) );
 } );
@@ -188,6 +201,9 @@ add_action( 'save_post_page', function ( $id ) {
 } );
 
 // Documentos PDF (miembros, actas y resoluciones).
+// Icono por formato de archivo (PDF, XLS, DOC…), lo usan las listas de documentos, la búsqueda y la biblioteca.
+require get_template_directory() . "/inc/arch.php";
+
 require get_template_directory() . "/inc/documentos.php";
 require get_template_directory() . "/inc/documentos-vista.php";
 
@@ -196,6 +212,14 @@ require get_template_directory() . "/inc/enlaces.php";
 
 // Informes anuales de rendición de cuentas en tarjetas ([rendicion]).
 require get_template_directory() . "/inc/rendicion.php";
+// Carrusel del personal con autoridad destacada ([equipo]).
+require get_template_directory() . "/inc/equipo.php";
+// Estantes de la biblioteca de archivos ([biblioteca]).
+require get_template_directory() . "/inc/biblioteca.php";
+// Tarjetas de acceso rápido ([accesos]).
+require get_template_directory() . "/inc/accesos.php";
+// Modal de sistemas desactivado: "Sistema Histórico de Gestión" abre su página (inc/sistemas-modal.php queda sin cargar).
+// require get_template_directory() . "/inc/sistemas-modal.php";
 
 // Búsqueda con documentos, página 404 y datos para buscadores y redes.
 require get_template_directory() . "/inc/busqueda.php";

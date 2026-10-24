@@ -1,5 +1,5 @@
 /* [enlaces]: tarjetas de acceso a sistemas o páginas (inc/enlaces.php). Reutiliza .card e .icono de 02-componentes. */
-.enlaces{list-style:none;padding:0;margin:var(--e3) 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--e2)}
+.enlaces{list-style:none;padding:0;margin:var(--e3) 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:var(--e2)}
 .enlace-card{display:flex;align-items:center;gap:14px;height:100%;padding:18px;text-align:left;color:var(--texto);border-color:var(--linea)}
 .enlace-card .icono{width:48px;height:48px;border-radius:12px}
 .enlace-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;line-height:1.35}

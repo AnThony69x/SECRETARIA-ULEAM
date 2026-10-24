@@ -30,6 +30,7 @@
   .mv-tarjeta,.mv-ico{animation:none}
 }
 .mv-pag,.mv-pag>.wp-block-group__inner-container{width:100%}
+.mv-pag{margin-bottom:var(--e4)}
 /* Pilares */
 .pilares-sec{margin:56px 0 var(--e4)}
 .pilares-sec .mv-kick{color:var(--rojo-osc);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px}
@@ -37,9 +38,10 @@
 .pilares-sec h2::before{content:"";width:28px;height:28px;flex:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23DB1D1F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z'/%3E%3C/svg%3E") center/contain no-repeat}
 .pilares-sec .pil-intro{color:var(--gris);max-width:720px;margin-bottom:28px}
 .pilares>.wp-block-group__inner-container{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch}
-.pilar{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center;align-content:center;background:#fff;border:1px solid var(--linea);border-left:4px solid var(--azul);border-radius:var(--radio);box-shadow:var(--sombra);padding:18px;text-align:left;margin:0!important}
-.pilar::before{content:"";grid-row:1/3;width:48px;height:48px;border-radius:50%;background:var(--azul-cl) center/24px no-repeat var(--ic)}
-.pilar h3{color:var(--azul);font-size:15px;font-weight:600;line-height:1.3;margin-bottom:2px}
+.pilar{display:flex;flex-direction:column;align-items:center;gap:10px;background:#fff;border:1px solid var(--linea);border-top:4px solid var(--azul);border-radius:var(--radio);box-shadow:var(--sombra);padding:28px 20px 24px;text-align:center;margin:0!important;transition:transform .25s,border-color .25s,box-shadow .25s}
+.pilar:hover{transform:translateY(-4px);border-top-color:var(--rojo);box-shadow:0 14px 30px rgba(0,40,100,.14)}
+.pilar::before{content:"";flex:none;width:56px;height:56px;border-radius:50%;background:var(--azul-cl) center/26px no-repeat var(--ic)}
+.pilar h3{color:var(--azul);font-size:16px;font-weight:600;line-height:1.3;margin:0}
 .pilar p{color:var(--gris);font-size:14px;line-height:1.5;margin:0}
 .pilar:nth-child(1){--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230059A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='20' height='5' x='2' y='3' rx='1'/%3E%3Cpath d='M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4'/%3E%3C/svg%3E")}
 .pilar:nth-child(2){--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230059A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Ccircle cx='12' cy='12' r='6'/%3E%3Ccircle cx='12' cy='12' r='2'/%3E%3C/svg%3E")}
@@ -54,3 +56,4 @@
 .mv-pag>.wp-block-group__inner-container{gap:var(--e3)}
 .pilares-sec{margin-top:var(--e4)}
 .pilares>.wp-block-group__inner-container{gap:var(--e2)}
+@media(prefers-reduced-motion:reduce){.pilar{transition:none}.pilar:hover{transform:none}}

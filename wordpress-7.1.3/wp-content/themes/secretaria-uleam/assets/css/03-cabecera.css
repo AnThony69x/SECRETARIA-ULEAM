@@ -21,6 +21,14 @@
 .menu a{display:block;padding:18px 0 15px;border-bottom:3px solid transparent;transition:.2s;color:var(--texto);cursor:pointer}
 .menu a:hover,.menu a.activo,.menu .current-menu-item>a{color:var(--azul-medio);border-color:var(--rojo)}
 .menu a.activo,.menu .current-menu-item>a{font-weight:600}
+/* Escritorio: los enlaces sin submenú se resaltan al pasar el cursor como los que tienen submenú (píldora azul clara, ver más abajo); el actual conserva el subrayado rojo */
+@media(min-width:861px){
+  .menu>li:not(.menu-item-has-children)>a{position:relative;isolation:isolate}
+  .menu>li:not(.menu-item-has-children)>a::before{content:"";position:absolute;inset:7px -8px;z-index:-1;border-radius:10px;background:var(--azul-cl);border:1px solid color-mix(in srgb,var(--azul-claro) 40%,transparent);opacity:0;transition:opacity .2s}
+  .menu>li:not(.menu-item-has-children):not(.current-menu-item)>a:not(.activo):hover{border-color:transparent;color:var(--azul)}
+  .menu>li:not(.menu-item-has-children):not(.current-menu-item)>a:not(.activo):hover::before{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){.menu>li:not(.menu-item-has-children)>a::before{transition:none}}
 .iconbtn{background:none;border:1px solid var(--linea);border-radius:10px;width:42px;height:42px;color:var(--azul);font-size:20px;display:grid;place-items:center}
 /* ===== RESPONSIVE ===== */
 .menu-btn{display:none}

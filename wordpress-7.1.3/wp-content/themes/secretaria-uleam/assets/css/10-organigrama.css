@@ -1,7 +1,7 @@
 /* Organigrama de Recursos Humanos: niveles, paneles por área y tarjetas. */
 /* ===== Organigrama institucional: paneles por área, tarjetas centradas, nodos numerados ===== */
 .pagina-cont:has(.oc){max-width:none;margin:0;padding:48px 0 64px}
-.oc-wrap{box-sizing:content-box;max-width:1240px;margin:0 auto;padding:0 24px}
+.oc-wrap{box-sizing:border-box;max-width:var(--ancho-pagina);margin:0 auto;padding:0 var(--e2)}
 .oc{list-style:none;margin:0;padding:0}
 /* Cada área define --area-color (inline); el resto se deriva de él */
 .oc-n{--area-color:#0B5C8E;--next-color:var(--area-color);--area-soft:color-mix(in srgb,var(--area-color) 10%,white);--area-dark:color-mix(in srgb,var(--area-color) 62%,black);position:relative;display:flex;padding-bottom:32px}
@@ -54,7 +54,7 @@
   .oc-ini{font-size:44px}
   .oc-main .oc-ini{font-size:72px}
   .oc-tx{padding:0 8px}
-  .oc-tx b{font-size:13px}
+  .oc-tx b{font-size:14px}
   .oc-up{right:14px;bottom:14px}
 }
 .oc-def{object-fit:contain;padding:8%;background:linear-gradient(135deg,var(--area-soft),color-mix(in srgb,var(--area-color) 28%,white))}

@@ -1,0 +1,44 @@
+/* [biblioteca]: tarjeta de búsqueda de archivos de la portada (inc/biblioteca.php). */
+.bib{display:flex;flex-direction:column;gap:var(--e2);padding:var(--e3);background:#fff;border:1px solid var(--linea);border-radius:16px;box-shadow:var(--sombra)}
+.bib-cab{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.bib-cab h3{margin:0;color:var(--azul);font-size:clamp(20px,2.4vw,26px);font-weight:600}
+.bib-todo{display:inline-flex;align-items:center;min-height:40px;gap:6px;color:var(--azul-medio);font-weight:600;font-size:14px}
+.bib-todo:hover{text-decoration:underline}
+.bib-todo .ico{width:16px;height:16px;transition:transform .2s}
+.bib-todo:hover .ico{transform:translateX(3px)}
+.bib-campos{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr) minmax(0,1fr) auto;gap:12px}
+.bib-buscar{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 14px;background:var(--fondo);border:1px solid var(--linea);border-radius:10px}
+.bib-buscar:focus-within{background:#fff;border-color:var(--azul-claro)}
+.bib-buscar .ico{width:18px;height:18px;flex:none;color:var(--gris)}
+.bib-buscar input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--texto);font:inherit;font-size:14px;padding:12px 0}
+.bib-campo{display:flex;min-width:0}
+.bib-campo select{width:100%;min-height:48px;padding:0 36px 0 14px;border:1px solid var(--linea);border-radius:10px;background:var(--fondo) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23005689' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") right 12px center/16px no-repeat;color:var(--texto);font:inherit;font-size:14px;appearance:none;-webkit-appearance:none;text-overflow:ellipsis}
+.bib-campo select:focus-visible,.bib-buscar:focus-within{outline:3px solid var(--azul-claro);outline-offset:1px}
+.bib-ir{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border:0;border-radius:10px}
+.bib-ir .ico{width:16px;height:16px}
+.bib-lbl{margin:var(--e1) 0 0;color:var(--texto);font-size:14px;font-weight:600}
+.bib-rec{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+/* Barras verticales entre columnas (3 → 2 → 1 columna según el ancho) */
+.bib-rec>li{border-left:1px solid var(--linea)}
+.bib-rec>li:nth-child(3n+1){border-left:0}
+.bib-rec>li>.bib-doc{height:100%}
+.bib-doc{display:flex;gap:12px;align-items:flex-start;padding:14px var(--e2);border-radius:10px;color:var(--texto);transition:background .2s}
+.bib-doc:hover{background:var(--azul-cl)}
+.bib-doc:focus-visible{outline:3px solid var(--azul-claro);outline-offset:1px}
+.bib-ic{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:var(--azul-cl);color:var(--azul)}
+.bib-ic .ico{width:20px;height:20px}
+.bib-dt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.bib-dt b{color:var(--azul);font-size:14px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.bib-dt small{color:var(--gris);font-size:12px}
+@media(max-width:900px){.bib-campos{grid-template-columns:1fr 1fr}.bib-buscar{grid-column:1/-1}.bib-ir{grid-column:1/-1}}
+@media(max-width:600px){.bib{padding:var(--e2)}.bib-campos{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.bib-doc,.bib-todo .ico{transition:none}.bib-todo:hover .ico{transform:none}}
+@media(max-width:900px){
+  .bib-rec{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bib-rec>li:nth-child(3n+1){border-left:1px solid var(--linea)}
+  .bib-rec>li:nth-child(2n+1){border-left:0}
+}
+@media(max-width:600px){
+  .bib-rec{grid-template-columns:1fr}
+  .bib-rec>li{border-left:0}
+}

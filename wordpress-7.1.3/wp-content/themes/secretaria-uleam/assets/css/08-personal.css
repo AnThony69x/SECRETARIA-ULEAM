@@ -63,7 +63,7 @@
 }
 /* Escritorio: todas las personas de un nivel en una sola fila (7 x 1, 4 x 1...) */
 @media(min-width:1100px){
-  .pagina-cont:has(.perfiles){max-width:1240px}
+  .pagina-cont:has(.perfiles){max-width:var(--ancho-pagina)}
   .perfiles>.wp-block-group__inner-container{flex-wrap:nowrap;gap:var(--e2)!important}
   .perfiles .perfil{flex:1 1 0;width:auto;min-width:0;max-width:225px;padding:var(--e3) 12px 20px!important}
   .perfiles.principal .perfil{max-width:260px}
@@ -74,7 +74,7 @@
   .perfil .perfil-cargo{font-size:10px;padding:4px 10px}
 }
 @media(min-width:1100px){
-  body:has(.perfiles) .pag-hero .wrap{max-width:1240px}
+  body:has(.perfiles) .pag-hero .wrap{max-width:var(--ancho-pagina)}
 }
 /* Todas las tarjetas del mismo tamaño en todos los niveles; el ancho es el que permite 7 en una fila */
 @media(min-width:1100px){
@@ -85,8 +85,8 @@
 }
 /* Tarjetas grandes y uniformes (225px) en todos los niveles; los niveles largos pasan a otra fila, centrada */
 @media(min-width:1100px){
-  .pagina-cont:has(.perfiles){max-width:1000px}
-  body:has(.perfiles) .pag-hero .wrap{max-width:1000px}
+  .pagina-cont:has(.perfiles){max-width:var(--ancho-pagina)}
+  body:has(.perfiles) .pag-hero .wrap{max-width:var(--ancho-pagina)}
   .perfiles>.wp-block-group__inner-container{flex-wrap:wrap;gap:var(--e3)!important}
   .perfiles .perfil,.perfiles.principal .perfil{width:225px!important;padding:var(--e3) var(--e2) 20px!important}
   .perfiles .perfil-foto img,.perfiles.principal .perfil-foto img{width:104px;height:104px}

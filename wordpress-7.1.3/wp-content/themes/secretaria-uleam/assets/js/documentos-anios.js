@@ -62,7 +62,12 @@
     var esAnio = function (x) { return /^Año/.test(x[0]); };
     var resto = o.cs.filter(function (x) { return x !== act && x[1] && esAnio(x); });
     // Grupos que no son años (ej. "Documentos generales"): abiertos arriba, como lista; los años quedan como histórico.
-    o.cs.filter(function (x) { return x !== act && x[1] && !esAnio(x); }).forEach(function (x) { frag.appendChild(fijo(o, x[0])); });
+    var fi = o.cs.filter(function (x) { return x !== act && x[1] && !esAnio(x); });
+    // Con fijos y años a la vez, o.modo ('actual' | 'hist') elige cuál de los dos se ve (selector Actual / Histórico).
+    var ambos = fi.length && (act || resto.length);
+    if (ambos && o.modo === 'hist') fi = [];
+    if (ambos && o.modo === 'actual') resto = [];
+    fi.forEach(function (x) { frag.appendChild(fijo(o, x[0])); });
     var hayFijos = frag.childNodes.length > 0;
     if (o.asc) resto.reverse();
     if (act) frag.appendChild(anio(o, act[0], act[1], true));
@@ -74,7 +79,7 @@
       frag.appendChild(sep);
     }
     resto.forEach(function (x) { frag.appendChild(anio(o, x[0], x[1], false)); });
-    return { frag: frag, n: (act ? 1 : 0) + resto.length, fijos: hayFijos }; // n = años
+    return { frag: frag, n: (act ? 1 : 0) + resto.length, fijos: hayFijos, ambos: !!ambos }; // n = años
   }
   window.ULEAM_DOC = window.ULEAM_DOC || {};
   window.ULEAM_DOC.anios = anios;

@@ -1,0 +1,21 @@
+/* [equipo]: autoridad principal sola + carrusel dinámico del resto (inc/equipo.php). Tarjetas: .oc-c de 10-organigrama. Flechas: .carrusel-btn de 08-personal. */
+.eq{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--e3);align-items:center}
+.eq-con-solo{grid-template-columns:360px minmax(0,1fr)}
+/* Las tarjetas del organigrama heredan estos tonos del nivel (.oc-n); aquí se derivan del color inline de cada tarjeta. */
+.eq .oc-c{--area-soft:color-mix(in srgb,var(--area-color) 10%,white);--area-dark:color-mix(in srgb,var(--area-color) 62%,black)}
+.eq-solo{display:flex;justify-content:center;padding-top:14px}
+.eq-carr{position:relative;min-width:0}
+.eq-pista{display:flex;gap:var(--e2);overflow-x:auto;list-style:none;margin:0;padding:18px 4px 20px;scrollbar-width:none}
+.eq-pista::-webkit-scrollbar{display:none}
+.eq-pista:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
+.eq-pista>li{flex:none}
+.eq-pista .oc-c{width:260px;height:100%}
+.eq .oc-tx b{font-size:17px}
+.eq .oc-tx small{font-size:13px}
+.eq .oc-main{width:340px}
+.eq-pausa{position:absolute;right:4px;top:-50px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid var(--linea);background:#fff;color:var(--azul);display:grid;place-items:center}
+.eq-pausa:hover{background:var(--azul);color:#fff}
+.eq-pausa:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
+.eq-pausa .ico{width:18px;height:18px}
+@media(max-width:860px){.eq-con-solo{grid-template-columns:minmax(0,1fr)}.eq-solo .oc-main{width:min(100%,340px)}.eq-carr{padding-top:48px}.eq-pausa{top:0}}
+@media(max-width:560px){.eq-pista .oc-c{width:200px}}

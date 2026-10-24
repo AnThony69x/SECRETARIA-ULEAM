@@ -10,7 +10,7 @@
 .wp-block-button__link:hover{color:var(--blanco);transform:translateY(-2px);box-shadow:var(--sombra)}
 .wp-block-button__link:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.wp-block-button__link{transition:none}.wp-block-button__link:hover{transform:none}}
-.btn.pq{padding:8px 16px;font-size:13px;border-radius:10px}
+.btn.pq{padding:8px 16px;font-size:13px;border-radius:10px;min-height:40px}
 .enlace{color:var(--azul-medio);font-weight:600;font-size:14px}
 .enlace:hover{text-decoration:underline}
 .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--azul-cl);color:var(--azul)}

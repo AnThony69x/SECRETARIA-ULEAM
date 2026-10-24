@@ -1,10 +1,9 @@
 /* Listados de documentos (miembros, actas, resoluciones): pestañas, filtros y filas. */
 .doc-lista{background:#fff;border-radius:var(--radio);box-shadow:var(--sombra);overflow:hidden}
 .doc-fila{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 22px;border-top:1px solid var(--linea)}
-.doc-fila:first-child{border-top:0}
 .doc-fila .icono{width:44px;height:44px;font-size:20px;border-radius:12px}
 .doc-fila h4{font-size:15px;margin-bottom:2px}
-.doc-fila small{color:var(--gris);font-size:12px}
+.doc-fila small{color:var(--gris);font-size:14px}
 .doc-fila .botones2{display:flex;gap:8px}
 .doc-card{display:flex;flex-direction:column;gap:6px}
 .doc-card .tipo{font-size:12px;color:var(--gris);font-weight:600}
@@ -32,11 +31,11 @@
 .doc-herramientas{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .doc-herramientas .doc-buscar{flex:1 1 320px}
 .doc-herramientas .btn.pq{background:#fff;color:var(--azul);border:1px solid var(--linea);box-shadow:none}
-.doc-contador{color:var(--gris);font-size:13px;margin:10px 2px 0}
+.doc-contador{color:var(--gris);font-size:14px;margin:10px 2px 0}
 .doc-seccion[hidden],.doc-grupo[hidden],.doc-fila[hidden]{display:none}
 .doc-vacio{background:#fff;border-radius:var(--radio);margin-top:24px}
 /* Ajustes de diseño: ancho útil, filas compactas y jerarquía visual */
-.pagina-cont:has(.docs-todo){max-width:1120px;padding-top:32px}
+.pagina-cont:has(.docs-todo){padding-top:32px}
 .pagina-cont:has(.docs-todo)>p{max-width:80ch;color:var(--gris);font-size:15px;margin-bottom:20px}
 .docs-todo{display:block}
 .doc-seccion{margin-top:36px;scroll-margin-top:130px}
@@ -67,7 +66,7 @@
   .doc-fila .btn{margin-left:48px}
 }
 /* Diseño final: pestañas como tarjetas, barra de herramientas en tarjeta y filas con jerarquía */
-.doc-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;border:0;margin-bottom:18px}
+.doc-tabs{display:flex;flex-wrap:wrap;gap:14px;border:0;margin-bottom:18px}
 .doc-tabs [role=tab]{position:relative;display:flex;align-items:flex-start;gap:12px;text-align:left;background:#fff;border:1px solid var(--linea);border-radius:var(--radio);margin:0;padding:18px 16px 16px;box-shadow:var(--sombra);transition:border-color .2s,transform .2s,box-shadow .2s}
 .doc-tabs [role=tab]:hover{transform:translateY(-2px);border-color:var(--azul-claro)}
 .doc-tabs [aria-selected=true]{border:2px solid var(--azul);padding:17px 15px 15px;background:linear-gradient(180deg,#fff,var(--azul-cl))}
@@ -77,8 +76,8 @@
 .doc-tabs [aria-selected=true] .icono{background:var(--azul);color:#fff}
 .doc-tab-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
 .doc-tab-txt b{color:var(--azul);font-size:16px;font-weight:600;line-height:1.25}
-.doc-tab-txt small{color:var(--gris);font-size:12px;font-weight:400;line-height:1.35}
-.doc-tab-n{display:inline-block;align-self:flex-start;margin-top:6px;font-size:11px;font-weight:600;color:var(--azul);background:var(--azul-cl);padding:2px 10px;border-radius:999px}
+.doc-tab-txt small{color:var(--gris);font-size:13px;font-weight:400;line-height:1.35}
+.doc-tab-n{display:inline-block;align-self:flex-start;margin-top:6px;font-size:12px;font-weight:600;color:var(--azul);background:var(--azul-cl);padding:2px 10px;border-radius:999px}
 .doc-herramientas{background:#fff;border:1px solid var(--linea);border-radius:var(--radio);padding:10px;box-shadow:var(--sombra);margin-bottom:6px}
 .doc-herramientas .doc-buscar{box-shadow:none;background:var(--fondo);border-color:transparent}
 .doc-herramientas .doc-buscar:focus-within{border-color:var(--azul-claro);background:#fff}
@@ -86,13 +85,13 @@
 .doc-tipo select{background:var(--fondo);border-color:transparent;cursor:pointer}
 .doc-contador{margin:10px 4px 0}
 .doc-seccion{margin-top:12px}
-.doc-filas{padding:6px 10px}
-.doc-fila{border-bottom:1px solid var(--linea);border-radius:0}
-.doc-fila:hover{background:var(--fondo);border-radius:10px}
+.doc-filas{display:grid;gap:8px;padding:10px}
+.doc-fila{padding:12px 14px;border:1px solid var(--linea);border-radius:12px;background:#fff}
+.doc-fila:hover{background:var(--fondo);border-color:var(--azul-claro)}
 .doc-fila .icono{background:#fdecec;color:var(--rojo-osc)}
-.doc-t{font-size:14px;font-weight:600;color:var(--texto)}
+.doc-t{font-size:14px;font-weight:600;color:var(--azul)}
 .doc-t small{font-weight:400;margin-top:2px}
-.doc-fila .btn.pq,.rc-acciones .btn.pq{background:#fff;color:var(--azul);border:1px solid var(--azul)}
+.doc-fila .btn.pq,.rc-acciones .btn.pq{background:var(--azul-cl);color:var(--azul);border:1px solid var(--azul-claro)}
 .doc-fila .btn.pq:hover,.rc-acciones .btn.pq:hover{background:var(--azul);color:#fff;transform:none;box-shadow:none}
 @media(max-width:760px){
   .doc-tabs{grid-template-columns:1fr;gap:8px}
@@ -113,7 +112,7 @@
 .doc-anio[hidden],.doc-tipo[hidden],.doc-herramientas[hidden]{display:none}
 .doc-anio select,.doc-tipo select{appearance:none;-webkit-appearance:none;min-height:46px;min-width:190px;border:1px solid transparent;border-radius:12px;background:var(--fondo) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23005689' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") right 12px center/16px no-repeat;padding:0 38px 0 14px;font:inherit;font-size:14px;font-weight:600;color:var(--azul);cursor:pointer}
 .doc-anio select:hover,.doc-tipo select:hover,.doc-anio select:focus,.doc-tipo select:focus{border-color:var(--azul-claro);background-color:#fff}
-.doc-contador{margin:8px 4px 0;font-size:13px}
+.doc-contador{margin:8px 4px 0;font-size:14px}
 .doc-seccion{margin-top:8px;padding:0}
 /* anula el padding global de section */
 @media(max-width:760px){
@@ -153,8 +152,8 @@
 /* Ver y Descargar por separado */
 .doc-acciones{display:flex;gap:6px;flex:none}
 .doc-fila .doc-acciones .btn.pq{padding:6px 11px;font-size:12.5px}
-.doc-fila .doc-acciones .doc-bajar,.rc-acciones .btn.pq.doc-bajar{background:var(--azul);color:#fff}
-.doc-fila .doc-acciones .doc-bajar:hover,.rc-acciones .btn.pq.doc-bajar:hover{background:var(--azul-osc);border-color:var(--azul-osc)}
+.doc-fila .doc-acciones .doc-bajar,.rc-acciones .btn.pq.doc-bajar{background:#fff;color:var(--azul);border-color:var(--linea)}
+.doc-fila .doc-acciones .doc-bajar:hover,.rc-acciones .btn.pq.doc-bajar:hover{background:var(--azul-cl);color:var(--azul);border-color:var(--azul-claro)}
 .doc-fila .doc-ver:hover .ico{animation:none;transform:scale(1.15)}
 @media(max-width:760px){
   .doc-fila .btn{margin-left:0}
@@ -219,9 +218,9 @@
 .doc-herramientas>label{flex:0 1 190px}
 .doc-anio select,.doc-tipo select,.doc-orden select{min-width:0;width:100%;text-overflow:ellipsis}
 .doc-limpiar{white-space:nowrap}
-.doc-tabs [role=tab]{min-width:0;overflow:hidden;padding-right:40px}
+.doc-tabs [role=tab]{flex:1 1 calc((100% - 24px)/3);min-width:200px;overflow:hidden;padding-right:40px}
 .doc-tab-txt,.doc-tab-txt b,.doc-tab-txt small{min-width:0;overflow-wrap:break-word}
 .doc-tab-n{white-space:nowrap}
 /* Escritorio: icono arriba y texto debajo, así las 5 pestañas caben en una fila sin partir palabras */
 @media(min-width:901px){.doc-tabs [role=tab]{flex-direction:column;gap:10px;padding-right:16px}}
-@media(max-width:760px){.doc-herramientas .doc-buscar{flex-basis:100%}.doc-herramientas>label{flex:1 1 140px}.doc-limpiar{flex:1 1 100%;justify-content:center}}
+@media(max-width:900px){.doc-herramientas{flex-direction:row;align-items:stretch}.doc-herramientas .doc-buscar{flex-basis:100%}.doc-herramientas>label{flex:1 1 140px}.doc-limpiar{flex:1 1 100%;justify-content:center}}
