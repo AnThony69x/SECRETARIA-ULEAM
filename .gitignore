@@ -21,3 +21,6 @@
 
 # Fotos originales pesadas (327 MB)
 /foto-ULEAM/
+
+# Exportaciones de base de datos para el despliegue (llevan usuarios y correos)
+/despliegue/salida/

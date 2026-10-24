@@ -23,6 +23,10 @@ cp detener.sh.example detener.sh && chmod +x detener.sh
 
 La primera vez, completa `wp-config.php` (host `127.0.0.1:3308`, base `db-secretaria`, usuario `wpuser`, la contraseña de `DB_PASS`).
 
+## Publicar en un servidor
+
+Guía completa (direcciones de la parte visual y del administrador, base de datos, archivos y lista de comprobación): [`despliegue/DESPLIEGUE.md`](despliegue/DESPLIEGUE.md).
+
 ## Identidad visual
 
 Según la guía *Aplicación de nueva gráfica institucional* de la ULEAM. El tema `secretaria-uleam` define los colores una sola vez, como variables CSS en `wordpress-7.1.3/wp-content/themes/secretaria-uleam/style.css`; el resto del CSS solo usa las variables.
