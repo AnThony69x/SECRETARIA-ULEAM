@@ -2,12 +2,12 @@
 // Lo usa assets/js/documentos.js (se carga antes, ver inc/recursos.php).
 (function () {
   if (!document.querySelector('.docs-todo')) return;
-  // --- Sesiones: se deducen del título (n.º de sesión "SO 009"/"Nro.001" y fecha "01 de diciembre de 2023"). ---
+  // --- Sesiones: se deducen del título (n.º de sesión "SO 009"/"SO-006"/"Nro.001" y fecha "01 de diciembre de 2023"). ---
   var MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
   var RE_FECHA = /(\d{1,2})\s+(?:de\s+)?(enero|febrero|marzo|abril|mayo|junio|julio|agosto|sept?iembre|octubre|noviembre|diciembre)\s+(?:del?\s+)?((?:19|20)\d{2})/i;
   function sesion(r) {
     var t = r.ti, n = null, f = null, m;
-    if ((m = t.match(/\b(?:SO|SE)\s*0*(\d{1,3})\b/i))) n = +m[1];
+    if ((m = t.match(/\b(?:SO|SE|S0)[\s-]*0*(\d{1,3})\b/i))) n = +m[1]; // "SO 009", "SO-006" y la errata "S0-001"
     else if (/^acta/i.test(t) && (m = t.match(/\b(?:Nro|No)\.?\s*0*(\d{1,3})\b/i) || t.match(/\b0*(\d{1,3})\s+(?:19|20)\d{2}\s*$/))) n = +m[1];
     if ((m = t.match(RE_FECHA))) f = [+m[3], MESES.indexOf(m[2].toLowerCase().replace('setiembre', 'septiembre')) + 1, +m[1]];
     else if ((m = t.match(/^ACTA\s*(\d{2})(\d{2})((?:19|20)\d{2})$/i))) f = [+m[3], +m[2], +m[1]];

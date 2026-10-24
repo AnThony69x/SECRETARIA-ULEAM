@@ -146,6 +146,9 @@ const DOC_TEXTOS = array(
 	'doc_l_tipo' => array( 'Etiqueta del filtro de tipo', 'Tipo' ),
 	'doc_limpiar' => array( 'Botón para limpiar filtros', 'Limpiar' ),
 	'doc_l_orden'  => array( 'Etiqueta del orden', 'Orden' ),
+	'doc_anio_act' => array( 'Etiqueta del año en curso (desplegado arriba)', 'Año en curso' ),
+	'doc_anio_rec' => array( 'Etiqueta del año más reciente cuando aún no hay documentos del año en curso', 'Año más reciente' ),
+	'doc_anios_ant' => array( 'Título de la lista de años anteriores al año en curso (recogidos)', 'Histórico' ),
 	'hist_titulo'  => array( 'Archivo histórico: título del aviso', 'Archivo histórico' ),
 	'hist_desc'    => array( 'Archivo histórico: descripción ({año} = año de corte)', 'Actas, resoluciones y documentos anteriores a {año}.' ),
 	'hist_ver'     => array( 'Archivo histórico: botón para entrar', 'Ver archivo histórico' ),
@@ -161,22 +164,26 @@ add_action( 'customize_register', function ( $c ) {
 	}
 }, 20 );
 add_action( 'customize_register', function ( $c ) {
-	$c->add_setting( 'uleam_doc_corte', array( 'default' => 2018, 'sanitize_callback' => 'absint' ) );
-	$c->add_control( 'uleam_doc_corte', array( 'section' => 'uleam', 'label' => 'Archivo histórico: los años anteriores a este van a la página histórica', 'type' => 'number' ) );
+	$c->add_setting( 'uleam_doc_anios_atras', array( 'default' => 2, 'sanitize_callback' => 'absint' ) );
+	$c->add_control( 'uleam_doc_anios_atras', array( 'section' => 'uleam', 'label' => 'Documentos: años anteriores al actual que se ven en la página principal (el resto pasa al archivo histórico)', 'type' => 'number', 'input_attrs' => array( 'min' => 0, 'max' => 50 ) ) );
 	$c->add_setting( 'uleam_doc_mes_p2', array( 'default' => 7, 'sanitize_callback' => fn( $v ) => min( 12, max( 2, absint( $v ) ) ) ) );
 	$c->add_control( 'uleam_doc_mes_p2', array( 'section' => 'uleam', 'label' => 'Documentos: mes en que empieza el periodo 2 de cada año (1 = enero … 12 = diciembre)', 'type' => 'number', 'input_attrs' => array( 'min' => 2, 'max' => 12 ) ) );
 	$c->add_setting( 'uleam_doc_hist_pagina', array( 'default' => 0, 'sanitize_callback' => 'absint' ) );
 	$c->add_control( 'uleam_doc_hist_pagina', array( 'section' => 'uleam', 'label' => 'Archivo histórico: página donde se muestra', 'type' => 'dropdown-pages' ) );
 }, 21 );
 
-// Vista "actual" (año >= corte) o "historico" (año < corte). El año de un periodo es el mayor que contiene ("2016 - 2018" → 2018).
+// Año de corte móvil: el actual menos los años que el administrador deja en la página principal (cada enero avanza solo).
+function doc_corte() {
+	return (int) wp_date( 'Y' ) - (int) get_theme_mod( 'uleam_doc_anios_atras', 2 );
+}
+
+// Vista "actual" (año >= corte) o "historico" (año < corte). Solo cuentan los grupos por año ("Año 2021"):
+// los periodos de Miembros ("Periodo 2016 - 2018") siempre se quedan en la página principal.
 function doc_en_vista( $g, $vista ) {
 	if ( 'actual' !== $vista && 'historico' !== $vista ) {
 		return true;
 	}
-	preg_match_all( '/\d{4}/', $g, $m );
-	$y = $m[0] ? max( array_map( 'intval', $m[0] ) ) : 0;
-	$h = $y && $y < (int) get_theme_mod( 'uleam_doc_corte', 2018 );
+	$h = preg_match( '/^Año (\d{4})/', $g, $m ) && (int) $m[1] < doc_corte();
 	return 'historico' === $vista ? $h : ! $h;
 }
 
@@ -285,7 +292,7 @@ add_shortcode( 'consejo', function ( $a ) {
 	}
 	$terms = array_values( array_filter( $terms, fn( $t ) => ! empty( $res[ $t->slug ] ) ) );
 	// Aviso que enlaza con la otra vista (archivo histórico ↔ documentos recientes).
-	$corte  = (int) get_theme_mod( 'uleam_doc_corte', 2018 );
+	$corte  = doc_corte();
 	$pag    = (int) get_theme_mod( 'uleam_doc_hist_pagina', 0 ) ?: (int) get_option( 'uleam_doc_hist_pagina_id' );
 	$aviso  = '';
 	$hist_url = '';
@@ -303,7 +310,7 @@ add_shortcode( 'consejo', function ( $a ) {
 	} elseif ( 'historico' === $vista && ( $padre = wp_get_post_parent_id( get_the_ID() ) ) ) {
 		$aviso = '<a class="doc-hist doc-hist-volver" href="' . esc_url( get_permalink( $padre ) ) . '"><span class="doc-hist-btn">' . uleam_icon( 'chevron-left' ) . esc_html( doc_txt( 'hist_volver' ) ) . '</span></a>';
 	}
-	$o   = '<div class="docs-todo" data-vista="' . $vista . '" data-mes2="' . (int) get_theme_mod( 'uleam_doc_mes_p2', 7 ) . '" data-api="' . esc_url( rest_url( 'uleam/v1/documentos' ) ) . '">';
+	$o   = '<div class="docs-todo" data-vista="' . $vista . '" data-t-actual="' . esc_attr( doc_txt( 'doc_anio_act' ) ) . '" data-t-ant="' . esc_attr( doc_txt( 'doc_anios_ant' ) ) . '" data-t-rec="' . esc_attr( doc_txt( 'doc_anio_rec' ) ) . '" data-mes2="' . (int) get_theme_mod( 'uleam_doc_mes_p2', 7 ) . '" data-api="' . esc_url( rest_url( 'uleam/v1/documentos' ) ) . '">';
 	$o  .= 'historico' === $vista ? $aviso : ''; // "Volver" arriba en el archivo histórico
 	$o  .= '<template class="doc-tpl"><li class="doc-fila"><span class="icono">' . uleam_icon( 'file-text' ) . '</span><span class="doc-t"><span></span><small></small></span>'
 		. '<span class="doc-acciones"><a class="btn pq doc-ver" target="_blank" rel="noopener">' . uleam_icon( 'eye' ) . '<span>' . esc_html( doc_txt( 'doc_ver' ) ) . '</span></a>'

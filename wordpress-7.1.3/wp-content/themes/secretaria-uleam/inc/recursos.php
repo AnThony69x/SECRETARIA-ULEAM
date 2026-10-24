@@ -2,7 +2,7 @@
 // Carga de CSS y JS del tema. Cada componente tiene su archivo en assets/css y assets/js.
 
 // Módulos JS en orden. El primero conserva el handle "secretaria-uleam" porque inc/documentos.php le añade datos (ULEAM_CI).
-const ULEAM_JS = array( 'menu', 'slider', 'carrusel', 'documentos-sesiones', 'documentos', 'consejo', 'horario', 'visor', 'organigrama' );
+const ULEAM_JS = array( 'menu', 'slider', 'carrusel', 'documentos-sesiones', 'documentos-anios', 'documentos', 'consejo', 'horario', 'visor', 'organigrama' );
 
 add_action( 'wp_enqueue_scripts', function () {
 	$dir = get_template_directory();

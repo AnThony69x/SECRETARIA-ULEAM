@@ -1,0 +1,25 @@
+/* Documentos por año: el año en curso desplegado y destacado; los anteriores, recogidos (assets/js/documentos-anios.js). */
+.doc-anio-it>details>summary{min-height:64px}
+.doc-anio-it>details>summary .doc-ses-t b{font-size:17px}
+/* Año en curso: cabecera en la banda azul del banner para que sea lo primero que se vea. */
+.doc-anio-actual>details{border:0;box-shadow:var(--sombra)}
+.doc-anio-actual>details>summary{background:var(--grad-azul);color:var(--blanco);min-height:76px;padding:14px 20px}
+.doc-anio-actual>details>summary:hover{background:var(--grad-azul);filter:brightness(1.08)}
+.doc-anio-actual>details>summary:focus-visible{outline-color:var(--blanco)}
+.doc-anio-actual>details>summary .doc-ses-ic{background:rgba(255,255,255,.15);color:var(--blanco)}
+.doc-anio-actual>details>summary .doc-ses-t b{color:var(--blanco);font-size:22px}
+.doc-anio-actual>details>summary .doc-ses-t small{color:var(--blanco);opacity:.85;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.doc-anio-actual>details>summary .doc-ses-n{background:var(--blanco);color:var(--azul)}
+.doc-anio-actual>details>summary .doc-ses-chev{color:var(--blanco)}
+.doc-anio-per{list-style:none;display:grid;gap:10px;margin:0;padding:12px;border-top:1px solid var(--linea);background:var(--fondo)}
+.doc-anio-per>.doc-fila{background:var(--blanco);border-radius:var(--radio)}
+.doc-anio-msj{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:8px 4px;color:var(--gris);font-size:14px}
+.doc-anios-sep{list-style:none;padding:var(--e3) 4px 0}
+.doc-anios-sep .kicker{margin:0}
+@media(max-width:600px){
+  .doc-anio-per{padding:8px}
+  .doc-anio-it>details>summary .doc-ses-t{flex-basis:calc(100% - 90px)} /* título en su fila; el conteo baja (09b) */
+  .doc-anio-it>details>summary .doc-ses-t b{font-size:16px}
+}
+/* Sin animación de entrada en la vista por años: al abrir un año se repinta la lista y cientos de filas parpadeaban. */
+.docs-todo .doc-filas.por-anio .doc-fila:not([hidden]){animation:none}

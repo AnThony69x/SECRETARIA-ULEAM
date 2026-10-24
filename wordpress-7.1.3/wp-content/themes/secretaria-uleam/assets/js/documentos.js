@@ -8,9 +8,11 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
   var secs = tabs.map(function (t) {
     var el = document.getElementById(t.getAttribute('aria-controls')), s = {
       tab: t, el: el, slug: el.id, name: t.dataset.nombre, ul: el.querySelector('.doc-filas'), mas: el.querySelector('.doc-mas'),
-      grupos: JSON.parse(el.dataset.resumen || '[]'), g0: el.dataset.g0 || '', cache: {}, pide: {}, pag: 1
+      grupos: JSON.parse(el.dataset.resumen || '[]'), g0: el.dataset.g0 || '', cache: {}, pide: {}, fallo: {}, abiertos: {}, pag: 1
     };
-    s.g = s.g0;
+    // Con varios años la vista inicial es "todos": el año en curso abierto y los anteriores recogidos (documentos-anios.js).
+    s.ini = s.g0 && /^Año/.test(s.g0) ? '' : s.g0;
+    s.g = s.ini;
     s.cache[s.g0 || '*'] = JSON.parse(el.dataset.ini || '[]');
     return s;
   });
@@ -29,15 +31,16 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     var c = s.cache[s.g || '*'];
     return c ? c.filter(okT) : null;
   }
-  function pedir(s) {
-    var k = s.g || '*';
+  function pedir(s, g) {
+    var k = g || '*';
     if (s.pide[k]) return;
     s.pide[k] = 1;
-    fetch(api + '?seccion=' + encodeURIComponent(s.slug) + (s.g ? '&grupo=' + encodeURIComponent(s.g) : '') + vq)
+    fetch(api + '?seccion=' + encodeURIComponent(s.slug) + (g ? '&grupo=' + encodeURIComponent(g) : '') + vq)
       .then(function (r) { if (!r.ok) throw r; return r.json(); })
       .then(function (rows) { s.cache[k] = rows; render(); })
-      .catch(function () { s.pide[k] = 0; cont.textContent = 'No se pudieron cargar los documentos. Intenta de nuevo.'; s.ul.removeAttribute('aria-busy'); });
+      .catch(function () { s.pide[k] = 0; s.fallo[g] = 1; render(); cont.textContent = 'No se pudieron cargar los documentos. Intenta de nuevo.'; s.ul.removeAttribute('aria-busy'); });
   }
+  var T = { actual: d.dataset.tActual, rec: d.dataset.tRec, ant: d.dataset.tAnt, cargando: 'Cargando documentos…', error: 'No se pudieron cargar los documentos.', reintentar: 'Reintentar' };
   var DS = window.ULEAM_DOC, MESES = DS.MESES, tipoDe = DS.tipoDe, agrupar = DS.agrupar, MES2 = +d.dataset.mes2 || 7;
   function fila(r, i, compacto) {
     var li = tpl.cloneNode(true), a = li.querySelectorAll('a');
@@ -69,7 +72,8 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     div.appendChild(h); div.appendChild(ul);
     return div;
   }
-  function periodoLi(P, abierto) {
+  // recuerda (opcional): objeto donde se guarda si el periodo quedó abierto, para respetarlo al repintar.
+  function periodoLi(P, abierto, recuerda) {
     var li = document.createElement('li'), det = document.createElement('details'), sum = document.createElement('summary'), cuerpo = document.createElement('div');
     var n = P.ses.filter(function (G) { return !G.otros; }).length;
     li.className = 'doc-sesion doc-periodo'; det.open = abierto; cuerpo.className = 'doc-per';
@@ -78,6 +82,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     sum.querySelector('small').textContent = P.p === 1 ? 'Enero – ' + MESES[MES2 - 2] + ' ' + P.anio : P.p === 2 ? MESES[MES2 - 1].replace(/^./, function (c) { return c.toUpperCase(); }) + ' – diciembre ' + P.anio : 'Sin fecha de sesión';
     sum.querySelector('.doc-ses-n').textContent = (n ? n + (n > 1 ? ' sesiones · ' : ' sesión · ') : '') + P.docs + (P.docs > 1 ? ' documentos' : ' documento');
     (orden === 'asc' ? P.ses.slice().reverse() : P.ses).forEach(function (G) { cuerpo.appendChild(sesionBloque(G)); });
+    if (recuerda) det.addEventListener('toggle', function () { recuerda['p' + P.k] = det.open; });
     det.appendChild(sum); det.appendChild(cuerpo); li.appendChild(det);
     return li;
   }
@@ -113,11 +118,11 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     cs.forEach(function (x) { sel.add(new Option(x[0].replace(/^Año /, '') + ' (' + x[1] + ')', x[0], false, s.g === x[0])); });
     d.querySelector('.doc-anio').hidden = s.grupos.length < 2;
     d.querySelector('.doc-tipo').hidden = !s.grupos.some(function (x) { return x[1].resolucion; });
-    d.querySelector('.doc-limpiar').hidden = !(q || tipo || s.g !== s.g0);
+    d.querySelector('.doc-limpiar').hidden = !(q || tipo || s.g !== s.ini);
     var act_ = d.querySelector('.doc-activos'), tsel = d.querySelector('.doc-tipo select');
     act_.innerHTML = '';
     [[q, '“' + q + '”', function () { var i = d.querySelector('.doc-buscar input'); i.value = ''; i.dispatchEvent(new Event('input')); }],
-     [s.g && s.g !== s.g0, s.g.replace(/^Año /, ''), function () { s.g = s.g0; s.pag = 1; render(); }],
+     [s.g && s.g !== s.ini, s.g.replace(/^Año /, ''), function () { s.g = s.ini; s.pag = 1; render(); }],
      [tipo, tipo && tsel.options[tsel.selectedIndex].text, function () { tsel.value = ''; tsel.dispatchEvent(new Event('change')); }]
     ].forEach(function (f) {
       if (!f[0]) return;
@@ -127,15 +132,16 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
       b.onclick = f[2]; act_.appendChild(b);
     });
     if (buscando) { cont.textContent = 'Buscando…'; return; }
+    if (!res && !s.g && !s.ini && s.g0) return pintarAnios(s, cs);
     var rows = filas(s);
-    if (!rows) { s.ul.setAttribute('aria-busy', 'true'); s.ul.classList.add('cargando'); cont.textContent = 'Cargando documentos…'; pedir(s); return; }
+    if (!rows) { s.ul.setAttribute('aria-busy', 'true'); s.ul.classList.add('cargando'); cont.textContent = 'Cargando documentos…'; pedir(s, s.g); return; }
     s.ul.removeAttribute('aria-busy'); s.ul.classList.remove('cargando');
     var ses = agrupar(rows), frag = document.createDocumentFragment(), total, ver, unidad;
     if (ses) {
       var pers = DS.periodos(ses, MES2);
       if (orden === 'asc') pers.reverse();
       ver = pers.slice(0, s.pag * PAGS); total = pers.length; unidad = ['periodo', 'periodos'];
-      ver.forEach(function (P, i) { frag.appendChild(periodoLi(P, i === 0 || (!!q && rows.length <= 40))); });
+      ver.forEach(function (P) { frag.appendChild(periodoLi(P, false)); }); // recogidos: con muchos documentos, el usuario elige qué periodo abrir
     } else {
       if (orden === 'asc') { // invierte el orden de los años, no el de los documentos dentro de cada año
         var por_g = {}, gs_ = [];
@@ -145,7 +151,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
       ver = rows.slice(0, s.pag * PAG); total = rows.length; unidad = ['documento', 'documentos'];
       ver.forEach(function (r, i) { frag.appendChild(fila(r, i, false)); });
     }
-    s.ul.classList.toggle('por-sesion', !!ses);
+    s.ul.classList.toggle('por-sesion', !!ses); s.ul.classList.remove('por-anio');
     s.ul.innerHTML = ''; s.ul.appendChild(frag);
     s.ul.hidden = !ver.length;
     s.mas.hidden = total <= ver.length;
@@ -154,6 +160,29 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     vacio.hidden = rows.length > 0;
     var vh = vacio.querySelector('.doc-vacio-hist'); // la búsqueda sigue en el archivo histórico
     if (vh) { vh.hidden = !q; vh.href = vh.href.split('?')[0] + '?q=' + encodeURIComponent(q); }
+  }
+  // Contenido de un año: sus periodos con sesiones o, si no se pueden agrupar, la lista de documentos.
+  function cuerpo(rows, s) {
+    rows = rows.filter(okT);
+    var ses = agrupar(rows);
+    if (!ses) return rows.map(function (r, i) { return fila(r, i, true); });
+    var pers = DS.periodos(ses, MES2);
+    if (orden === 'asc') pers.reverse();
+    // Los periodos empiezan recogidos y conservan lo que el usuario abra o cierre: al abrir otro año se repinta todo.
+    return pers.map(function (P) { var k = 'p' + P.k; return periodoLi(P, !!s.abiertos[k], s.abiertos); });
+  }
+  function pintarAnios(s, cs) {
+    var r = DS.anios({ s: s, cs: cs, asc: orden === 'asc', hist: d.dataset.vista === 'historico', cuerpo: function (rows) { return cuerpo(rows, s); }, t: T,
+      filas: function (g) { return s.cache[g] || null; }, pedir: function (g) { pedir(s, g); } });
+    s.ul.removeAttribute('aria-busy'); s.ul.classList.remove('cargando');
+    s.ul.classList.add('por-sesion', 'por-anio');
+    // El repintado recrea los años: se devuelve el foco al año que lo tenía (teclado / lector de pantalla).
+    var f = document.activeElement, gf = f && s.ul.contains(f) && f.closest('.doc-anio-it') ? f.closest('.doc-anio-it').dataset.g : null;
+    s.ul.innerHTML = ''; s.ul.appendChild(r.frag);
+    if (gf !== null) [].some.call(s.ul.querySelectorAll('.doc-anio-it'), function (li) { if (li.dataset.g !== gf) return false; li.querySelector('summary').focus({ preventScroll: true }); return true; });
+    s.ul.hidden = !r.n; s.mas.hidden = true;
+    cont.textContent = r.n ? r.n + (r.n === 1 ? ' año' : ' años') + ' · ' + s.n + ' documentos en ' + s.name : '';
+    vacio.hidden = r.n > 0;
   }
   function buscar() {
     var t = q;
@@ -175,7 +204,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
   });
   d.querySelector('.doc-buscar input').addEventListener('input', function (e) {
     q = e.target.value.trim();
-    secs.forEach(function (s) { s.pag = 1; s.g = q ? '' : s.g0; });
+    secs.forEach(function (s) { s.pag = 1; s.g = q ? '' : s.ini; });
     clearTimeout(timer); timer = setTimeout(buscar, 300);
   });
   d.querySelector('.doc-tipo select').addEventListener('change', function (e) { tipo = e.target.value; secs.forEach(function (s) { s.pag = 1; }); render(); });
@@ -183,7 +212,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
   d.querySelector('.doc-limpiar').addEventListener('click', function () {
     q = ''; tipo = ''; orden = ''; d.querySelector('.doc-orden select').value = ''; res = null; buscando = 0; clearTimeout(timer);
     d.querySelector('.doc-buscar input').value = ''; d.querySelector('.doc-tipo select').value = '';
-    secs.forEach(function (s) { s.g = s.g0; s.pag = 1; });
+    secs.forEach(function (s) { s.g = s.ini; s.pag = 1; });
     render();
   });
   var q0 = new URLSearchParams(location.search).get('q'); // búsqueda que llega desde la otra página
