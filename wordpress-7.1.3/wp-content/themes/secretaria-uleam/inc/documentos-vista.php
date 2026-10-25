@@ -19,6 +19,7 @@ const DOC_TEXTOS = array(
 	'bus_paginas'  => array( 'Búsqueda: título de las páginas encontradas', 'Páginas del sitio' ),
 	'bus_docs'     => array( 'Búsqueda: título de los documentos encontrados', 'Documentos' ),
 	'bus_mas'      => array( 'Búsqueda: aviso cuando hay más documentos de los que se muestran ({n} = total, {m} = mostrados)', 'Se muestran {m} de {n} documentos. Escribe más palabras para afinar la búsqueda.' ),
+	'bus_filtro'   => array( 'Búsqueda con filtros: texto del campo para filtrar documentos ({a} = apartado)', 'Filtrar documentos de {a}…' ),
 	'bus_vacio'    => array( 'Búsqueda: aviso sin resultados', 'No se encontraron resultados. Revisa la ortografía o prueba con otras palabras.' ),
 	'e404_titulo'  => array( 'Página 404: título', 'Página no encontrada' ),
 	'e404_sub'     => array( 'Página 404: subtítulo', 'La dirección que buscas no existe o fue movida' ),

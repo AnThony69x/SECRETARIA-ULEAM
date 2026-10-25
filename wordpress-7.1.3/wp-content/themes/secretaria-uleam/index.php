@@ -4,7 +4,8 @@ get_header();
 $slides = new WP_Query( array( 'post_type' => 'slide', 'orderby' => 'menu_order', 'order' => 'ASC', 'posts_per_page' => 10 ) );
 ?>
 <?php if ( $slides->have_posts() ) : ?>
-<div class="hero" id="inicio">
+<?php $seg = min( 30, max( 3, (int) get_theme_mod( 'uleam_slide_seg', 6 ) ) ); ?>
+<div class="hero" id="inicio" data-seg="<?php echo (int) $seg; ?>" data-auto="<?php echo get_theme_mod( 'uleam_slide_auto', true ) ? 1 : 0; ?>" style="--seg:<?php echo (int) $seg; ?>s">
   <div class="slider" id="slider">
   <?php $n = 0; while ( $slides->have_posts() ) : $slides->the_post(); ?>
     <?php

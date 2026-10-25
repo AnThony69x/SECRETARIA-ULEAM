@@ -17,7 +17,7 @@ function uleam_hero( $titulo, $sub = '', $chips = array() ) {
 		. ( $chips ? '<div class="chips">' . implode( '', array_map( fn( $c ) => '<span>' . uleam_icon( $c[0] ) . esc_html( $c[1] ) . '</span>', $chips ) ) . '</div>' : '' ) . '</div></section>';
 }
 
-// Documentos que coinciden con la búsqueda: total y las primeras 50 filas, cada una con su etiqueta de sección.
+// Documentos que coinciden con la búsqueda: total y las primeras N filas (Personalizar), cada una con su etiqueta de sección.
 function uleam_buscar_docs( $q, $sec = '', $gr = '' ) {
 	$rows = mb_strlen( $q ) >= 2 || $sec || $gr ? doc_api( array( 'q' => $q, 'seccion' => $sec, 'grupo' => $gr ) ) : array();
 	$rows = is_wp_error( $rows ) ? array() : $rows;
@@ -29,7 +29,7 @@ function uleam_buscar_docs( $q, $sec = '', $gr = '' ) {
 	$rows = array_values( array_filter( $rows, fn( $r ) => ( ! $sec || in_array( $r['s'], $hijas, true ) ) && ( ! $gr || $r['g'] === $gr ) ) );
 	$et   = array(); // etiqueta por sección: "Órgano · Sección" si la sección es hija de un órgano
 	$out  = array();
-	foreach ( array_slice( $rows, 0, 50 ) as $r ) {
+	foreach ( array_slice( $rows, 0, min( 500, max( 10, (int) get_theme_mod( 'uleam_bus_max', 50 ) ) ) ) as $r ) {
 		if ( ! isset( $et[ $r['s'] ] ) ) {
 			$t  = get_term_by( 'slug', $r['s'], 'seccion' );
 			$p  = $t && $t->parent ? get_term( $t->parent, 'seccion' ) : null;

@@ -19,6 +19,14 @@ $chips = array_filter( array(
 uleam_hero( doc_txt( 'bus_titulo' ), $sub, $chips );
 ?>
 <main class="pagina-cont">
+<?php if ( $sec || $gr ) : // filtro de documentos: mantiene el apartado y el año elegidos y busca dentro de ellos ?>
+  <form class="doc-buscar bus-filtro" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+    <?php if ( $sec ) : ?><input type="hidden" name="a" value="<?php echo esc_attr( $sec ); ?>"><?php endif; ?>
+    <?php if ( $gr ) : ?><input type="hidden" name="g" value="<?php echo esc_attr( $gr ); ?>"><?php endif; ?>
+    <span class="ico"><?php echo uleam_icon( 'search' ); ?></span>
+    <input type="search" name="s" value="<?php echo esc_attr( $q ); ?>" autocomplete="off" placeholder="<?php echo esc_attr( str_replace( '{a}', $term ? $term->name : '', doc_txt( 'bus_filtro' ) ) ); ?>" aria-label="<?php echo esc_attr( doc_txt( 'bus_filtro' ) ); ?>">
+  </form>
+<?php endif; ?>
 <?php if ( $hay ) : ?>
   <div class="bus-grupo"><h2><?php echo esc_html( doc_txt( 'bus_paginas' ) ); ?></h2></div>
   <ul class="enlaces">

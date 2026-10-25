@@ -19,6 +19,10 @@ function uleam_icon( $name ) {
 		'copy'           => '<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
 		'mail'           => '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
 		'map-pin'        => '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+		'message-circle' => '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+		'cerrar'         => '<path d="M18 6 6 18M6 6l12 12"/>',
+		'recargar'       => '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+		'send'           => '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
 		'search'         => '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
 		'chevron-left'   => '<path d="m15 18-6-6 6-6"/>',
 		'chevron-right'  => '<path d="m9 18 6-6-6-6"/>',
@@ -106,6 +110,12 @@ add_action( 'customize_register', function ( $c ) {
 	$c->add_control( 'uleam_siguenos', array( 'section' => 'uleam', 'label' => 'Texto junto a las redes (barra superior y pie)', 'type' => 'text' ) );
 	$c->add_setting( 'uleam_buscar', array( 'default' => ULEAM_BUSCAR, 'sanitize_callback' => 'sanitize_text_field' ) );
 	$c->add_control( 'uleam_buscar', array( 'section' => 'uleam', 'label' => 'Texto de ayuda del buscador', 'type' => 'text' ) );
+	$c->add_setting( 'uleam_slide_seg', array( 'default' => 6, 'sanitize_callback' => fn( $v ) => min( 30, max( 3, absint( $v ) ) ) ) );
+	$c->add_control( 'uleam_slide_seg', array( 'section' => 'uleam', 'label' => 'Segundos que dura cada slide de la portada (3 a 30)', 'type' => 'number', 'input_attrs' => array( 'min' => 3, 'max' => 30 ) ) );
+	$c->add_setting( 'uleam_slide_auto', array( 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean' ) );
+	$c->add_control( 'uleam_slide_auto', array( 'section' => 'uleam', 'label' => 'Cambiar los slides de la portada automáticamente', 'type' => 'checkbox' ) );
+	$c->add_setting( 'uleam_bus_max', array( 'default' => 50, 'sanitize_callback' => fn( $v ) => min( 500, max( 10, absint( $v ) ) ) ) );
+	$c->add_control( 'uleam_bus_max', array( 'section' => 'uleam', 'label' => 'Documentos que se listan como máximo en la búsqueda (10 a 500)', 'type' => 'number', 'input_attrs' => array( 'min' => 10, 'max' => 500 ) ) );
 	foreach ( ULEAM_PIE_COLS as $k => $d ) {
 		$c->add_setting( "uleam_$k", array( 'default' => $d[1], 'sanitize_callback' => 'textarea' === $d[2] ? 'sanitize_textarea_field' : 'sanitize_text_field' ) );
 		$c->add_control( "uleam_$k", array( 'section' => 'uleam', 'label' => $d[0], 'type' => $d[2] ) );
@@ -232,6 +242,7 @@ require get_template_directory() . "/inc/ficha-pdf-hojas.php";
 
 // Búsqueda con documentos, página 404 y datos para buscadores y redes.
 require get_template_directory() . "/inc/busqueda.php";
+require get_template_directory() . "/inc/chatbot.php";
 require get_template_directory() . "/inc/seo.php";
 
 // Horario de atención editable.

@@ -15,4 +15,5 @@
 .slide.lado-izq>img.frente{inset:auto 3% 0 auto;object-position:right bottom}
 @media(max-width:900px){
   .slide>img.frente,.slide.lado-izq>img.frente{inset:28px auto auto 50%;transform:translateX(-50%);width:94%;height:auto;max-width:94%}
+  .slide:first-child>img.frente{top:96px} /* el grupo del primer slide es bajo y ancho: se baja para acercarlo a la tarjeta */
 }

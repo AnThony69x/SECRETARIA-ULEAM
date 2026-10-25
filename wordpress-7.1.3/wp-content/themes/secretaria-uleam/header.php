@@ -28,10 +28,12 @@
         <?php if ( has_custom_logo() ) echo wp_get_attachment_image( get_theme_mod( 'custom_logo' ), 'full', false, array( 'alt' => get_bloginfo( 'name' ) ) ); ?>
         <span class="nombre"><?php bloginfo( 'name' ); ?></span>
       </a>
+      <?php if ( ! ( is_search() && ( isset( $_GET['a'] ) || isset( $_GET['g'] ) ) ) ) : // con filtros, la búsqueda baja junto a los documentos (search.php) ?>
       <form class="buscar" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
         <input type="search" name="s" autocomplete="off" <?php $b = get_theme_mod( 'uleam_buscar', ULEAM_BUSCAR ); ?>placeholder="<?php echo esc_attr( $b ); ?>" aria-label="<?php echo esc_attr( $b ); ?>">
         <button type="submit" aria-label="Buscar"><?php echo uleam_icon( 'search' ); ?></button>
       </form>
+      <?php endif; ?>
     </div>
   </div>
   <div class="navbar-wrap">

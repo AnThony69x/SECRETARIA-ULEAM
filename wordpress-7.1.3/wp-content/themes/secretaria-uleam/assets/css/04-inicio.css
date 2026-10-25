@@ -18,7 +18,13 @@
 .puntos{display:flex;gap:6px}
 /* La línea visible mide 4 px, pero la zona táctil es de 34×24 px (el fondo se pinta solo en el contenido) */
 .puntos button{width:34px;height:24px;border-radius:0;border:0;background:rgba(255,255,255,.4);background-clip:content-box;padding:10px 0;cursor:pointer}
-.puntos button.on{background-color:#fff}
+.puntos button{position:relative}
+/* El punto activo se llena en --seg segundos (lo que dura el slide, editable en Personalizar); slider.js lo reinicia en cada cambio */
+.puntos button::after{content:"";position:absolute;left:0;right:0;top:10px;height:4px;background:#fff;transform:scaleX(0);transform-origin:left}
+.puntos button.on::after{animation:llenar var(--seg,6s) linear forwards}
+.puntos.pausado button.on::after{animation-play-state:paused}
+@keyframes llenar{to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){.puntos button.on::after{animation:none;transform:none}}
 /* ===== ACCESOS RÁPIDOS ===== */
 .accesos-wrap{position:relative;margin:var(--e4) 0;padding:0}
 .accesos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--e2)}
@@ -205,7 +211,7 @@
   .evento .modal,.evento .foto-mini{display:none}
 }
 @media(max-width:560px){
-  .ctrl{left:16px;gap:8px;bottom:20px}.ctrl button{width:40px;height:40px}.puntos button{width:24px}
+  .ctrl{left:16px;right:16px;gap:8px;bottom:20px}.ctrl button{width:40px;height:40px;flex:none}.puntos{flex:1}.ctrl .puntos button{flex:1;width:auto;height:24px}
   .accesos{grid-template-columns:1fr}
   .procesos{grid-template-columns:1fr}
   .valores{grid-template-columns:repeat(2,1fr)}
