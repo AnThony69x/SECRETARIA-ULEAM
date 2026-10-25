@@ -34,8 +34,8 @@ footer{background:var(--azul-osc);color:#fff;padding:56px 0 22px;border-radius:0
 .pie-contacto li+li{margin-top:10px}
 .pie-contacto .ico{flex:none;width:18px;height:18px;margin-top:4px;color:var(--azul-claro)}
 .pie-redes{display:flex;gap:12px}
-.pie-redes a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;transition:background .2s,color .2s}
-.pie-redes a:hover{background:#fff;color:var(--azul-noche)}
+.pie-redes a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.28);display:grid;place-items:center;transition:background .2s,color .2s,border-color .2s}
+.pie-redes a:hover{background:var(--azul-claro);border-color:var(--azul-claro);color:var(--azul-noche)}
 .pie-redes .ico{width:19px;height:19px}
 .pie-texto{max-width:1400px;margin:var(--e3) auto 0;padding-top:var(--e2);border-top:1px solid rgba(255,255,255,.18);text-align:center;font-size:13px;line-height:1.7;opacity:.8;overflow-wrap:break-word}
 @media(max-width:1000px){.pie-g{grid-template-columns:1fr 1fr;gap:var(--e3)}}

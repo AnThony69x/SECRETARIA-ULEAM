@@ -37,7 +37,7 @@ add_shortcode( 'biblioteca', function ( $a ) {
 			. '<span class="bib-dt"><b>' . esc_html( $f['ti'] ) . '</b><small>' . esc_html( $nombre[ $f['s'] ] . ( 0 === strpos( $f['g'], 'Año' ) ? ' · ' . preg_replace( '/^Año\s*/u', '', $f['g'] ) : '' ) ) . '</small></span></a></li>';
 	}
 	return '<form class="bib" action="' . esc_url( home_url( '/' ) ) . '" method="get" role="search" aria-label="Buscar en la biblioteca de archivos" data-anios="' . esc_attr( wp_json_encode( $anios ) ) . '">'
-		. '<div class="bib-cab"><h3>' . esc_html( $a['titulo'] ) . '</h3>' . ( $url ? '<a class="bib-todo" href="' . esc_url( $url ) . '">' . esc_html( $a['enlace'] ) . uleam_icon( 'arrow-right' ) . '</a>' : '' ) . '</div>'
+		. '<div class="bib-cab"><h3>' . esc_html( $a['titulo'] ) . '</h3>' . ( $padre ? '<a class="bib-todo" href="' . esc_url( add_query_arg( array( 's' => '', 'a' => $padre->slug ), home_url( '/' ) ) ) . '">' . esc_html( $a['enlace'] ) . uleam_icon( 'arrow-right' ) . '</a>' : '' ) . '</div>'
 		. '<div class="bib-campos"><label class="bib-buscar">' . uleam_icon( 'search' ) . '<span class="sr">Buscar documento por nombre o número</span><input type="search" name="s" placeholder="' . esc_attr( $a['buscar'] ) . '"></label>'
 		. '<label class="bib-campo"><span class="sr">Apartado</span><select name="a"><option value="">Todos los apartados</option>' . $tipos . '</select></label>'
 		. '<label class="bib-campo"><span class="sr">Año</span><select name="g"><option value="">Todos los años</option>' . $opt_anios . '</select></label>'

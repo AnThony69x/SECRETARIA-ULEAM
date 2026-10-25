@@ -10,7 +10,13 @@ $hay  = $q && ! $sec && ! $gr && have_posts();
 $term = $sec ? get_term_by( 'slug', $sec, 'seccion' ) : null;
 $filtros = trim( ( $term ? $term->name : '' ) . ( $gr ? ' · ' . preg_replace( '/^Año\s*/u', '', $gr ) : '' ), ' ·' );
 $sub  = $q ? str_replace( '{q}', $q, doc_txt( 'bus_sub' ) ) . ( $filtros ? ' · ' . $filtros : '' ) : $filtros;
-uleam_hero( doc_txt( 'bus_titulo' ), $sub );
+$chips = array_filter( array(
+	$q ? array( 'search', '«' . $q . '»' ) : null,
+	$filtros ? array( 'archive', $filtros ) : null,
+	$hay ? array( 'file-text', $GLOBALS['wp_query']->found_posts . ' ' . ( 1 === (int) $GLOBALS['wp_query']->found_posts ? 'página' : 'páginas' ) ) : null,
+	$docs['total'] ? array( 'folder', $docs['total'] . ' ' . ( 1 === $docs['total'] ? 'documento' : 'documentos' ) ) : null,
+) );
+uleam_hero( doc_txt( 'bus_titulo' ), $sub, $chips );
 ?>
 <main class="pagina-cont">
 <?php if ( $hay ) : ?>

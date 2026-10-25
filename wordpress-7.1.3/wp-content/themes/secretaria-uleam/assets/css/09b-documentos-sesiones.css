@@ -19,8 +19,8 @@
 .doc-sesion details[open] .doc-ses-chev{transform:rotate(180deg)}
 .doc-per{border-top:1px solid var(--linea);padding:6px 12px 10px}
 .doc-ses-bloque+.doc-ses-bloque{margin-top:6px;border-top:1px dashed var(--linea)}
-.doc-ses-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;padding:12px 6px 4px;font-size:14px;color:var(--azul)}
-.doc-ses-h small{font-size:12px;font-weight:400;color:var(--gris)}
+.doc-ses-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;padding:12px 6px 6px;margin-bottom:6px;border-bottom:2px solid var(--linea);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);overflow-wrap:anywhere}
+.doc-ses-h small{font-size:12px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--gris)}
 .doc-sub{list-style:none;display:grid;gap:6px;padding:0}
 .doc-sub .doc-fila{padding:10px 12px}
 .doc-anio-fijos{padding:10px;background:#fff;border-radius:var(--radio);box-shadow:var(--sombra)} /* documentos permanentes: filas dentro de un panel, no pegadas al borde */

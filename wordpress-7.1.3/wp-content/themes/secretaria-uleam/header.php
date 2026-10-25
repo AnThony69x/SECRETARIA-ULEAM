@@ -28,7 +28,7 @@
         <span class="nombre"><?php bloginfo( 'name' ); ?></span>
       </a>
       <form class="buscar" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-        <input type="search" name="s" <?php $b = get_theme_mod( 'uleam_buscar', ULEAM_BUSCAR ); ?>placeholder="<?php echo esc_attr( $b ); ?>" aria-label="<?php echo esc_attr( $b ); ?>">
+        <input type="search" name="s" autocomplete="off" <?php $b = get_theme_mod( 'uleam_buscar', ULEAM_BUSCAR ); ?>placeholder="<?php echo esc_attr( $b ); ?>" aria-label="<?php echo esc_attr( $b ); ?>">
         <button type="submit" aria-label="Buscar"><?php echo uleam_icon( 'search' ); ?></button>
       </form>
     </div>

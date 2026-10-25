@@ -10,6 +10,7 @@ Text Domain: secretaria-uleam
   --azul:#005689; --azul-osc:#004499; --azul-medio:#0059A8; --azul-claro:#46A4FF;
   --rojo:#DB1D1F; --rojo-osc:#B11719; --rojo-claro:#FF0000; --rojo-cl:#fdecec; /* tinte claro del rojo: baldosa de los iconos de archivo */
   --azul-cl:#e6f0f8; /* tinte claro derivado del azul principal, solo para fondos */
+  --azul-cl-2:#d3e7fa; /* extremo más saturado del tinte, para degradados de baldosas */
   --azul-noche:#07235c; --azul-rey:#0b3d9e; /* tonos profundos derivados para bandas oscuras (barra, banners, pie) */
   --grad-azul:linear-gradient(110deg,var(--azul-noche),var(--azul-rey));
   --texto:#1e2a44; --gris:#5f6b85; --linea:#e3e9f5; --fondo:#f4f7fc; --blanco:#fff;
@@ -26,6 +27,9 @@ button{font:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px;border-radius:6px}
 .wrap{max-width:none;margin:0 auto;padding:0 5vw}
 h1,h2,h3,h4{line-height:1.2;font-weight:600}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+::selection{background:var(--azul-claro);color:var(--texto)}
 section{padding:68px 0}
 /* ===== HEADER ===== */
 .ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}

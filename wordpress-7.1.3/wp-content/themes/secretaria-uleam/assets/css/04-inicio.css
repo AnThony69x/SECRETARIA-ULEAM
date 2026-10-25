@@ -27,7 +27,12 @@
 .acceso{display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px 20px;text-align:center;color:var(--texto);background:#fff;border:1px solid var(--linea);border-radius:var(--radio);box-shadow:var(--sombra);transition:transform .25s,border-color .25s,box-shadow .25s}
 .acceso:hover{transform:translateY(-4px);border-color:var(--azul-claro);box-shadow:0 14px 30px rgba(0,40,100,.14)}
 .acceso:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}
-.acceso .icono{width:52px;height:52px;font-size:24px;border-radius:14px;background:var(--azul-cl);color:var(--azul);transition:transform .25s}
+.acceso .icono{width:52px;height:52px;font-size:24px;border-radius:14px;background:linear-gradient(145deg,var(--azul-cl),var(--azul-cl-2));box-shadow:0 4px 12px color-mix(in srgb,var(--azul) 20%,transparent);color:var(--azul);transition:transform .25s}
+/* Tono distinto por tarjeta, solo mezclas de azules */
+.acceso:nth-child(4n+1) .icono{background:linear-gradient(145deg,var(--azul-cl),color-mix(in srgb,var(--azul) 14%,#fff))}
+.acceso:nth-child(4n+2) .icono{background:linear-gradient(145deg,var(--azul-cl),color-mix(in srgb,var(--azul-medio) 16%,#fff))}
+.acceso:nth-child(4n+3) .icono{background:linear-gradient(145deg,var(--azul-cl),color-mix(in srgb,var(--azul-claro) 18%,#fff))}
+.acceso:nth-child(4n) .icono{background:linear-gradient(145deg,var(--azul-cl),color-mix(in srgb,var(--azul-medio) 12%,var(--azul-cl-2)))}
 .acceso:hover .icono{transform:scale(1.08)}
 .acceso b{color:var(--azul);font-size:17px;font-weight:600;line-height:1.3}
 .acceso small{color:var(--gris);font-size:14px;line-height:1.45;overflow-wrap:anywhere}

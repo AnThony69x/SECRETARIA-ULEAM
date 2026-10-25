@@ -29,6 +29,8 @@
 .pag-hero p{margin:4px 0 12px}
 .pag-hero{padding:var(--e3) 0}
 .pag-hero p{margin:var(--e1) 0 var(--e2)}
+/* Raya roja bajo el título */
+.pag-hero h1::after{content:"";display:block;width:56px;height:4px;margin-top:10px;background:var(--rojo);border-radius:2px}
 .pagina-cont{padding:var(--e4) var(--e2) 56px}
 @media(max-width:760px){
   .pagina-cont{padding:var(--e3) var(--e2) var(--e4)}
