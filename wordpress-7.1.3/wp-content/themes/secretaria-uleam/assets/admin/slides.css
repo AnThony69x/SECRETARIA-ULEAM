@@ -1,0 +1,45 @@
+/* Administración de slides (inc/slide-admin.php). Colores de la paleta institucional. */
+.us-intro{display:flex;gap:8px;align-items:flex-start;margin:0 0 14px;padding:10px 14px;background:#e6f0f8;border-left:4px solid #005689;border-radius:6px;color:#1e2a44;font-size:13px}
+.us-intro .dashicons{color:#005689}
+.us-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.us-card{border:1px solid #dcdcde;border-radius:10px;padding:14px;background:#fff}
+.us-card h4,.us-t{display:flex;align-items:center;gap:8px;margin:0 0 10px;color:#005689;font-size:14px}
+.us-t{margin:22px 0 10px}
+.us-prev{display:grid;place-items:center;aspect-ratio:16/9;border-radius:8px;border:1px dashed #9aa8c4;background:#f4f7fc;overflow:hidden}
+.us-prev img{width:100%;height:100%;object-fit:cover}
+.us-damas{background:conic-gradient(#e3e9f5 25%,#fff 0 50%,#e3e9f5 0 75%,#fff 0) 0 0/16px 16px}
+.us-damas img{object-fit:contain}
+.us-vacio{display:grid;justify-items:center;gap:4px;color:#5f6b85;font-size:13px}
+.us-vacio .dashicons{width:32px;height:32px;font-size:32px;color:#46a4ff}
+.us-acc{display:flex;align-items:center;gap:14px;margin:8px 0 0}
+.us-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.us-opt{display:grid;gap:4px;padding:10px;border:1px solid #dcdcde;border-radius:10px;background:#fff;cursor:pointer}
+.us-opt:has(input:checked){border-color:#005689;box-shadow:0 0 0 2px #46a4ff;background:#e6f0f8}
+.us-opt input{position:absolute;opacity:0;pointer-events:none}
+.us-opt b{color:#1e2a44;font-size:13px}
+.us-opt small{color:#5f6b85;font-size:12px;line-height:1.35}
+.us-sw{display:flex;gap:4px;height:38px;border-radius:6px;overflow:hidden;background:#cfd8e6;padding:5px}
+.us-sw i{border-radius:3px;background:#fff}
+.us-tono-auto{background:linear-gradient(90deg,#cfd8e6,#7aa6d6)}
+.us-tono-0{background:linear-gradient(90deg,#d9c9a6,#9bbd8a)}
+.us-tono-1{background:linear-gradient(90deg,#8fb4dd,#5f8fc4)}
+.us-tono-2{background:linear-gradient(90deg,#2a5b99,#07235c)}
+.us-tono-auto i,.us-tono-0 i,.us-tono-1 i,.us-tono-2 i,.us-lado-auto i,.us-lado-der i,.us-lado-izq i{background:rgba(255,255,255,.85)}
+.us-lado-auto{background:#cfd8e6}.us-lado-der,.us-lado-izq{background:#cfd8e6}
+.us-lado-der i:first-child,.us-lado-izq i:last-child{flex:2;background:#7aa6d6}
+.us-lado-der i:last-child,.us-lado-izq i:first-child{flex:1.4;background:#005689}
+.us-lado-auto i{flex:1}.us-lado-auto i:last-child{background:#005689}
+/* Lista */
+.column-orden{width:92px}.column-vista{width:190px}
+.us-mover{display:inline-flex;flex-direction:column;align-items:center}
+.us-mover .button-link{line-height:1;color:#005689}
+.us-num{font-weight:600;font-size:16px;color:#005689}
+.us-asa{margin-left:6px;color:#9aa8c4;cursor:grab}
+.us-mini-vista{position:relative;display:block;width:170px;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#cfd8e6}
+.us-mini-vista img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.us-mini-vista img.us-mini-frente{object-fit:contain;object-position:left bottom}
+.us-chip{display:inline-block;margin:2px 0;padding:2px 10px;border-radius:99px;background:#f4f7fc;border:1px solid #dcdcde;font-size:12px;color:#1e2a44}
+.us-chip-on{background:#e6f0f8;border-color:#46a4ff;color:#005689}
+.us-hueco{height:90px;background:#e6f0f8;outline:2px dashed #46a4ff}
+.us-aviso .dashicons{color:#005689}
+@media(max-width:782px){.us-grid{grid-template-columns:1fr}}

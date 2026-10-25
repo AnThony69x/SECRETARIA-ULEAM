@@ -50,7 +50,7 @@ if port_open 8000; then
   echo "✔ El servidor ya está corriendo (puerto 8000)."
 else
   echo "▶ Arrancando servidor PHP..."
-  setsid php -d opcache.revalidate_freq=0 -S 0.0.0.0:8000 -t "$WP" </dev/null >/tmp/php-server.log 2>&1 &
+  setsid php -d opcache.revalidate_freq=0 -d upload_max_filesize=64M -d post_max_size=64M -d memory_limit=256M -S 0.0.0.0:8000 -t "$WP" </dev/null >/tmp/php-server.log 2>&1 &
   disown 2>/dev/null || true
   sleep 2
 fi

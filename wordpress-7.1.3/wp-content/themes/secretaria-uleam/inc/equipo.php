@@ -43,6 +43,17 @@ add_shortcode( 'equipo', function ( $a ) {
 			break;
 		}
 	}
+	// Orden por color: las personas de una misma área (y sus subáreas) quedan juntas, siguiendo el orden de las áreas; dentro, el orden de siempre.
+	$clave = function ( $p ) {
+		$area = wp_get_post_terms( $p->ID, 'area' )[0] ?? null;
+		if ( ! $area ) {
+			return array( 999, 999 );
+		}
+		$raiz = get_ancestors( $area->term_id, 'area', 'taxonomy' );
+		$raiz = $raiz ? end( $raiz ) : $area->term_id;
+		return array( (int) ( get_term_meta( $raiz, 'orden', true ) ?: 99 ), (int) ( get_term_meta( $area->term_id, 'orden', true ) ?: 99 ) );
+	};
+	usort( $gente, fn( $x, $y ) => $clave( $x ) <=> $clave( $y ) ); // estable: conserva menu_order y título dentro de cada área
 	$li = '';
 	foreach ( $gente as $p ) {
 		$li .= '<li>' . $tarjeta( $p ) . '</li>';

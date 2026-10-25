@@ -15,6 +15,8 @@ add_action( 'after_setup_theme', function () {
 // Iconos SVG en línea (trazos tipo Lucide). Se usan por nombre en el código y en los menús.
 function uleam_icon( $name ) {
 	static $p = array(
+		'landmark'       => '<path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/><path d="m12 2 8 5H4z"/>',
+		'copy'           => '<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
 		'mail'           => '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
 		'map-pin'        => '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
 		'search'         => '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
@@ -218,8 +220,15 @@ require get_template_directory() . "/inc/equipo.php";
 require get_template_directory() . "/inc/biblioteca.php";
 // Tarjetas de acceso rápido ([accesos]).
 require get_template_directory() . "/inc/accesos.php";
-// Modal de sistemas desactivado: "Sistema Histórico de Gestión" abre su página (inc/sistemas-modal.php queda sin cargar).
-// require get_template_directory() . "/inc/sistemas-modal.php";
+// Modal con los sistemas del Sistema Histórico de Gestión (se abre desde el menú y la tarjeta de accesos).
+require get_template_directory() . "/inc/sistemas-modal.php";
+
+// Ficha de requerimiento de documentos en línea ([ficha]) y su administración.
+require get_template_directory() . "/inc/slide-admin.php";
+require get_template_directory() . "/inc/ficha.php";
+require get_template_directory() . "/inc/ficha-envio.php";
+require get_template_directory() . "/inc/ficha-pdf.php";
+require get_template_directory() . "/inc/ficha-pdf-hojas.php";
 
 // Búsqueda con documentos, página 404 y datos para buscadores y redes.
 require get_template_directory() . "/inc/busqueda.php";

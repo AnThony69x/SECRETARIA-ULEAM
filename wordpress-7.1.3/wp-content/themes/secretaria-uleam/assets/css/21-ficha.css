@@ -1,0 +1,126 @@
+/* [ficha]: formulario de requerimiento de documentos y comprobante imprimible (inc/ficha.php). */
+.ficha{max-width:860px;margin:0 auto}
+.ficha-cab{display:grid;grid-template-columns:2fr 1fr;border:1px solid var(--azul);border-radius:var(--radio) var(--radio) 0 0;background:#fff;overflow:hidden}
+.ficha-cab>div{padding:12px 16px;border-bottom:1px solid var(--linea)}
+.ficha-cab>div:nth-child(odd){border-right:1px solid var(--linea)}
+.ficha-cab>div:nth-last-child(-n+2){border-bottom:0}
+.ficha-cab dt{color:var(--gris);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.ficha-cab dd{margin:2px 0 0;color:var(--azul);font-size:14px;font-weight:600}
+.ficha-form{padding:var(--e3);background:#fff;border:1px solid var(--azul);border-top:0;border-radius:0 0 var(--radio) var(--radio);box-shadow:var(--sombra);display:grid;gap:var(--e2)}
+.ficha-form[hidden],.ficha-hoja[hidden],.ficha-rev[hidden],.ficha-mas[hidden]{display:none}
+.ficha-t{color:var(--azul);font-size:clamp(22px,3vw,28px);text-align:center}
+.ficha-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--e2);border:1px solid var(--linea);border-radius:var(--radio);padding:var(--e2)}
+.ficha-g legend{padding:0 8px;color:var(--azul);font-size:15px;font-weight:600}
+.ficha-c{display:grid;gap:6px;align-content:start}
+.ficha-c label{color:var(--texto);font-size:14px;font-weight:600}
+.ficha-c small{float:right;color:var(--gris);font-size:13px;font-weight:400}
+.ficha input[type=text],.ficha textarea{width:100%;min-height:44px;padding:10px 14px;border:1px solid var(--linea);border-radius:10px;background:var(--fondo);font:inherit;font-size:15px;color:var(--texto)}
+.ficha textarea{resize:vertical}
+.ficha input[aria-invalid=true]{border-color:var(--rojo);background:var(--rojo-cl)}
+.ficha-e{color:var(--rojo-osc);font-size:14px;margin:0}
+.ficha-e:empty{display:none}
+.ficha-docs{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ficha-g .ficha-e,.ficha-g .ficha-mas,.ficha-g .ficha-mas-btn{grid-column:1/-1}
+.ficha-mas-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border:1px dashed var(--azul-claro);border-radius:10px;background:var(--blanco);color:var(--azul);font:600 14px var(--font-uleam);cursor:pointer}
+.ficha-mas-btn:hover{background:var(--azul-cl)}
+.ficha-mas-btn .ico{width:18px;height:18px;transition:transform .2s}
+.ficha-mas-btn[aria-expanded=true] .ico{transform:rotate(180deg)}
+@media(prefers-reduced-motion:reduce){.ficha-mas-btn .ico{transition:none}}
+.ficha-chk{display:flex;align-items:flex-start;gap:10px;min-height:40px;padding:8px 12px;border:1px solid var(--linea);border-radius:10px;background:#fff;cursor:pointer;font-size:14px}
+.ficha-chk input{flex:none;width:20px;height:20px;margin-top:1px;accent-color:var(--azul)}
+.ficha-chk:has(input:checked){border-color:var(--azul-claro);background:var(--azul-cl)}
+.ficha-chk em{display:none;margin-left:auto;padding:2px 10px;border-radius:99px;background:var(--blanco);color:var(--azul);font-style:normal;font-weight:600;white-space:nowrap}
+.ficha-chk:has(input:checked) em{display:inline-block;animation:ficha-precio .2s ease-out}
+@keyframes ficha-precio{from{opacity:0;transform:translateX(-4px)}}
+@media(prefers-reduced-motion:reduce){.ficha-chk:has(input:checked) em{animation:none}}
+.ficha-nota{grid-column:1/-1;margin:0;color:var(--gris);font-size:14px}
+.ficha-total{font-weight:600;color:var(--azul);text-align:right}
+.ficha-total:empty{display:none}
+.ficha-acepto{border:0;padding:0;background:none;color:var(--gris)}
+.ficha-trampa{position:absolute;left:-9999px;height:0;overflow:hidden}
+.ficha-form .btn{justify-self:start;min-height:48px;gap:8px}
+.ficha-form .btn[disabled]{opacity:.6;cursor:wait}
+.ficha-form .btn .ico,.ficha-acc .btn .ico{width:18px;height:18px}
+.ficha-rev{padding:var(--e3);background:#fff;border:1px solid var(--azul);border-top:0;border-radius:0 0 var(--radio) var(--radio);box-shadow:var(--sombra);display:grid;gap:10px}
+/* Con el resumen final la cabecera queda separada del mensaje: se redondea completa */
+.ficha-cab:has(~ .ficha-hoja:not([hidden])){border-radius:var(--radio)}
+.ficha-rev-aviso{color:var(--gris);font-size:14px;text-align:center}
+.ficha-rev .btn[disabled]{opacity:.6;cursor:wait}
+.ficha-exito{display:flex;align-items:center;gap:10px;margin:var(--e2) 0;padding:14px 18px;border-radius:12px;background:var(--azul-cl);color:var(--azul);font-weight:600}
+.ficha-exito .ico{flex:none;width:20px;height:20px}
+.ficha-papel{background:#fff;border:1px solid var(--texto);padding:var(--e3);display:grid;gap:10px;color:#000}
+.ficha-papel h2,.ficha-papel h3{text-align:center;color:#000}
+.ficha-papel h3{font-size:16px}
+.ficha-p-cab{font-size:13px;text-align:right;color:#000}
+.ficha-p-datos,.ficha-p-docs{list-style:none;display:grid;gap:6px}
+.ficha-p-datos li{display:flex;gap:8px;border-bottom:1px dotted var(--gris);padding-bottom:2px}
+.ficha-p-docs li::before{content:"\2611";margin-right:8px}
+.ficha-p-t{font-weight:600}
+.ficha-p-det{min-height:80px;padding:8px;border:1px solid var(--texto);white-space:pre-wrap;overflow-wrap:anywhere}
+.ficha-p-firmas{width:100%;border-collapse:collapse;margin-top:12px}
+.ficha-p-firmas td{height:56px;padding:6px 8px;border:1px solid var(--texto);font-size:13px;font-weight:600;vertical-align:top}
+.ficha-acc{display:flex;flex-wrap:wrap;gap:12px;margin-top:var(--e2)}
+.ficha-acc .btn{min-height:44px;gap:8px}
+@media(max-width:600px){.ficha-cab{grid-template-columns:1fr}.ficha-cab>div{border-right:0!important;border-bottom:1px solid var(--linea)!important}.ficha-g,.ficha-docs{grid-template-columns:1fr}.ficha-form{padding:var(--e2)}}
+/* Pantalla de revisión: datos en tarjetas, documentos como filas y total destacado */
+.ficha-rev{gap:var(--e2)}
+.ficha-rev .ficha-t{margin:0}
+.ficha-papel{gap:var(--e2);border:1px solid var(--azul);border-radius:var(--radio);box-shadow:var(--sombra);color:var(--texto)}
+.ficha-papel h2,.ficha-papel h3{margin:0;color:var(--azul)}
+.ficha-papel h2{font-size:clamp(22px,3vw,28px)}
+.ficha-papel h3{font-size:16px}
+.ficha-papel .ficha-p-cab{margin:0;color:var(--gris);font-size:13px}
+.ficha-papel .ficha-p-firmas{display:none}
+:is(.ficha-rev,.ficha-papel) .ficha-p-datos{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+:is(.ficha-rev,.ficha-papel) .ficha-p-datos li{flex-direction:column;gap:2px;padding:10px 14px;border:1px solid var(--linea);border-radius:12px;background:var(--fondo)}
+:is(.ficha-rev,.ficha-papel) .ficha-p-datos li:first-child,:is(.ficha-rev,.ficha-papel) .ficha-p-datos li:nth-child(4){grid-column:1/-1}
+:is(.ficha-rev,.ficha-papel) .ficha-p-datos span{color:var(--gris);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+:is(.ficha-rev,.ficha-papel) .ficha-p-datos b{color:var(--azul);font-size:15px;overflow-wrap:anywhere}
+:is(.ficha-rev,.ficha-papel) .ficha-p-t{margin:var(--e1) 0 0;color:var(--azul);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+:is(.ficha-rev,.ficha-papel) .ficha-p-docs{gap:8px}
+:is(.ficha-rev,.ficha-papel) .ficha-p-docs li{display:flex;align-items:center;gap:12px;min-height:44px;padding:8px 14px;border-radius:12px;background:var(--azul-cl);color:var(--texto);font-size:14px}
+:is(.ficha-rev,.ficha-papel) .ficha-p-docs li::before{content:"";flex:none;width:22px;height:22px;margin:0;border-radius:50%;background:var(--azul) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/14px no-repeat}
+.ficha-p-docs em{margin-left:auto;padding-left:10px;color:var(--azul);font-style:normal;font-weight:600;white-space:nowrap}
+:is(.ficha-rev,.ficha-papel) .ficha-total{display:block;padding:12px 18px;border-radius:12px;background:var(--azul);color:var(--blanco);font-size:16px}
+:is(.ficha-rev,.ficha-papel) .ficha-p-det{min-height:0;padding:12px 16px;border:0;border-left:4px solid var(--azul-claro);border-radius:0 12px 12px 0;background:var(--fondo);font-size:14px}
+:is(.ficha-rev,.ficha-papel) .ficha-p-det:empty::before{content:"Sin detalle";color:var(--gris)}
+.ficha-rev .ficha-acc{justify-content:flex-end;margin-top:var(--e1)}
+.ficha-acc .btn{min-height:48px;padding:0 24px}
+.ficha-acc .btn:not(.azul){border:2px solid var(--azul);background:var(--blanco);color:var(--azul)}
+@media(max-width:600px){.ficha-rev{padding:var(--e2)}:is(.ficha-rev,.ficha-papel) .ficha-p-datos{grid-template-columns:1fr}.ficha-rev .ficha-acc{flex-direction:column-reverse}.ficha-rev .ficha-acc .btn{width:100%;justify-content:center}}
+.ficha-hoja{margin-top:var(--e2);padding:0} /* anula el relleno genérico de section */
+.ficha-hoja>.ficha-exito:first-child{margin-top:0}
+/* Aviso al generar la ficha: modal con check animado que lleva a las indicaciones de pago */
+.ficha-modal{width:min(440px,calc(100vw - 32px));margin:auto;padding:var(--e3);border:0;border-radius:20px;background:var(--blanco);color:var(--texto);text-align:center;box-shadow:0 24px 60px rgba(7,35,92,.35)}
+.ficha-modal[open]{display:grid;gap:12px;justify-items:center;animation:ficha-m-in .35s cubic-bezier(.2,.9,.3,1.2)}
+.ficha-modal::backdrop{background:rgba(7,35,92,.55);backdrop-filter:blur(3px)}
+.ficha-modal h2{margin:0;color:var(--azul);font-size:22px}
+.ficha-modal p{margin:0;font-size:15px}
+.ficha-m-cod b{padding:2px 10px;border-radius:99px;background:var(--azul-cl);color:var(--azul)}
+.ficha-m-ico{width:76px;height:76px;fill:none;stroke:var(--azul);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ficha-m-ico circle{fill:var(--azul-cl);stroke-dasharray:151;stroke-dashoffset:151;animation:ficha-m-dib .6s .1s ease-out forwards}
+.ficha-m-ico path{stroke-dasharray:40;stroke-dashoffset:40;animation:ficha-m-dib .4s .6s ease-out forwards}
+.ficha-modal .btn{min-height:48px;gap:8px;margin-top:var(--e1)}
+@keyframes ficha-m-in{from{opacity:0;transform:translateY(24px) scale(.94)}}
+@keyframes ficha-m-dib{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.ficha-modal[open],.ficha-m-ico circle,.ficha-m-ico path{animation:none;stroke-dashoffset:0}}
+/* Pago y entrega: tarjetas de banco con número copiable y leyenda con el correo */
+.ficha-pago{margin-top:var(--e2);padding:var(--e3);border:1px solid var(--azul-claro);border-radius:var(--radio);background:var(--azul-cl);display:grid;gap:var(--e2)}
+.ficha-pago h3{display:flex;align-items:center;gap:10px;margin:0;color:var(--azul);font-size:18px}
+.ficha-pago h3 .ico{flex:none;width:22px;height:22px}
+.ficha-bancos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.ficha-bancos li{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:6px 14px;padding:14px 16px;border:1px solid var(--linea);border-radius:14px;background:var(--blanco)}
+.ficha-bancos .icono{grid-row:1/3;width:44px;height:44px}
+.ficha-banco{display:grid}
+.ficha-banco b{color:var(--azul);font-size:16px}
+.ficha-banco small,.ficha-cuenta small{color:var(--gris);font-size:13px}
+.ficha-cuenta{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.ficha-cuenta code{padding:4px 10px;border-radius:8px;background:var(--azul-cl);color:var(--azul-osc);font:600 15px/1.4 var(--font-uleam);letter-spacing:.04em}
+.ficha-copiar{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border:1px solid var(--azul);border-radius:10px;background:var(--blanco);color:var(--azul);font:600 14px var(--font-uleam);cursor:pointer}
+.ficha-copiar:hover{background:var(--azul-cl)}
+.ficha-copiar .ico{width:16px;height:16px}
+.ficha-pago-nota{display:flex;align-items:flex-start;gap:12px;margin:0;padding:14px 16px;border-radius:14px;background:var(--azul);color:var(--blanco);font-size:15px;line-height:1.55}
+.ficha-pago-nota span{white-space:pre-line}
+.ficha-pago-nota .ico{flex:none;width:22px;height:22px;margin-top:2px}
+.ficha-pago-nota a{color:var(--blanco);font-weight:600;text-decoration:underline;text-underline-offset:3px;overflow-wrap:break-word}
+@media(max-width:600px){.ficha-pago{padding:var(--e2)}.ficha-bancos{grid-template-columns:1fr}.ficha-pago-nota{font-size:14px;padding:12px 14px}}

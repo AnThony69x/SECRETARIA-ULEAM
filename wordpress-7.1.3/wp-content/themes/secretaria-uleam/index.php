@@ -6,9 +6,19 @@ $slides = new WP_Query( array( 'post_type' => 'slide', 'orderby' => 'menu_order'
 <?php if ( $slides->have_posts() ) : ?>
 <div class="hero" id="inicio">
   <div class="slider" id="slider">
-  <?php while ( $slides->have_posts() ) : $slides->the_post(); ?>
-    <div class="slide">
+  <?php $n = 0; while ( $slides->have_posts() ) : $slides->the_post(); ?>
+    <?php
+    // Variantes editables (inc/slide-admin.php): lado de la tarjeta (alterna por defecto) y tono azul del fondo.
+    $frente = (int) get_post_meta( get_the_ID(), 'frente_id', true );
+    $lado   = get_post_meta( get_the_ID(), 'lado', true );
+    $lado   = in_array( $lado, array( 'der', 'izq' ), true ) ? $lado : ( 0 === $n % 2 ? 'der' : 'izq' );
+    $tono   = get_post_meta( get_the_ID(), 'tono', true );
+    $tono   = in_array( (string) $tono, array( '0', '1', '2' ), true ) ? $tono : ( $frente ? '1' : '0' );
+    ++$n;
+    ?>
+    <div class="slide lado-<?php echo esc_attr( $lado ); ?> tono-<?php echo esc_attr( $tono ); ?><?php echo $frente ? ' con-frente' : ''; ?>">
       <?php the_post_thumbnail( 'full', array( 'alt' => '' ) ); ?>
+      <?php if ( $frente ) { echo wp_get_attachment_image( $frente, 'full', false, array( 'class' => 'frente', 'alt' => '' ) ); } ?>
       <div class="wrap">
         <div class="tarjeta">
           <?php if ( $e = get_post_meta( get_the_ID(), 'etiqueta', true ) ) : ?><span class="etiq"><?php echo esc_html( $e ); ?></span><?php endif; ?>

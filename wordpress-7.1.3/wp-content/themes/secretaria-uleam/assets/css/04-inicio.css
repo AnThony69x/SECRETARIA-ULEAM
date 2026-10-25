@@ -22,7 +22,7 @@
 /* ===== ACCESOS RÁPIDOS ===== */
 .accesos-wrap{position:relative;margin:var(--e4) 0;padding:0}
 .accesos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--e2)}
-@media(min-width:1000px){.accesos{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:1000px){.accesos{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}} /* se adapta a 4 o 5 tarjetas sin dejar una sola en la última fila */
 /* Tarjeta vertical centrada: icono, título, texto y enlace "Ingresar" (el texto sale del atributo texto="" del shortcode) */
 .acceso{display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px 20px;text-align:center;color:var(--texto);background:#fff;border:1px solid var(--linea);border-radius:var(--radio);box-shadow:var(--sombra);transition:transform .25s,border-color .25s,box-shadow .25s}
 .acceso:hover{transform:translateY(-4px);border-color:var(--azul-claro);box-shadow:0 14px 30px rgba(0,40,100,.14)}
