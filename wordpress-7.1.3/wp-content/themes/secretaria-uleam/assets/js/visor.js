@@ -21,7 +21,7 @@
     n=Math.min(6,Math.max(1,n));if(cx===undefined){cx=0;cy=0}
     x=cx-(cx-x)*n/z;y=cy-(cy-y)*n/z;z=n;if(z===1){x=0;y=0}pinta();
   }
-  function abrir(src,alt){im.src=src;im.alt=alt;lb.querySelector(".lb-bajar").href=src;z=1;x=0;y=0;pinta();lb.hidden=false;document.documentElement.classList.add("lb-abierto");ult=document.activeElement;lb.querySelector('[data-a="cerrar"]').focus()}
+  function abrir(src,alt){im.style.visibility="hidden";im.onload=im.onerror=function(){im.style.visibility="";pinta()};im.removeAttribute("src");im.src=src;im.alt=alt;lb.querySelector(".lb-bajar").href=src;z=1;x=0;y=0;pinta();lb.hidden=false;document.documentElement.classList.add("lb-abierto");ult=document.activeElement;lb.querySelector('[data-a="cerrar"]').focus()}
   function cerrar(){lb.hidden=true;document.documentElement.classList.remove("lb-abierto");if(ult)ult.focus()}
   imgs.forEach(function(i){
     var f=i.closest("figure");f.classList.add("zoomable");
