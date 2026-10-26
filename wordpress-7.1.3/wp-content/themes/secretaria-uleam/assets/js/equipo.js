@@ -5,7 +5,7 @@
     if (!pista || !pista.children.length) return;
     var reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var originales = Array.prototype.slice.call(pista.children);
-    originales.forEach(function (n) { var c = n.cloneNode(true); c.setAttribute('aria-hidden', 'true'); pista.appendChild(c); });
+    originales.forEach(function (n) { var c = n.cloneNode(true); c.setAttribute('aria-hidden', 'true'); c.querySelectorAll('[tabindex]').forEach(function (t) { t.removeAttribute('tabindex'); }); pista.appendChild(c); });
     var vuelta = function () { return pista.children[originales.length].offsetLeft - pista.children[0].offsetLeft; };
     var normalizar = function () { var v = vuelta(); if (v > 0 && pista.scrollLeft >= v) pista.scrollLeft -= v; };
     var paso = function (dir) {

@@ -1,7 +1,7 @@
 // Visor de imágenes del contenido (ej. organigrama): clic para ampliar, zoom con rueda/botones/doble clic y arrastre para mover.
 (function(){
   var imgs=document.querySelectorAll(".pagina-cont figure.wp-block-image img");
-  if(!imgs.length)return;
+  if(!imgs.length&&!document.querySelector(".oc-av[data-grande]"))return;
   var S=function(p){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>'};
   var ic={lupa:S('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/>'),mas:S('<path d="M12 5v14M5 12h14"/>'),menos:S('<path d="M5 12h14"/>'),
     bajar:S('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>'),x:S('<path d="M18 6 6 18M6 6l12 12"/>')};
@@ -28,6 +28,10 @@
     var b=document.createElement("button");b.type="button";b.className="zoom-btn";b.innerHTML=ic.lupa+"<span>Ver en grande</span>";f.appendChild(b);
     var go=function(){abrir(i.currentSrc||i.src,i.alt)};i.addEventListener("click",go);b.addEventListener("click",go);
   });
+  // Fotos del personal (organigrama y carrusel del equipo): clic o Enter/Espacio abre la foto grande.
+  var foto=function(e){var f=e.target.closest&&e.target.closest(".oc-av[data-grande]");if(f)abrir(f.dataset.grande,f.alt)};
+  document.addEventListener("click",foto);
+  document.addEventListener("keydown",function(e){if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches(".oc-av[data-grande]")){e.preventDefault();foto(e)}});
   lb.addEventListener("click",function(e){var a=e.target.closest("[data-a]");if(a){var k=a.dataset.a;k==="cerrar"?cerrar():zoom(z*(k==="mas"?1.4:1/1.4))}else if(e.target===lz||e.target===lb)cerrar()});
   var rel=function(e){var r=lz.getBoundingClientRect();return[e.clientX-r.left-r.width/2,e.clientY-r.top-r.height/2]};
   lz.addEventListener("wheel",function(e){e.preventDefault();var p=rel(e);zoom(z*(e.deltaY<0?1.15:1/1.15),p[0],p[1])},{passive:false});

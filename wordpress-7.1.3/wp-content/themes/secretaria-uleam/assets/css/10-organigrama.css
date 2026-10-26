@@ -74,3 +74,5 @@
 @media(prefers-reduced-motion:reduce){
   .oc-main,.oc-ins{animation:none}
 }
+.oc-av[data-grande]{cursor:zoom-in}
+.oc-av[data-grande]:focus-visible{outline:3px solid var(--azul-claro);outline-offset:-3px}
