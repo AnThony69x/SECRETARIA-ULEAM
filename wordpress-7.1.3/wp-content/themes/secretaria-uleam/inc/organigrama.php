@@ -79,7 +79,7 @@ function oc_areas( $padre ) {
 
 // Una tarjeta de persona. $color solo se pasa fuera del organigrama (allí --area-color lo hereda el nivel).
 function oc_tarjeta( $p, $cls, $ins, $color = '', $sub = '' ) {
-	$foto = get_the_post_thumbnail_url( $p, 'medium' );
+	$foto = get_the_post_thumbnail_url( $p, 'medium_large' );
 	return '<div class="oc-c ' . $cls . '"' . ( $color ? ' style="--area-color:' . esc_attr( $color ) . '"' : '' ) . '>' . ( 'oc-main' === $cls && $ins ? '<span class="oc-ins">' . esc_html( $ins ) . '</span>' : '' )
 		. '<img class="oc-av' . ( $foto ? '' : ' oc-def' ) . '" src="' . esc_url( $foto ?: get_template_directory_uri() . '/assets/avatar.svg' ) . '" alt="' . esc_attr( $p->post_title ) . '" loading="lazy">'
 		. '<div class="oc-tx"><b>' . esc_html( $p->post_title ) . '</b>' . ( $sub ? '<small>' . esc_html( $sub ) . '</small>' : '' ) . '</div></div>';
