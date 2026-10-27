@@ -4,20 +4,21 @@
 
 // Textos y datos editables: clave => [etiqueta del Personalizador, valor por defecto, tipo].
 const FICHA_CAMPOS = array(
-	'ficha_codigo'   => array( 'Código del formulario', 'PAC-01-F-001', 'text' ),
+	'ficha_codigo'   => array( 'Código del formulario (sus últimos dígitos se reemplazan por el número de la solicitud)', 'PAC-01-F-001', 'text' ),
 	'ficha_revision' => array( 'Revisión', '1', 'text' ),
 	'ficha_inst'     => array( 'Institución (membrete del PDF)', 'Universidad Laica Eloy Alfaro de Manabí', 'text' ),
 	'ficha_nombre'   => array( 'Nombre del documento', 'Ficha de requerimiento de documentos', 'text' ),
 	'ficha_proc'     => array( 'Procedimiento', 'Emisión y entrega de certificado de promoción.', 'text' ),
 	'ficha_titulo'   => array( 'Título sobre el formulario', 'Secretaría General', 'text' ),
 	'ficha_docs'     => array( 'Documentos que se pueden solicitar (uno por línea: Nombre | valor en USD)', "Certificado de matrícula | 5.00\nCertificado de promoción | 5.00\nCertificación de indicador al mérito | 8.00\nAnalítico de notas | 12.00\nCertificación de acta de grado original / fiel copia de su original | 5.00\nCertificación de título original | 10.00\nCertificación de promedio de acta de grado | 6.00\nCertificación de promedio de año/semestre/nivel/global | 8.00\nCertificación de copia de título | 6.00\nCertificación de no tener impedimento de tercera matrícula (cambio de IES) | 10.00\nCertificación de haber agotado la tercera matrícula (cambio de IES) | 10.00\nCertificación IES de aval oficial | 10.00\nCertificación de acceso a estudios de cuarto nivel | 10.00\nCertificación de firma de autoridades académicas | 3.00\nCertificación de escala de calificaciones | 6.00\nRécord único | 10.00\nCertificación de no haber sido sancionado por la ULEAM (para otras universidades) | 5.00\nCertificación Universidad Santa María | 20.00\nCertificación récord académico traducción/inglés | 20.00\nCertificación consolidada para el exterior | 20.00\nSobre certificado para documentos al exterior | 2.00\nCertificación IES acreditada / carrera acreditada | 10.00", 'textarea' ),
+	'ficha_requisitos' => array( 'Requisitos (una línea terminada en ":" es un título; el resto son requisitos en negrilla)', "Estudiantes:\nCopia de cédula\nCertificados de matrícula\nCertificados de promoción\nCertificado de no haber sido sancionado (cuando son estudiantes)\nCertificado de no tener tercera matrícula\nPara profesionales:\nTítulo\nActa de grado\nCédula\nPara documentos al exterior:\nSobre membretado para enviar documentos al exterior", 'textarea' ),
 	'ficha_visibles' => array( 'Documentos visibles al inicio (el resto se despliega)', '6', 'text' ),
 	'ficha_nota'     => array( 'Nota bajo la lista de documentos', 'Valores en USD según la Resolución OCS-SE-003 No. 007-2024 (Órgano Colegiado Superior). Se pagan al retirar el documento.', 'textarea' ),
 	'ficha_aviso'    => array( 'Aviso de protección de datos', 'Usaremos tus datos solo para atender esta solicitud. Se guardan en el sistema de la Secretaría General y no se comparten con terceros.', 'textarea' ),
 	'ficha_ok'       => array( 'Mensaje al generar la solicitud', 'Tu solicitud fue registrada y tu PDF se descargó. Págalo y envía los documentos indicados al correo de Secretaría General.', 'textarea' ),
 	'ficha_pagos'    => array( 'Métodos de pago (uno por línea: Banco | Titular | N.º de cuenta)', "Banco Pichincha | Universidad Laica Eloy Alfaro de Manabí | xxxxxxx
 Banco del Pacífico | Universidad Laica Eloy Alfaro de Manabí | xxxxxxx", 'textarea' ),
-	'ficha_pago_nota' => array( 'Leyenda de la hoja de pago ({correo} se reemplaza por el correo de atención)', "Todo trámite institucional generado en línea debe enviarse al correo de Secretaría General ({correo}) con estos documentos adjuntos:\n1. Ficha de requerimiento (este PDF)\n2. Copia de cédula\n3. Copia de la papeleta de votación\n4. Comprobante de pago", 'textarea' ),
+	'ficha_pago_nota' => array( 'Texto antes de los requisitos ({correo} se reemplaza por el correo de atención)', "Todo trámite institucional generado en línea debe enviarse al correo de Secretaría General ({correo}) con estos documentos adjuntos:", 'textarea' ),
 );
 
 add_action( 'customize_register', function ( $c ) {
@@ -45,6 +46,18 @@ function ficha_num( $n ) {
 	return sprintf( '%03d', $n );
 }
 
+// El código lleva el consecutivo al final: PAC-01-F-001 → PAC-01-F-007 para la solicitud 7.
+function ficha_codigo_pref() {
+	return preg_replace( '/\d+$/', '', ficha_mod( 'ficha_codigo' ) );
+}
+function ficha_codigo_num( $n ) {
+	return ficha_codigo_pref() . ficha_num( $n );
+}
+// Código de la próxima solicitud del año (el contador guarda la última asignada).
+function ficha_codigo_proximo() {
+	return ficha_codigo_num( (int) get_option( 'uleam_ficha_n_' . wp_date( 'Y' ), 0 ) + 1 );
+}
+
 // Documentos solicitables: una línea = "Nombre | valor" (el valor es opcional; sin líneas vacías ni repetidas).
 function ficha_lineas() {
 	$out = array();
@@ -58,6 +71,18 @@ function ficha_lineas() {
 }
 function ficha_docs() {
 	return array_keys( ficha_lineas() );
+}
+
+// Requisitos: una línea terminada en ":" es título de grupo; el resto son requisitos. Devuelve [es_titulo, texto].
+function ficha_requisitos() {
+	$out = array();
+	foreach ( explode( "\n", ficha_mod( 'ficha_requisitos' ) ) as $l ) {
+		$l = trim( $l );
+		if ( '' !== $l ) {
+			$out[] = array( ':' === substr( $l, -1 ), $l );
+		}
+	}
+	return $out;
 }
 
 // Métodos de pago editables: una línea = "Banco | Titular | N.º de cuenta".
@@ -105,10 +130,10 @@ add_shortcode( 'ficha', function () {
 	$pdf = $ok && 0 === strpos( (string) ( $_GET['pdf'] ?? '' ), admin_url( 'admin-ajax.php' ) ) ? (string) $_GET['pdf'] : ''; // solo enlaces al propio PDF
 	$err = isset( $_GET['ficha'] ) && 'err' === $_GET['ficha'] ? ( FICHA_ERRORES[ sanitize_key( $_GET['m'] ?? '' ) ] ?? FICHA_ERRORES['x'] ) : '';
 	ob_start(); ?>
-<div class="ficha" data-ajax="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-anio="<?php echo (int) wp_date( 'Y' ); ?>">
+<div class="ficha" data-ajax="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-anio="<?php echo (int) wp_date( 'Y' ); ?>" data-codigo="<?php echo esc_attr( ficha_codigo_pref() ); ?>">
   <dl class="ficha-cab">
     <div><dt>Nombre del documento</dt><dd><?php echo esc_html( mb_strtoupper( ficha_mod( 'ficha_nombre' ) ) ); ?></dd></div>
-    <div><dt>Código</dt><dd><?php echo esc_html( ficha_mod( 'ficha_codigo' ) ); ?></dd></div>
+    <div><dt>Código</dt><dd data-codigo-siguiente><?php echo esc_html( ficha_codigo_proximo() ); ?></dd></div>
     <div><dt>Procedimiento</dt><dd><?php echo esc_html( ficha_mod( 'ficha_proc' ) ); ?></dd></div>
     <div><dt>Revisión</dt><dd><?php echo esc_html( ficha_mod( 'ficha_revision' ) ); ?></dd></div>
   </dl>
@@ -160,7 +185,7 @@ add_shortcode( 'ficha', function () {
   <section class="ficha-hoja" hidden aria-label="Comprobante de la solicitud">
     <p class="ficha-exito" role="status"><?php echo uleam_icon( 'star' ) . esc_html( ficha_mod( 'ficha_ok' ) ); ?></p>
     <div class="ficha-papel">
-      <p class="ficha-p-cab"><b><?php echo esc_html( ficha_mod( 'ficha_codigo' ) ); ?></b> · Revisión <?php echo esc_html( ficha_mod( 'ficha_revision' ) ); ?> · <?php echo esc_html( ficha_mod( 'ficha_proc' ) ); ?></p>
+      <p class="ficha-p-cab"><b data-codigo-ficha><?php echo esc_html( ficha_codigo_proximo() ); ?></b> · Revisión <?php echo esc_html( ficha_mod( 'ficha_revision' ) ); ?> · <?php echo esc_html( ficha_mod( 'ficha_proc' ) ); ?></p>
       <h2><?php echo esc_html( mb_strtoupper( ficha_mod( 'ficha_titulo' ) ) ); ?></h2>
       <h3><?php echo esc_html( mb_strtoupper( ficha_mod( 'ficha_nombre' ) ) ); ?> No. <span data-f="n"></span></h3>
       <ul class="ficha-p-datos">
@@ -189,6 +214,13 @@ add_shortcode( 'ficha', function () {
       </ul>
       <?php $correo = ha_mod( 'ha_correo', 'secretaria.general@uleam.edu.ec' ); ?>
       <p class="ficha-pago-nota"><?php echo uleam_icon( 'mail' ); ?><span><?php echo implode( '<a href="mailto:' . esc_attr( $correo ) . '">' . esc_html( $correo ) . '</a>', array_map( 'esc_html', explode( '{correo}', ficha_mod( 'ficha_pago_nota' ) ) ) ); ?></span></p>
+      <?php if ( $req = ficha_requisitos() ) : ?>
+      <div class="ficha-req">
+        <?php foreach ( $req as $r ) : ?>
+        <p class="<?php echo $r[0] ? 'ficha-req-t' : 'ficha-req-i'; ?>"><?php echo esc_html( $r[1] ); ?></p>
+        <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
     </section>
     <p class="ficha-acc"><a class="btn azul" data-pdf href="#" download><?php echo uleam_icon( 'download' ); ?>Descargar PDF</a> <button type="button" class="btn" data-nueva>Nueva solicitud</button></p>
   </section>

@@ -60,7 +60,7 @@ function ficha_pdf( $id ) {
 	$d      = get_post_meta( $id, 'ficha_datos', true ) ?: array();
 	$n      = (int) get_post_meta( $id, 'ficha_n', true );
 	$p      = new Ficha_PDF();
-	$c      = ficha_mod( 'ficha_codigo' ); // el código es del formulario y no cambia; el consecutivo va en el No.
+	$c      = ficha_codigo_num( $n ); // el consecutivo va al final del código y en el No.
 	$num    = ficha_num( $n );
 	$emitido = wp_date( 'd/m/Y H:i' );
 
@@ -157,10 +157,22 @@ function ficha_pdf( $id ) {
 	}
 	$y += 24;
 	$p->texto( 40, $y, 'ENTREGA DE DOCUMENTOS', 9, true, FICHA_AZ );
+	// Requisitos que se adjuntan al enviar; en negrilla y más grandes para que no pasen desapercibidos.
+	$top  = $y + 8;
 	$nota = str_replace( '{correo}', ha_mod( 'ha_correo', 'secretaria.general@uleam.edu.ec' ), ficha_mod( 'ficha_pago_nota' ) );
-	$fin  = $p->parrafo( 56, $y + 28, 480, $nota, 10, false, '#1e2a44', 1.6 );
-	$p->caja( 40, $y + 8, 515, $fin - $y - 14, FICHA_AZ, '' );
-	$p->linea( 41.5, $y + 9.5, 41.5, $fin - 7.5, FICHA_AZ, 3 );
+	$y    = $p->parrafo( 48, $y + 26, 480, $nota, 13, true, FICHA_AZ, 1.4 ) + 6;
+	foreach ( ficha_requisitos() as $r ) {
+		if ( $r[0] ) { // título de grupo
+			$y += 8;
+			$p->texto( 48, $y, $r[1], 12.5, true, FICHA_AZ );
+			$y += 20;
+		} else {
+			$p->texto( 56, $y, '•', 12, true, FICHA_AZ );
+			$y = $p->parrafo( 68, $y, 475, $r[1], 12, true, '#1e2a44', 1.4 );
+		}
+	}
+	$p->caja( 40, $top, 515, $y - $top - 6, FICHA_AZ, '' );
+	$p->linea( 41.5, $top + 1.5, 41.5, $y - 7.5, FICHA_AZ, 3 );
 	ficha_pdf_pie( $p, $emitido );
 	return $p->salida();
 }

@@ -30,6 +30,7 @@
   var mas = f.querySelector('.ficha-mas'), masBtn = f.querySelector('.ficha-mas-btn');
   if (mas) masBtn.addEventListener('click', function () {
     var abre = mas.hidden; mas.hidden = !abre; masBtn.setAttribute('aria-expanded', abre);
+    if (!abre) mas.querySelectorAll('input').forEach(function (c) { c.checked = false; }); // al cerrar, lo oculto no debe seguir marcado ni sumar al total
     masBtn.querySelector('span').textContent = abre ? 'Ver menos documentos' : 'Ver más documentos (' + masBtn.dataset.mas + ')';
   });
   var cuenta = f.querySelector('#n-detalle');
@@ -76,7 +77,7 @@
     var datos = new FormData(f); datos.set('action', 'uleam_ficha');
     fetch(cont.dataset.ajax, { method: 'POST', body: datos, credentials: 'same-origin' })
       .then(function (r) { return r.json(); })
-      .then(function (j) { if (j.ok) { llenar(hoja, 'f', j.num); mostrar(rev, hoja); bajar(j.pdf); modal.querySelector('[data-m=numero]').textContent = j.num; if (modal.showModal) modal.showModal(); f.reset(); if (mas) { mas.hidden = true; masBtn.setAttribute('aria-expanded', 'false'); masBtn.querySelector('span').textContent = 'Ver más documentos (' + masBtn.dataset.mas + ')'; } cuenta.textContent = '0 / 1000'; } else msg.textContent = j.error || 'No pudimos generar la solicitud.'; })
+      .then(function (j) { if (j.ok) { llenar(hoja, 'f', j.num); hoja.querySelector('[data-codigo-ficha]').textContent = cont.dataset.codigo + j.num; cont.querySelector('[data-codigo-siguiente]').textContent = cont.dataset.codigo + ('00' + (+j.num + 1)).slice(-3); mostrar(rev, hoja); bajar(j.pdf); modal.querySelector('[data-m=numero]').textContent = j.num; if (modal.showModal) modal.showModal(); f.reset(); if (mas) { mas.hidden = true; masBtn.setAttribute('aria-expanded', 'false'); masBtn.querySelector('span').textContent = 'Ver más documentos (' + masBtn.dataset.mas + ')'; } cuenta.textContent = '0 / 1000'; } else msg.textContent = j.error || 'No pudimos generar la solicitud.'; })
       .catch(function () { msg.textContent = 'No hay conexión. Revisa tu internet e inténtalo de nuevo.'; })
       .then(function () { btn.disabled = false; });
   };

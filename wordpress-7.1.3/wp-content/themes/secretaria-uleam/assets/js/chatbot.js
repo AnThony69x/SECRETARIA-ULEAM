@@ -9,6 +9,14 @@
   });
   var pool = todas.slice(), inicio = cb.dataset.ini || msgs.innerHTML, typing = '<span class="cb-typing" aria-label="Escribiendo"><i></i><i></i><i></i></span>';
 
+  // Avatar: su gesto sigue al chat (saludo al abrir, pensando al esperar, respondiendo o error).
+  var fig = cb.querySelector('.cb-figura'), tFig = 0;
+  function gesto(e, ms) { // muestra la imagen del gesto e; con ms, vuelve a reposo al cabo de ese tiempo
+    clearTimeout(tFig);
+    fig.querySelectorAll('img').forEach(function (i) { i.classList.toggle('on', i.dataset.estado === e); }); // cruce suave entre gestos (CSS)
+    if (ms) tFig = setTimeout(function () { gesto('reposo'); }, ms);
+  }
+
   // La conversación vive en sessionStorage: sobrevive al cambiar de página y se borra al recargar (F5) o cerrar la pestaña.
   var CLAVE = 'cb_estado';
   function guardar() {
@@ -18,6 +26,8 @@
     panel.hidden = !v;
     btn.setAttribute('aria-expanded', v);
     if (v) form.querySelector('input').focus();
+    if (v) { fig.hidden = false; gesto('saludo', 2500); }
+    else { gesto('reposo'); fig.hidden = true; } // al cerrar desaparece sin despedirse
     guardar();
   }
   function bajar() { msgs.scrollTo({ top: msgs.scrollHeight, behavior: 'smooth' }); }
@@ -58,7 +68,8 @@
   // El asistente escribe, responde y vuelve a ofrecer opciones.
   function responder(fn) {
     var esp = poner('bot', typing);
-    setTimeout(function () { quitar(esp); fn(); setTimeout(function () { poner('bot', '', datos.dataset.mas); sugerir(); }, 500); }, 700);
+    gesto('pensando');
+    setTimeout(function () { quitar(esp); fn(); gesto('respondiendo', 2500); setTimeout(function () { poner('bot', '', datos.dataset.mas); sugerir(); }, 500); }, 700);
   }
   function elegir(s) {
     pool = pool.filter(function (x) { return x !== s; });
@@ -78,6 +89,8 @@
     form.querySelector('input').value = ''; form.querySelector('input').focus(); sugerir();
   });
   btn.addEventListener('click', function () { abrir(panel.hidden); });
+  var cab = cb.querySelector('.cb-cabeza'); // la cabeza junto al botón también abre el chat
+  if (cab) cab.addEventListener('click', function () { btn.click(); });
   cb.querySelector('.cb-x').addEventListener('click', function () { abrir(false); btn.focus(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { abrir(false); btn.focus(); } });
 
@@ -89,6 +102,7 @@
     var v = msgs.querySelector('.cb-ir'); if (v) v.remove();
     poner('yo', '', t);
     var esp = poner('bot', typing);
+    gesto('pensando');
     fetch(api, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: t, history: hist }) })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw j; return j; }); })
       .then(function (j) {
@@ -96,8 +110,9 @@
         hist.push({ role: 'user', content: t }, { role: 'bot', content: esp.textContent });
         var l = (j.docs || []).concat(j.links || []);
         if (l.length) esp.appendChild(enlaces(l));
+        gesto('respondiendo', 2500);
       })
-      .catch(function (j) { esp.textContent = (j && j.message) || cb.dataset.error; })
+      .catch(function (j) { esp.textContent = (j && j.message) || cb.dataset.error; gesto('error', 2500); })
       .then(function () { setTimeout(function () { poner('bot', '', datos.dataset.mas); sugerir(); }, 500); });
   });
   var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0], est = null;
@@ -113,5 +128,6 @@
     pool = est.p.map(function (i) { return todas[i]; }).filter(Boolean); hist = est.hist || [];
     if (est.abierto) { panel.hidden = false; btn.setAttribute('aria-expanded', true); msgs.scrollTop = msgs.scrollHeight; }
   } else sugerir();
+  fig.hidden = panel.hidden; gesto('reposo'); // al volver de otra página con el chat abierto, el avatar sigue ahí
   new MutationObserver(guardar).observe(msgs, { childList: true, subtree: true, characterData: true });
 })();

@@ -5,7 +5,7 @@
 const CB_TEXTOS = array(
 	'cb_boton'   => array( 'Texto del botón flotante', '¿Te ayudo?' ),
 	'cb_titulo'  => array( 'Título del chat', 'Asistente virtual' ),
-	'cb_saludo'  => array( 'Mensaje de bienvenida', 'Hola, soy el asistente de la Secretaría General. ¿En qué te ayudo? Escribe tu pregunta o elige una opción.' ),
+	'cb_saludo'  => array( 'Mensaje de bienvenida', '¡Hola! Soy el asistente virtual de la Secretaría General. ¿Qué necesitas? Cuéntame con tus palabras o elige una de las opciones de abajo.' ),
 	'cb_error'   => array( 'Mensaje si el agente no responde', 'No pude obtener una respuesta. Intenta de nuevo o elige una pregunta frecuente.' ),
 	'cb_docs'    => array( 'Mensaje antes de la lista de documentos encontrados', 'Encontré estos documentos:' ),
 	'cb_nada'    => array( 'Mensaje cuando no hay respuesta ni documentos', 'No encontré una respuesta. Prueba con otras palabras o elige una de estas preguntas:' ),
@@ -16,6 +16,18 @@ const CB_TEXTOS = array(
 	'cb_ficha'   => array( 'Texto del acceso a la ficha de requerimiento', 'Solicitar mi ficha de requerimiento' ),
 	'cb_campo'   => array( 'Texto del campo de escritura', 'Escribe tu pregunta…' ),
 );
+
+// Gestos del avatar flotante: cada uno se ve en un momento del chat. Las imágenes se cambian en Personalizar → Asistente.
+const CB_GESTOS = array(
+	'saludo'       => array( 'Saludo (al abrir el chat)', 'assets/img/saludo.webp' ),
+	'reposo'       => array( 'Reposo (esperando tu pregunta)', 'assets/img/reposo.webp' ),
+	'pensando'     => array( 'Pensando (buscando la respuesta)', 'assets/img/pensando.webp' ),
+	'respondiendo' => array( 'Respondiendo', 'assets/img/respondiendo.webp' ),
+	'error'        => array( 'Error', 'assets/img/error.webp' ),
+);
+
+// Cabeza que pesa junto al botón cuando el chat está cerrado; se cambia en Personalizar → Asistente.
+const CB_CABEZA = 'assets/img/cabeza-pensando-v2.webp';
 
 function cb_txt( $k ) { return get_theme_mod( $k, CB_TEXTOS[ $k ][1] ); }
 
@@ -39,6 +51,12 @@ add_action( 'customize_register', function ( $c ) {
 		$c->add_setting( $k, array( 'default' => $d[1], 'sanitize_callback' => 'sanitize_text_field' ) );
 		$c->add_control( $k, array( 'section' => 'uleam_chat', 'label' => $d[0], 'type' => 'text' ) );
 	}
+	foreach ( CB_GESTOS as $k => $d ) {
+		$c->add_setting( "cb_gesto_$k", array( 'default' => get_theme_file_uri( $d[1] ), 'sanitize_callback' => 'esc_url_raw' ) );
+		$c->add_control( new WP_Customize_Image_Control( $c, "cb_gesto_$k", array( 'section' => 'uleam_chat', 'label' => 'Avatar: ' . $d[0] ) ) );
+	}
+	$c->add_setting( 'cb_cabeza', array( 'default' => get_theme_file_uri( CB_CABEZA ), 'sanitize_callback' => 'esc_url_raw' ) );
+	$c->add_control( new WP_Customize_Image_Control( $c, 'cb_cabeza', array( 'section' => 'uleam_chat', 'label' => 'Cabeza junto al botón (chat cerrado; vacía = sin imagen)' ) ) );
 	$c->add_setting( 'cb_api_url', array( 'default' => '', 'sanitize_callback' => 'esc_url_raw' ) );
 	$c->add_control( 'cb_api_url', array( 'section' => 'uleam_chat', 'label' => 'API del agente (URL, vacío = solo preguntas frecuentes)', 'type' => 'url',
 		'description' => 'Se envía POST JSON {"message": "...", "history": [...]} y se espera {"reply": "..."} (también vale "answer", "respuesta" o "text").' ) );
@@ -149,6 +167,12 @@ function cb_responder( WP_REST_Request $r ) {
 add_action( 'wp_footer', function () {
 	if ( ! get_theme_mod( 'cb_activo', true ) ) return;
 	$faqs = get_posts( array( 'post_type' => 'faq', 'numberposts' => -1, 'orderby' => array( 'menu_order' => 'ASC', 'date' => 'ASC' ) ) );
+	$gestos = '';
+	foreach ( CB_GESTOS as $k => $d ) { // una imagen por gesto; el JS muestra la que toca según el estado del chat
+		$u = get_theme_mod( "cb_gesto_$k", get_theme_file_uri( $d[1] ) );
+		if ( $u ) $gestos .= '<img data-estado="' . esc_attr( $k ) . '" src="' . esc_url( $u ) . '" alt="" width="454" height="680" loading="lazy">';
+	}
+	$cab = get_theme_mod( 'cb_cabeza', get_theme_file_uri( CB_CABEZA ) );
 	?>
 <div class="cb" data-flecha="<?php echo esc_attr( uleam_icon( 'arrow-right' ) ); ?>" data-api="<?php echo esc_url( rest_url( 'uleam/v1/chat' ) ); ?>" data-error="<?php echo esc_attr( cb_txt( 'cb_error' ) ); ?>">
   <section class="cb-panel" id="cb-panel" role="dialog" aria-label="<?php echo esc_attr( cb_txt( 'cb_titulo' ) ); ?>" hidden>
@@ -163,6 +187,8 @@ add_action( 'wp_footer', function () {
     </div>
     <form class="cb-form"><input type="text" maxlength="500" autocomplete="off" placeholder="<?php echo esc_attr( cb_txt( 'cb_campo' ) ); ?>" aria-label="<?php echo esc_attr( cb_txt( 'cb_campo' ) ); ?>"><button type="submit" aria-label="Enviar"><?php echo uleam_icon( 'send' ); ?></button></form>
   </section>
+  <div class="cb-figura" aria-hidden="true" hidden><?php echo $gestos; ?></div>
+  <?php if ( $cab ) : ?><button type="button" class="cb-cabeza" aria-label="Abrir el asistente virtual" aria-controls="cb-panel"><img src="<?php echo esc_url( $cab ); ?>" alt="" width="248" height="240"></button><?php endif; ?>
   <button type="button" class="cb-btn" aria-expanded="false" aria-controls="cb-panel"><?php echo uleam_icon( 'message-circle' ); ?><span><?php echo esc_html( cb_txt( 'cb_boton' ) ); ?></span></button>
 </div>
 <script>

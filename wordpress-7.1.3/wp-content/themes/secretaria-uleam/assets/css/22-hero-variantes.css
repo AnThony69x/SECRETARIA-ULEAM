@@ -13,6 +13,9 @@
 /* Imagen de frente (PNG sin fondo): apoyada en la base del hero, junto a la tarjeta */
 .slide>img.frente{inset:auto auto 0 3%;width:auto;height:calc(100% - 24px);max-width:60%;object-fit:contain;object-position:left bottom;z-index:1;filter:drop-shadow(0 10px 24px rgba(7,35,92,.35))}
 .slide.lado-izq>img.frente{inset:auto 3% 0 auto;object-position:right bottom}
+@media(min-width:901px){
+  .slide:first-child>img.frente{height:92%;max-width:64%;left:2%} /* grupo del primer slide: más grande */
+}
 @media(max-width:900px){
   .slide>img.frente,.slide.lado-izq>img.frente{inset:28px auto auto 50%;transform:translateX(-50%);width:94%;height:auto;max-width:94%}
   .slide:first-child>img.frente{top:96px} /* el grupo del primer slide es bajo y ancho: se baja para acercarlo a la tarjeta */

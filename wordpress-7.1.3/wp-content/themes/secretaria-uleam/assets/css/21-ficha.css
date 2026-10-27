@@ -33,8 +33,7 @@
 .ficha-chk:has(input:checked) em{display:inline-block;animation:ficha-precio .2s ease-out}
 @keyframes ficha-precio{from{opacity:0;transform:translateX(-4px)}}
 @media(prefers-reduced-motion:reduce){.ficha-chk:has(input:checked) em{animation:none}}
-.ficha-nota{grid-column:1/-1;margin:0;color:var(--gris);font-size:14px}
-.ficha-total{font-weight:600;color:var(--azul);text-align:right}
+.ficha-nota{grid-column:1/-1;margin:0;color:var(--gris);font-size:14px}.ficha-total{font-weight:600;color:var(--azul);text-align:right}
 .ficha-total:empty{display:none}
 .ficha-acepto{border:0;padding:0;background:none;color:var(--gris)}
 .ficha-trampa{position:absolute;left:-9999px;height:0;overflow:hidden}
@@ -119,8 +118,15 @@
 .ficha-copiar{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border:1px solid var(--azul);border-radius:10px;background:var(--blanco);color:var(--azul);font:600 14px var(--font-uleam);cursor:pointer}
 .ficha-copiar:hover{background:var(--azul-cl)}
 .ficha-copiar .ico{width:16px;height:16px}
-.ficha-pago-nota{display:flex;align-items:flex-start;gap:12px;margin:0;padding:14px 16px;border-radius:14px;background:var(--azul);color:var(--blanco);font-size:15px;line-height:1.55}
+.ficha-pago-nota{display:flex;align-items:flex-start;gap:12px;margin:0;padding:14px 16px;border-radius:14px;background:var(--azul);color:var(--blanco);font-size:17px;font-weight:600;line-height:1.55}
 .ficha-pago-nota span{white-space:pre-line}
 .ficha-pago-nota .ico{flex:none;width:22px;height:22px;margin-top:2px}
+/* Requisitos: en negrilla y más grandes para que no pasen desapercibidos */
+.ficha-req{display:grid;gap:6px;padding:var(--e2);border-left:4px solid var(--azul);border-radius:var(--radio);background:var(--blanco)}
+.ficha-req p{margin:0;color:var(--azul-osc);font-weight:600}
+.ficha-req-t{font-size:18px}
+.ficha-req-t:not(:first-child){margin-top:var(--e1)}
+.ficha-req-i{position:relative;padding-left:18px;font-size:16px}
+.ficha-req-i::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--azul)}
 .ficha-pago-nota a{color:var(--blanco);font-weight:600;text-decoration:underline;text-underline-offset:3px;overflow-wrap:break-word}
-@media(max-width:600px){.ficha-pago{padding:var(--e2)}.ficha-bancos{grid-template-columns:1fr}.ficha-pago-nota{font-size:14px;padding:12px 14px}}
+@media(max-width:600px){.ficha-pago{padding:var(--e2)}.ficha-bancos{grid-template-columns:1fr}.ficha-pago-nota{font-size:16px;padding:12px 14px}}
