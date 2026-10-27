@@ -9,6 +9,9 @@
 .sis-sub{margin:0;color:var(--gris);font-size:15px}
 .sis-ayuda{margin:var(--e2) 0 0;font-size:14px;font-weight:600;color:var(--texto)}
 .sis-modal .enlaces{margin-top:var(--e2)}
+@media(min-width:861px){.sis-modal .enlaces{grid-template-columns:repeat(3,1fr)}} /* los tres principales en una fila */
+.sis-recoge:not(.con-extra) .enlace-extra{display:none}
+.sis-mas{margin-top:var(--e2)}
 .sis-cerrar{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--linea);background:#fff;color:var(--azul);display:grid;place-items:center}
 .sis-cerrar:hover{background:var(--azul);color:#fff}
 .sis-cerrar:focus-visible{outline:3px solid var(--azul-claro);outline-offset:2px}

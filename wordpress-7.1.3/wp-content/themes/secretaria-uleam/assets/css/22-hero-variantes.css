@@ -3,10 +3,10 @@
 .slide.lado-izq::before{background:linear-gradient(270deg,rgba(6,64,107,.15),rgba(6,64,107,.55))}
 
 /* Tono azul del fondo: la foto pierde color y el azul resalta la imagen de frente */
-.slide.tono-1>img:not(.frente){filter:grayscale(.45) contrast(1.04)}
-.slide.tono-1::before{background:color-mix(in srgb,var(--azul-rey) 46%,transparent);mix-blend-mode:color}
-.slide.tono-2>img:not(.frente){filter:grayscale(.8) contrast(1.06)}
-.slide.tono-2::before{background:color-mix(in srgb,var(--azul-rey) 70%,transparent);mix-blend-mode:color}
+.slide.tono-1>img:not(.frente){filter:grayscale(.6) contrast(1.08) saturate(1.2)}
+.slide.tono-1::before{background:color-mix(in srgb,var(--azul-claro) 80%,var(--azul-rey));mix-blend-mode:multiply} /* multiply tiñe de azul vivo sin lavar la foto */
+.slide.tono-2>img:not(.frente){filter:grayscale(.8) contrast(1.08) saturate(1.2)}
+.slide.tono-2::before{background:color-mix(in srgb,var(--azul-claro) 45%,var(--azul-rey));mix-blend-mode:multiply}
 .slide.tono-1::after,.slide.tono-2::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,transparent 62%,color-mix(in srgb,var(--azul-noche) 55%,transparent))}
 .slide.con-frente.tono-0::before{background:linear-gradient(180deg,transparent 72%,rgba(0,0,0,.4))} /* sin tono: solo oscurece el borde inferior para ver los controles */
 
@@ -14,6 +14,7 @@
 .slide>img.frente{inset:auto auto 0 3%;width:auto;height:calc(100% - 24px);max-width:60%;object-fit:contain;object-position:left bottom;z-index:1;filter:drop-shadow(0 10px 24px rgba(7,35,92,.35))}
 .slide.lado-izq>img.frente{inset:auto 3% 0 auto;object-position:right bottom}
 @media(min-width:901px){
+  .slide:first-child>img:not(.frente){object-position:50% 85%} /* fondo del primer slide: se ve más abajo de la foto, así el encuadre sube */
   .slide:first-child>img.frente{height:92%;max-width:64%;left:2%} /* grupo del primer slide: más grande */
 }
 @media(max-width:900px){

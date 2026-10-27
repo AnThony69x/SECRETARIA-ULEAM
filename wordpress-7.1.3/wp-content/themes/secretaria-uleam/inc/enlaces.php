@@ -30,7 +30,7 @@ add_shortcode( 'enlaces', function ( $a ) {
 	foreach ( $items as $it ) {
 		$icono = get_post_meta( $it->ID, '_uleam_icono', true );
 		$fuera = '_blank' === $it->target;
-		$o    .= '<li><a class="card enlace-card" href="' . esc_url( $it->url ) . '"' . ( $fuera ? ' target="_blank" rel="noopener"' : '' ) . '>'
+		$o    .= '<li' . ( in_array( 'enlace-extra', (array) $it->classes, true ) ? ' class="enlace-extra"' : '' ) . '><a class="card enlace-card" href="' . esc_url( $it->url ) . '"' . ( $fuera ? ' target="_blank" rel="noopener"' : '' ) . '>'
 			. '<span class="icono">' . uleam_icon( isset( ENL_ICONOS[ $icono ] ) ? $icono : 'monitor' ) . '</span><span class="enlace-t"><b>' . esc_html( $it->title ) . '</b>'
 			. ( $it->description ? '<small>' . esc_html( $it->description ) . '</small>' : '' ) . '</span>'
 			. '<span class="enlace-ir">' . uleam_icon( 'arrow-right' ) . ( $fuera ? '<span class="sr">(se abre en una pestaña nueva)</span>' : '' ) . '</span></a></li>';

@@ -12,6 +12,18 @@
     m.showModal();
     document.documentElement.classList.add('sis-abierto');
   }
+  // Los enlaces con la clase CSS "enlace-extra" (Apariencia → Menús) quedan recogidos tras un botón.
+  var ul = m.querySelector('.enlaces');
+  if (ul && ul.querySelector('.enlace-extra')) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn pq sis-mas'; b.setAttribute('aria-expanded', 'false'); b.textContent = 'Ver más sistemas';
+    b.addEventListener('click', function () {
+      var ab = ul.classList.toggle('con-extra');
+      b.setAttribute('aria-expanded', ab); b.textContent = ab ? 'Ver menos' : 'Ver más sistemas';
+    });
+    ul.classList.add('sis-recoge');
+    ul.after(b);
+  }
   function cerrar() { m.close(); }
   document.addEventListener('click', abrir);
   if (location.hash === '#sistemas') { m.showModal(); document.documentElement.classList.add('sis-abierto'); } // enlace directo al modal

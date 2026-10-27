@@ -91,7 +91,8 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     sum.querySelector('b').textContent = P.p ? 'Periodo ' + P.anio + '-' + P.p : 'Anexos y otros documentos ' + P.anio;
     sum.querySelector('small').textContent = P.p === 1 ? 'Enero – ' + MESES[MES2 - 2] + ' ' + P.anio : P.p === 2 ? MESES[MES2 - 1].replace(/^./, function (c) { return c.toUpperCase(); }) + ' – diciembre ' + P.anio : 'Sin fecha de sesión';
     sum.querySelector('.doc-ses-n').textContent = (n ? n + (n > 1 ? ' sesiones · ' : ' sesión · ') : '') + P.docs + (P.docs > 1 ? ' documentos' : ' documento');
-    (orden === 'asc' ? P.ses.slice().reverse() : P.ses).forEach(function (G) { cuerpo.appendChild(sesionBloque(G)); });
+    P.ses.slice().sort(function (A, B) { return (A.f ? A.f[1] * 100 + A.f[2] : 0) - (B.f ? B.f[1] * 100 + B.f[2] : 0) || (A.n || 0) - (B.n || 0); }) // enero a diciembre dentro del periodo
+      .forEach(function (G) { cuerpo.appendChild(sesionBloque(G)); });
     if (recuerda) det.addEventListener('toggle', function () { recuerda['p' + P.k] = det.open; });
     det.appendChild(sum); det.appendChild(cuerpo); li.appendChild(det);
     return li;
@@ -182,7 +183,7 @@ document.querySelectorAll('.docs-todo').forEach(function (d) {
     var ses = agrupar(rows);
     if (!ses) return rows.map(function (r, i) { return fila(r, i, true); });
     var pers = DS.periodos(ses, MES2);
-    if (orden === 'asc') pers.reverse();
+    pers.sort(function (A, B) { return (A.p || 9) - (B.p || 9); }); // 2025-1, 2025-2 y al final los anexos sin fecha (el orden elegido rige los años)
     // Los periodos empiezan recogidos y conservan lo que el usuario abra o cierre: al abrir otro año se repinta todo.
     return pers.map(function (P) { var k = 'p' + P.k; return periodoLi(P, !!s.abiertos[k], s.abiertos); });
   }
