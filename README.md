@@ -1,6 +1,6 @@
 # Secretaría General — ULEAM
 
-Sitio WordPress de la Secretaría General de la Universidad Laica Eloy Alfaro de Manabí. La maqueta de referencia está en `maqueta-secretaria-general.html`.
+Sitio WordPress de la Secretaría General de la Universidad Laica Eloy Alfaro de Manabí.
 
 ## Qué es este proyecto
 
@@ -26,7 +26,7 @@ Reglas de trabajo del tema: [`CLAUDE.md`](CLAUDE.md).
 ```bash
 cp arrancar.sh.example arrancar.sh && chmod +x arrancar.sh
 cp detener.sh.example detener.sh && chmod +x detener.sh
-# edita DB_PASS en arrancar.sh y crea credenciales.txt (ambos ignorados por git)
+# edita DB_PASS en arrancar.sh (ignorado por git)
 
 ./arrancar.sh   # MariaDB (puerto 3308) + PHP (puerto 8000)
 ./detener.sh

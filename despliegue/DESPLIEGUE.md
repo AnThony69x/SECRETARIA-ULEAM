@@ -113,7 +113,7 @@ final. Si WordPress está en otra carpeta, añade `--wp=/ruta/a/wordpress`.
   Cloudflare; así los límites de uso del chat y de la ficha son por visitante y no globales.
 - **Servidor:** usa las reglas de `nginx.example.conf` / `htaccess.example` (bloquean PHP en `uploads` y añaden cabeceras).
 - **Contraseña del administrador:** la base importada trae el usuario `admin` con la contraseña de desarrollo
-  (está en `credenciales.txt`, que no va en git). Cámbiala nada más entrar (Usuarios → Perfil). Si no puedes entrar:
+  (no se guarda en ningún archivo del proyecto). Cámbiala nada más entrar (Usuarios → Perfil). Si no puedes entrar:
   `UPDATE wp_users SET user_pass = MD5('PROVISIONAL') WHERE ID = 1;` y cámbiala dentro del administrador.
 - Crea un usuario por persona que edite (Usuarios → Añadir) y usa `admin` solo como cuenta de respaldo. El correo del
   administrador (Ajustes → Generales) es el que recibe los avisos.
