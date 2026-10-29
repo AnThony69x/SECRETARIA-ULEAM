@@ -94,6 +94,13 @@ el botón del BrandBook). Maneja datos serializados sin romperlos. La dirección
 final. Si WordPress está en otra carpeta, añade `--wp=/ruta/a/wordpress`.
 
 ### 7. Seguridad (antes de abrir el sitio al público)
+- **Dominio fijo:** en `wp-config.php` debe estar definido `ULEAM_DOMINIO` (descomenta la línea) o usar el
+  `wp-config.produccion.example.php`; sin eso, el sitio acepta cualquier host (enlaces de recuperar contraseña envenenables).
+- **Clave del chatbot:** define `define( 'ULEAM_CB_KEY', 'la-clave' );` en `wp-config.php` y deja vacío el campo del
+  Personalizador, para que no quede en la base ni en sus copias.
+- **Detrás de Cloudflare:** añade `define( 'ULEAM_PROXY_CF', true );` solo si el servidor acepta tráfico únicamente de
+  Cloudflare; así los límites de uso del chat y de la ficha son por visitante y no globales.
+- **Servidor:** usa las reglas de `nginx.example.conf` / `htaccess.example` (bloquean PHP en `uploads` y añaden cabeceras).
 - **Contraseña del administrador:** la base importada trae el usuario `admin` con la contraseña de desarrollo
   (está en `credenciales.txt`, que no va en git). Cámbiala nada más entrar (Usuarios → Perfil). Si no puedes entrar:
   `UPDATE wp_users SET user_pass = MD5('PROVISIONAL') WHERE ID = 1;` y cámbiala dentro del administrador.
@@ -116,6 +123,34 @@ final. Si WordPress está en otra carpeta, añade `--wp=/ruta/a/wordpress`.
 - [ ] Sin avisos de contenido mixto (mira la consola del navegador): todo por `https://`.
 - [ ] En un teléfono: el menú se despliega y no hay desplazamiento horizontal.
 - [ ] Apariencia → Personalizar → Identidad del sitio: el icono del escudo está puesto.
+
+## Alternativa: migrar con el plugin WPvivid
+
+Otra forma de llevar el sitio, sin exportar la base a mano. No se ha probado en este proyecto; los nombres de los menús
+del plugin pueden variar según su versión. La carpeta `uploads/` (unos 12 GB de PDF) **no** se mueve con el plugin.
+
+**Antes del backup (en tu equipo)**
+- Revisa las solicitudes de la ficha (tipo `solicitud`, llevan datos personales): borra las de prueba o decide si viajan.
+- Vacía la papelera de páginas y borra `wp-content/plugins/hello.php`.
+- Confirma el correo de avisos (Ajustes → Generales) y la visibilidad en buscadores (Ajustes → Lectura).
+- Instala y activa WPvivid (Plugins → Añadir nuevo).
+
+**Backup**
+1. WPvivid → Backup & Restore → Backup Now: *Database + Themes* (solo `secretaria-uleam`). Sin `uploads`, plugins ni núcleo.
+2. Descarga todos los archivos que genere (se parte en varios).
+3. Copia `uploads/` aparte, directo al servidor:
+   `rsync -av --progress wp-content/uploads/ usuario@servidor:/ruta/wp-content/uploads/`
+
+**En el servidor**
+1. WordPress 7.1.3 limpio, base de datos vacía y `wp-config.php` propio (`ULEAM_DOMINIO`, `ULEAM_CB_KEY`, credenciales,
+   `WP_DEBUG` en `false`): el plugin no lleva `wp-config.php`. Sube los límites de PHP (`upload_max_filesize`,
+   `post_max_size`, `memory_limit`, `max_execution_time`).
+2. Instala WPvivid, sube los archivos del backup (Backup & Restore → Upload) y restaura.
+3. Entra con el usuario y la contraseña **locales** (la base se reemplaza). Cambia la contraseña ya (paso 7).
+4. Ajustes → Enlaces permanentes: guarda sin cambiar nada. Copia el `.htaccess` o el bloque de Nginx (paso 5).
+5. Si quedan enlaces a `localhost`: `php despliegue/cambiar-url.php http://localhost:8000 https://TU-DOMINIO --seco`
+   y, si cuenta filas, ejecútalo sin `--seco`.
+6. Recorre la lista del paso 8 y desinstala WPvivid.
 
 ## Después de publicar
 

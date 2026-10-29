@@ -2,6 +2,20 @@
 
 Sitio WordPress de la Secretaría General de la Universidad Laica Eloy Alfaro de Manabí. La maqueta de referencia está en `maqueta-secretaria-general.html`.
 
+## Qué es este proyecto
+
+Reestructuración del micrositio de la Secretaría General: un tema propio de WordPress (`secretaria-uleam`) en lugar de
+páginas sueltas, con todo el contenido editable desde wp-admin y sin tocar el núcleo ni plugins de terceros.
+
+- **Documentos:** Consejo Universitario, archivo histórico y rendición de cuentas, con buscador y visor de PDF.
+- **Personal:** organigrama y equipo, con fotos y áreas editables.
+- **Servicios:** ficha de solicitud con PDF descargable, enlaces y sistemas, horario de atención y chatbot de preguntas.
+- **Diseño:** identidad visual ULEAM (abajo), responsive y accesible, un archivo CSS/JS por componente.
+- **Seguridad y despliegue:** dominio fijo en producción, enlaces del PDF que caducan, límites de uso, reglas de servidor
+  y guía de publicación (incluye la opción de migrar con WPvivid).
+
+Reglas de trabajo del tema: [`CLAUDE.md`](CLAUDE.md).
+
 ## Requisitos
 
 - PHP (con extensión `mysqli`)
@@ -26,6 +40,10 @@ La primera vez, completa `wp-config.php` (host `127.0.0.1:3308`, base `db-secret
 ## Publicar en un servidor
 
 Guía completa (direcciones de la parte visual y del administrador, base de datos, archivos y lista de comprobación): [`despliegue/DESPLIEGUE.md`](despliegue/DESPLIEGUE.md).
+
+Antes de abrir el sitio al público, en el `wp-config.php` del servidor define `ULEAM_DOMINIO` (dominio fijo con `https`)
+y, si se usa, `ULEAM_CB_KEY` (clave del chatbot) y `ULEAM_PROXY_CF` (solo detrás de Cloudflare). El `wp-config.php` local
+acepta cualquier host y no debe usarse en producción.
 
 ## Identidad visual
 

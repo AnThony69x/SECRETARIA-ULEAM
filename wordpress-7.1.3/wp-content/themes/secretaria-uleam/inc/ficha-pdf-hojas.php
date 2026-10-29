@@ -2,7 +2,8 @@
 // Arma las dos hojas del PDF de la ficha (inc/ficha-pdf.php) y lo entrega con un enlace firmado por solicitud.
 
 function ficha_pdf_url( $id ) {
-	return add_query_arg( array( 'action' => 'uleam_ficha_pdf', 'id' => (int) $id, 'sig' => wp_hash( "ficha-pdf|$id" ) ), admin_url( 'admin-ajax.php' ) );
+	$exp = time() + DAY_IN_SECONDS; // el PDF lleva datos personales: el enlace caduca
+	return add_query_arg( array( 'action' => 'uleam_ficha_pdf', 'id' => (int) $id, 'exp' => $exp, 'sig' => wp_hash( "ficha-pdf|$id|$exp" ) ), admin_url( 'admin-ajax.php' ) );
 }
 
 const FICHA_AZ = '#005689';
@@ -177,11 +178,12 @@ function ficha_pdf( $id ) {
 	return $p->salida();
 }
 
-// Descarga del PDF: solo con el enlace firmado que se entrega al enviar la solicitud (o desde el administrador).
+// Descarga del PDF: solo con el enlace firmado y vigente (24 h) que se entrega al enviar la solicitud.
 function ficha_pdf_entregar() {
 	$id = (int) ( $_GET['id'] ?? 0 );
-	if ( 'solicitud' !== get_post_type( $id ) || ! hash_equals( wp_hash( "ficha-pdf|$id" ), (string) ( $_GET['sig'] ?? '' ) ) ) {
-		wp_die( 'Enlace no válido.', '', array( 'response' => 403 ) );
+	$exp = (int) ( $_GET['exp'] ?? 0 );
+	if ( 'solicitud' !== get_post_type( $id ) || $exp < time() || ! hash_equals( wp_hash( "ficha-pdf|$id|$exp" ), (string) ( $_GET['sig'] ?? '' ) ) ) {
+		wp_die( 'Enlace no válido o caducado.', '', array( 'response' => 403 ) );
 	}
 	nocache_headers();
 	header( 'Content-Type: application/pdf' );

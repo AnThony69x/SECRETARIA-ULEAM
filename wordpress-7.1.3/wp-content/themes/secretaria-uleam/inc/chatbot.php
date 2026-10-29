@@ -61,7 +61,7 @@ add_action( 'customize_register', function ( $c ) {
 	$c->add_control( 'cb_api_url', array( 'section' => 'uleam_chat', 'label' => 'API del agente (URL, vacío = solo preguntas frecuentes)', 'type' => 'url',
 		'description' => 'Se envía POST JSON {"message": "...", "history": [...]} y se espera {"reply": "..."} (también vale "answer", "respuesta" o "text").' ) );
 	$c->add_setting( 'cb_api_key', array( 'default' => '', 'sanitize_callback' => 'sanitize_text_field' ) );
-	$c->add_control( 'cb_api_key', array( 'section' => 'uleam_chat', 'label' => 'Clave de la API (se envía como Bearer; nunca llega al navegador)', 'type' => 'text' ) );
+	$c->add_control( 'cb_api_key', array( 'section' => 'uleam_chat', 'label' => 'Clave de la API (se envía como Bearer; nunca llega al navegador)', 'type' => 'text', 'description' => 'Mejor definir ULEAM_CB_KEY en wp-config.php: así no queda en la base de datos ni en sus copias.' ) );
 } );
 
 // El navegador habla con WordPress y este reenvía al agente: así la clave queda en el servidor.
@@ -134,7 +134,7 @@ function cb_enlaces( $kw ) {
 function cb_agente( $msg, $hist ) {
 	$url = get_theme_mod( 'cb_api_url', '' );
 	if ( ! $url ) return null;
-	$key = get_theme_mod( 'cb_api_key', '' );
+	$key = defined( 'ULEAM_CB_KEY' ) ? ULEAM_CB_KEY : get_theme_mod( 'cb_api_key', '' ); // la constante de wp-config.php evita guardar la clave en la base
 	$res = wp_remote_post( $url, array(
 		'timeout' => 20,
 		'headers' => array( 'Content-Type' => 'application/json' ) + ( $key ? array( 'Authorization' => 'Bearer ' . $key ) : array() ),
@@ -151,7 +151,7 @@ function cb_responder( WP_REST_Request $r ) {
 	$msg = mb_substr( sanitize_textarea_field( (string) $r->get_param( 'message' ) ), 0, 500 );
 	if ( '' === $msg ) return new WP_Error( 'cb_vacio', cb_txt( 'cb_error' ), array( 'status' => 400 ) );
 	// Límite por IP (20 mensajes/min) para que nadie sature el buscador ni gaste la cuota del agente.
-	$k = 'cb_rl_' . md5( $_SERVER['REMOTE_ADDR'] ?? '' );
+	$k = 'cb_rl_' . md5( uleam_ip() );
 	$n = (int) get_transient( $k );
 	if ( $n >= 20 ) return new WP_Error( 'cb_limite', 'Demasiados mensajes, espera un momento.', array( 'status' => 429 ) );
 	set_transient( $k, $n + 1, MINUTE_IN_SECONDS );

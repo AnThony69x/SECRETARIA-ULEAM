@@ -250,4 +250,5 @@ require get_template_directory() . "/inc/horario.php";
 
 // Organigrama de personal editable (Personal / Áreas del organigrama).
 require get_template_directory() . "/inc/organigrama.php";
+require get_template_directory() . "/inc/seguridad.php";
 require get_template_directory() . "/inc/host-dinamico.php";

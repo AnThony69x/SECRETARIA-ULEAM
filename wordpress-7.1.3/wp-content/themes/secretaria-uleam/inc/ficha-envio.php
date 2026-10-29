@@ -105,12 +105,12 @@ function ficha_enviar() {
 	$ts  = (int) ( $p['ts'] ?? 0 );
 	$seg = time() - $ts;
 	$org = wp_parse_url( $_SERVER['HTTP_ORIGIN'] ?? $_SERVER['HTTP_REFERER'] ?? '', PHP_URL_HOST ); // el envío debe venir de este sitio
-	if ( ! hash_equals( ficha_token( $ts ), (string) ( $p['sig'] ?? '' ) ) || ( $org && $org !== wp_parse_url( home_url(), PHP_URL_HOST ) )
+	if ( ! hash_equals( ficha_token( $ts ), (string) ( $p['sig'] ?? '' ) ) || $org !== wp_parse_url( home_url(), PHP_URL_HOST )
 		|| ! empty( $p['web'] ) || $seg < 4 || $seg > 7 * DAY_IN_SECONDS ) { // firma falsa, otro origen, trampa para robots o envío demasiado rápido
 		$fin( false, $msj( 'x' ) );
 	}
 	// Topes: 5 por hora por dirección y 60 por hora en total (con proxy o CDN, REMOTE_ADDR es una sola dirección: el tope global evita bloquear a todos y el inundado).
-	$llave = 'ficha_' . md5( $_SERVER['REMOTE_ADDR'] ?? '' );
+	$llave = 'ficha_' . md5( uleam_ip() );
 	$veces = (int) get_transient( $llave );
 	$total = (int) get_transient( 'ficha_total' );
 	if ( $veces >= 5 || $total >= 60 ) {
