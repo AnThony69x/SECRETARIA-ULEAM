@@ -26,12 +26,12 @@ define( 'NONCE_SALT',       'TU_CLAVE' );
 
 /*
  * Direcciones del sitio.
- *  - WP_HOME    = la parte visual (lo que ve el público):      https://TU-DOMINIO
+ *  - WP_HOME    = la parte visual (lo que ve el público):      https://secretariageneral.uleam.edu.ec
  *  - WP_SITEURL = dónde está WordPress; el administrador queda en WP_SITEURL/wp-admin/
  * Normalmente son la misma dirección. Deben coincidir con lo que dejó despliegue/cambiar-url.php en la base de datos.
  */
-define( 'WP_HOME', 'https://TU-DOMINIO' );
-define( 'WP_SITEURL', 'https://TU-DOMINIO' );
+define( 'WP_HOME', 'https://secretariageneral.uleam.edu.ec' );
+define( 'WP_SITEURL', 'https://secretariageneral.uleam.edu.ec' );
 
 /* Detrás de un proxy o balanceador que termina el HTTPS (Cloudflare, Nginx delante de Apache…). */
 if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === $_SERVER['HTTP_X_FORWARDED_PROTO'] ) {

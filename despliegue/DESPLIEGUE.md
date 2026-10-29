@@ -4,12 +4,23 @@ Guía para publicar el sitio de la Secretaría General. Estado: el flujo de expo
 se **ensayó en local** (restaurar la exportación en una base temporal y cambiar la dirección). Lo que depende del
 servidor (Apache o Nginx, HTTPS, correo) **no se pudo probar aquí**: sigue los pasos y comprueba la lista del paso 8.
 
+## Dominio de destino y reemplazo del sitio anterior
+
+El sitio va en **https://secretariageneral.uleam.edu.ec/**, el mismo dominio donde hoy está el sitio anterior, que se da de baja.
+
+- **Antes de bajarlo:** pide a quien lo administra una copia completa (archivos y base de datos) y guárdala; es tu vuelta atrás.
+- **Enlaces viejos:** anota las direcciones del sitio anterior que el público o Google usan (búscalas con `site:secretariageneral.uleam.edu.ec`).
+  Las que no existan en el nuevo se redirigen con `301` en nginx/`.htaccess` a la página equivalente; si no, darán 404.
+- **Orden:** deja el sitio nuevo listo en el servidor (o en un subdominio temporal) y haz el cambio de apuntamiento en un
+  momento de poco uso. Comprueba la lista del paso 8 enseguida.
+- **Certificado y DNS:** el dominio ya existe; confirma con quien lo gestiona que el certificado HTTPS cubre el servidor nuevo.
+
 ## Las dos direcciones
 
 | Qué es | Dirección | Dónde se define |
 |---|---|---|
-| **Parte visual** (lo que ve el público) | `https://TU-DOMINIO/` | `WP_HOME` en `wp-config.php` y la opción `home` de la base de datos |
-| **Administrador** | `https://TU-DOMINIO/wp-admin/` | `WP_SITEURL` en `wp-config.php` y la opción `siteurl` de la base de datos |
+| **Parte visual** (lo que ve el público) | `https://secretariageneral.uleam.edu.ec/` | `WP_HOME` en `wp-config.php` y la opción `home` de la base de datos |
+| **Administrador** | `https://secretariageneral.uleam.edu.ec/wp-admin/` | `WP_SITEURL` en `wp-config.php` y la opción `siteurl` de la base de datos |
 
 Normalmente son el mismo dominio. En el sitio local ambas son `http://localhost:8000`. El script
 `despliegue/cambiar-url.php` cambia la dirección en la base de datos y `wp-config.produccion.example.php` la fija en el
@@ -86,8 +97,8 @@ Edita `wp-config.php`: base de datos, **claves nuevas** (https://api.wordpress.o
 
 ### 6. Cambiar la dirección en la base de datos
 ```bash
-php ../despliegue/cambiar-url.php http://localhost:8000 https://TU-DOMINIO --seco   # solo cuenta; deben salir unas 10 filas
-php ../despliegue/cambiar-url.php http://localhost:8000 https://TU-DOMINIO          # aplica el cambio
+php ../despliegue/cambiar-url.php http://localhost:8000 https://secretariageneral.uleam.edu.ec --seco   # solo cuenta; deben salir unas 10 filas
+php ../despliegue/cambiar-url.php http://localhost:8000 https://secretariageneral.uleam.edu.ec          # aplica el cambio
 ```
 Cambia las opciones `home` y `siteurl`, los enlaces del menú y los enlaces dentro del texto de las páginas (por ejemplo
 el botón del BrandBook). Maneja datos serializados sin romperlos. La dirección tiene que ser `https://dominio` sin barra
@@ -112,8 +123,8 @@ final. Si WordPress está en otra carpeta, añade `--wp=/ruta/a/wordpress`.
 - Ajustes → Enlaces permanentes: abre la pantalla y guarda sin cambiar nada para regenerar las reglas.
 
 ### 8. Comprobar que todo funciona
-- [ ] `https://TU-DOMINIO/` carga con el logo, las diapositivas y el menú.
-- [ ] `https://TU-DOMINIO/wp-admin/` pide usuario y entra.
+- [ ] `https://secretariageneral.uleam.edu.ec/` carga con el logo, las diapositivas y el menú.
+- [ ] `https://secretariageneral.uleam.edu.ec/wp-admin/` pide usuario y entra.
 - [ ] Abre `/consejo-universitario/`, `/consejo-de-postgrado/`, `/archivo-general/`, `/rendicion-de-cuentas/`,
       `/sistema-historico-de-gestion/`, `/brandbook/` y `/consejo-universitario/archivo-historico/`.
 - [ ] En Consejo Universitario: abre el año 2024, pulsa **Ver** y **Descargar** en un PDF.
@@ -148,7 +159,7 @@ del plugin pueden variar según su versión. La carpeta `uploads/` (unos 12 GB d
 2. Instala WPvivid, sube los archivos del backup (Backup & Restore → Upload) y restaura.
 3. Entra con el usuario y la contraseña **locales** (la base se reemplaza). Cambia la contraseña ya (paso 7).
 4. Ajustes → Enlaces permanentes: guarda sin cambiar nada. Copia el `.htaccess` o el bloque de Nginx (paso 5).
-5. Si quedan enlaces a `localhost`: `php despliegue/cambiar-url.php http://localhost:8000 https://TU-DOMINIO --seco`
+5. Si quedan enlaces a `localhost`: `php despliegue/cambiar-url.php http://localhost:8000 https://secretariageneral.uleam.edu.ec --seco`
    y, si cuenta filas, ejecútalo sin `--seco`.
 6. Recorre la lista del paso 8 y desinstala WPvivid.
 
